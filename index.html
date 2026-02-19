@@ -1,182 +1,408 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brunch & Smash Burger</title>
-<style>
-    body {
-        background-color: #000;
-        color: #fff;
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 0;
-    }
-    .container {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-    h1, h2 {
-        text-align: center;
-        color: #fff;
-        text-shadow: 0 0 10px #fff;
-    }
-    select, button {
-        padding: 10px;
-        margin: 10px 0;
-        background-color: #000;
-        color: #fff;
-        border: 1px solid #fff;
-        width: 100%;
-        font-size: 16px;
-    }
-    .menu-section {
-        margin: 20px 0;
-        border-bottom: 1px solid #fff;
-        padding-bottom: 10px;
-    }
-    .cart {
-        margin-top: 20px;
-        padding: 15px;
-        border: 1px solid #fff;
-    }
-    .message {
-        margin-top: 10px;
-        font-style: italic;
-        color: #fff;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Brunch & Smash Burger</title>
+    <style>
+        /* --- RESET & BASE --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            padding-bottom: 100px; /* Space for sticky footer */
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 { font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        h1 { font-size: 1.5rem; text-align: center; margin: 20px 0; border-bottom: 2px solid #fff; padding-bottom: 15px; }
+        h2 { font-size: 1.2rem; margin-top: 30px; margin-bottom: 15px; border-left: 4px solid #fff; padding-left: 10px; }
+        p { font-size: 0.9rem; color: #ccc; margin-bottom: 10px; }
+        .price { font-weight: bold; font-size: 1rem; }
+
+        /* --- LAYOUT --- */
+        .container { max-width: 600px; margin: 0 auto; padding: 0 20px; }
+        
+        /* --- ITEMS --- */
+        .menu-item {
+            border: 1px solid #333;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #0a0a0a;
+            transition: border-color 0.2s;
+        }
+        .menu-item:active { border-color: #fff; }
+        
+        .item-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+        .item-title { font-weight: bold; font-size: 1.1rem; }
+        
+        /* --- BUTTONS --- */
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-add {
+            flex: 1;
+            background: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 0; /* Strict square corners */
+        }
+        .btn-add:active { background: #fff; color: #000; }
+
+        /* --- QUANTITY CONTROLS --- */
+        .qty-control {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-top: 10px;
+            display: none; /* Hidden by default */
+        }
+        .qty-btn {
+            background: #fff; color: #000;
+            border: none; width: 30px; height: 30px;
+            font-size: 1.2rem; line-height: 1;
+            cursor: pointer;
+        }
+        .qty-display { margin: 0 15px; font-weight: bold; }
+
+        /* --- TOAST NOTIFICATION --- */
+        #toast {
+            position: fixed;
+            top: 20px; left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            color: #000;
+            padding: 12px 24px;
+            font-weight: bold;
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            width: 90%;
+            max-width: 400px;
+            border: 2px solid #000;
+        }
+
+        /* --- FOOTER --- */
+        #sticky-footer {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            background: #000;
+            border-top: 2px solid #fff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 999;
+        }
+        #total-display { font-size: 1.3rem; font-weight: bold; margin-bottom: 5px; }
+        #footer-message { font-size: 0.8rem; text-align: center; color: #ccc; margin-bottom: 10px; font-style: italic;}
+        #final-message { display: none; text-align: center; font-weight: bold; margin-top: 5px; text-transform: uppercase; font-size: 0.9rem;}
+
+        /* --- LANGUAGE SELECTOR OVERLAY --- */
+        #lang-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .lang-btn {
+            background: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 15px 40px;
+            margin: 10px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            width: 200px;
+            cursor: pointer;
+        }
+        .lang-btn:hover { background: #fff; color: #000; }
+
+        /* Utilities */
+        .hidden { display: none !important; }
+    </style>
 </head>
 <body>
 
-<div class="container" id="languageChoice">
-    <h1>Welcome / Bienvenue / Welkom</h1>
-    <p>Choisissez votre langue :</p>
-    <button onclick="setLanguage('en')">English</button>
-    <button onclick="setLanguage('fr')">Français</button>
-    <button onclick="setLanguage('nl')">Nederlands</button>
-</div>
-
-<div class="container" id="menu" style="display:none;">
-    <h1>🍔 Brunch & Smash Burger</h1>
-
-    <div class="menu-section">
-        <h2>Smash Burgers</h2>
-        <select id="burgerSelect">
-            <option value="5">Small Smash - 5€</option>
-            <option value="7.5">Classic Smash - 7.5€</option>
-            <option value="8.5">Chèvre Smash - 8.5€</option>
-            <option value="9.5">Truffe Smash - 9.5€</option>
-            <option value="9.5">BBQ Smash - 9.5€</option>
-            <option value="9.5">Raclette Smash - 9.5€</option>
-            <option value="8.5">Crispy Chicken - 8.5€</option>
-        </select>
-        <button onclick="addItem('Smash Burger')">Ajouter au panier</button>
+    <div id="lang-overlay">
+        <h1 style="border:none;">BRUNCH & SMASH</h1>
+        <button class="lang-btn" onclick="setLanguage('en')">English</button>
+        <button class="lang-btn" onclick="setLanguage('fr')">Français</button>
+        <button class="lang-btn" onclick="setLanguage('nl')">Nederlands</button>
     </div>
 
-    <div class="menu-section">
-        <h2>Baguettes</h2>
-        <select id="baguetteSelect">
-            <option value="9.5">Baguette Merguez - 9.5€</option>
-            <option value="9.5">Baguette Merguez Piquante - 9.5€</option>
-            <option value="9.5">Baguette Saucisse Poulet - 9.5€</option>
-            <option value="9.5">Baguette Kefta - 9.5€</option>
-        </select>
-        <button onclick="addItem('Baguette')">Ajouter au panier</button>
+    <div class="container" id="main-menu">
+        <h1 id="brand-title">BRUNCH & SMASH BURGER</h1>
+        
+        <div id="menu-content">
+            </div>
+
+        <div style="text-align: center; margin-top: 30px; color: #666; font-size: 0.8rem;">
+            Google Rating: 4.9/5 ★★★★★
+        </div>
     </div>
 
-    <div class="menu-section">
-        <h2>Sides</h2>
-        <select id="sideSelect">
-            <option value="3.5">Frites Maison - 3.5€</option>
-            <option value="5.5">Frites Lardon Hot Cheddar - 5.5€</option>
-            <option value="6">Tenders - 6€</option>
-            <option value="5">Frites Patate Douce - 5€</option>
-            <option value="2">Croquette Fromage - 2€</option>
-        </select>
-        <button onclick="addItem('Side')">Ajouter au panier</button>
+    <div id="toast">Excellent choix</div>
+
+    <div id="sticky-footer">
+        <div id="total-display">Total: 0.00€</div>
+        <div id="footer-message">...</div>
+        <div id="final-message"></div>
     </div>
 
-    <div class="menu-section">
-        <h2>Desserts</h2>
-        <select id="dessertSelect">
-            <option value="6">Moelleux au Chocolat - 6€</option>
-            <option value="4">Tiramisu - 4€</option>
-            <option value="6.5">Brioche Perdue - 6.5€</option>
-        </select>
-        <button onclick="addItem('Dessert')">Ajouter au panier</button>
-    </div>
+    <script>
+        // --- DATA ---
+        const phrases = [
+            "Excellent choix",
+            "Bon choix",
+            "Spoil : quoi que tu choisisses, ça sera bon",
+            "Vous avez de la chance de manger chez nous",
+            "La qualité est toujours au rendez-vous",
+            "Y a-t-il de meilleurs smash burgers ailleurs ?",
+            "Beaucoup hésitaient, maintenant ils sont amoureux de nos frites",
+            "Régalez-vous",
+            "N'oubliez pas de nous noter"
+        ];
 
-    <div class="menu-section">
-        <h2>Boissons</h2>
-        <select id="drinkSelect">
-            <option value="2">Pepsi - 2€</option>
-            <option value="2">Ice Tea - 2€</option>
-            <option value="2">Oasis Pomme Poire - 2€</option>
-            <option value="4">Milk-Shake - 4€</option>
-        </select>
-        <button onclick="addItem('Boisson')">Ajouter au panier</button>
-    </div>
+        const translations = {
+            fr: {
+                solo: "Sans Frites",
+                menu: "Avec Frites & Sauce",
+                add: "Ajouter",
+                total: "Total",
+                final: "PARFAIT, MAINTENANT ATTENDS LE SERVEUR QU'IL VIENNE À TOI OU VA VERS LUI.",
+                sections: {
+                    smash: "Smash Burgers",
+                    baguette: "Baguettes",
+                    sides: "Sides (Accompagnements)",
+                    dessert: "Desserts",
+                    drink: "Boissons",
+                    supp: "Suppléments"
+                }
+            },
+            en: {
+                solo: "No Fries",
+                menu: "With Fries & Sauce",
+                add: "Add",
+                total: "Total",
+                final: "PERFECT, NOW WAIT FOR THE SERVER OR GO TO THEM.",
+                sections: {
+                    smash: "Smash Burgers",
+                    baguette: "Baguettes",
+                    sides: "Sides",
+                    dessert: "Desserts",
+                    drink: "Drinks",
+                    supp: "Supplements"
+                }
+            },
+            nl: {
+                solo: "Zonder Friet",
+                menu: "Met Friet & Saus",
+                add: "Toevoegen",
+                total: "Totaal",
+                final: "PERFECT, WACHT NU OP DE OBER OF GA NAAR HEM TOE.",
+                sections: {
+                    smash: "Smash Burgers",
+                    baguette: "Baguettes",
+                    sides: "Sides",
+                    dessert: "Nagerechten",
+                    drink: "Dranken",
+                    supp: "Supplementen"
+                }
+            }
+        };
 
-    <div class="cart" id="cart">
-        <h2>Votre Panier</h2>
-        <ul id="cartItems"></ul>
-        <p id="total">Total: 0€</p>
-        <p id="finalMessage"></p>
-    </div>
-</div>
+        const menuData = [
+            {
+                category: "smash",
+                items: [
+                    { id: "s1", name: "Small Smash", desc: "Potato bun, steak viande hachée, cheddar, salade, tomate, cornichon, moutarde, ketchup", priceSolo: 5, priceMenu: 8.5 },
+                    { id: "s2", name: "Classic Smash", desc: "Potato bun, double steak, double cheddar, cornichon, sauce smash", priceSolo: 7.5, priceMenu: 10.5 },
+                    { id: "s3", name: "Chèvre Smash", desc: "Double steak, rondin de chèvre, salade, tomate, oignons caramélisés, miel, moutarde", priceSolo: 8.5, priceMenu: 11.5 },
+                    { id: "s4", name: "Truffe Smash", desc: "Double steak, double cheddar, salade, tomate, oignons caramélisés, sauce truffe", priceSolo: 9.5, priceMenu: 12.5 },
+                    { id: "s5", name: "BBQ Smash", desc: "Double steak, double cheddar, bacon, salade, tomate, oignons caramélisés, sauce BBQ", priceSolo: 9.5, priceMenu: 12.5 },
+                    { id: "s6", name: "Raclette Smash", desc: "Double steak, raclette savoyarde, salade, tomate, oignons caramélisés, sauce crème ail", priceSolo: 9.5, priceMenu: 12.5 },
+                    { id: "s7", name: "Crispy Chicken", desc: "Poulet frit, double cheddar, salade, tomate, oignons caramélisés, mayo Sriracha", priceSolo: 8.5, priceMenu: 11.5 },
+                ]
+            },
+            {
+                category: "baguette",
+                items: [
+                    { id: "b1", name: "Baguette Merguez", desc: "Pain frais, Merguez, double cheddar, oignons/cornichon, salade, tomate, sauce", priceSolo: 9.5, priceMenu: 12.5 },
+                    { id: "b2", name: "Baguette Merguez Piquante", desc: "Pain frais, Merguez Piquante, double cheddar, garniture", priceSolo: 9.5, priceMenu: 12.5 },
+                    { id: "b3", name: "Baguette Saucisse Poulet", desc: "Pain frais, Saucisse Poulet, double cheddar, garniture", priceSolo: 9.5, priceMenu: 12.5 },
+                    { id: "b4", name: "Baguette Kefta", desc: "Pain frais, Double steak, double cheddar, garniture", priceSolo: 9.5, priceMenu: 12.5 },
+                ]
+            },
+            {
+                category: "sides",
+                items: [
+                    { id: "sd1", name: "Frites Maison", price: 3.5 },
+                    { id: "sd2", name: "Frites Lardon Hot Cheddar", price: 5.5 },
+                    { id: "sd3", name: "Tenders", price: 6 },
+                    { id: "sd4", name: "Frites Patate Douce", price: 5 },
+                    { id: "sd5", name: "Croquette Fromage", price: 2 },
+                ]
+            },
+            {
+                category: "dessert",
+                items: [
+                    { id: "d1", name: "Moelleux Chocolat", desc: "Avec glace vanille et chantilly", price: 6 },
+                    { id: "d2", name: "Tiramisu", price: 4 },
+                    { id: "d3", name: "Brioche perdue", price: 6.5 },
+                ]
+            },
+            {
+                category: "drink",
+                items: [
+                    { id: "dr1", name: "Pepsi", price: 2 },
+                    { id: "dr2", name: "Ice Tea", price: 2 },
+                    { id: "dr3", name: "Oasis", price: 2 },
+                    { id: "dr4", name: "Schweppes Agrume", price: 2 },
+                    { id: "dr5", name: "Uludag", price: 2 },
+                    { id: "dr6", name: "Thé à la Menthe", price: 2 },
+                    { id: "dr7", name: "Milk-Shake", price: 4 },
+                ]
+            },
+            {
+                category: "supp",
+                items: [
+                    { id: "x1", name: "Supp. Steak Haché", price: 2 },
+                    { id: "x2", name: "Supp. Crispy Chicken", price: 2.5 },
+                    { id: "x3", name: "Cornichons / Jalapeños", price: 0.5 },
+                    { id: "x4", name: "Fromage / Bacon", price: 1.5 },
+                    { id: "x5", name: "Sauce Hot Cheddar", price: 1.5 },
+                    { id: "x6", name: "Supplément Sauce", price: 1 },
+                ]
+            }
+        ];
 
-<script>
-    const messages = [
-        "Bonne appétit !",
-        "Régalez-vous !",
-        "Vous avez de la chance de manger chez nous !",
-        "La qualité est toujours au rendez-vous !",
-        "Quel smash burger incroyable !",
-        "Spoiler : quoi que vous choisissiez, ce sera délicieux !",
-        "Excellent choix !",
-        "Bon choix !"
-    ];
+        let currentLang = 'fr';
+        let cartTotal = 0;
 
-    let cart = [];
-    let total = 0;
+        // --- FUNCTIONS ---
 
-    function setLanguage(lang) {
-        document.getElementById('languageChoice').style.display = 'none';
-        document.getElementById('menu').style.display = 'block';
-        if(lang !== 'fr') alert("Language selection currently only affects text layout.");
-    }
-
-    function addItem(category) {
-        let selectId = '';
-        switch(category) {
-            case 'Smash Burger': selectId = 'burgerSelect'; break;
-            case 'Baguette': selectId = 'baguetteSelect'; break;
-            case 'Side': selectId = 'sideSelect'; break;
-            case 'Dessert': selectId = 'dessertSelect'; break;
-            case 'Boisson': selectId = 'drinkSelect'; break;
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.getElementById('lang-overlay').classList.add('hidden');
+            renderMenu();
+            updateFooterText();
         }
 
-        let select = document.getElementById(selectId);
-        let name = select.options[select.selectedIndex].text.split(' - ')[0];
-        let price = parseFloat(select.value);
+        function showToast() {
+            const toast = document.getElementById('toast');
+            // Select random phrase
+            const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+            
+            // Translate/Display logic
+            // Note: Since phrases were provided in French, we display them as is for authenticity 
+            // or we could map them. Given the request, keeping the French "charm" or witty lines is often better, 
+            // but let's assume the user wants the witty French lines even in other langs 
+            // OR simple translations. For now, we display the French witty lines as requested.
+            
+            toast.innerText = randomPhrase;
+            toast.style.opacity = '1';
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2000);
+        }
 
-        cart.push({name, price});
-        total += price;
+        function addToTotal(price) {
+            cartTotal += price;
+            updateFooterDisplay();
+            showToast();
+        }
 
-        let cartList = document.getElementById('cartItems');
-        let li = document.createElement('li');
-        li.textContent = `${name} - ${price}€`;
-        cartList.appendChild(li);
+        function updateFooterDisplay() {
+            const t = translations[currentLang];
+            document.getElementById('total-display').innerText = `${t.total}: ${cartTotal.toFixed(2)}€`;
+            
+            // Show the "Final Message" permanently if total > 0
+            const finalMsg = document.getElementById('final-message');
+            if (cartTotal > 0) {
+                finalMsg.style.display = 'block';
+                finalMsg.innerText = t.final;
+                document.getElementById('footer-message').style.display = 'none'; // Hide the witty placeholder
+            } else {
+                finalMsg.style.display = 'none';
+            }
+        }
 
-        document.getElementById('total').textContent = `Total: ${total.toFixed(2)}€`;
+        function updateFooterText() {
+            // Initial footer text before selection
+            const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+            document.getElementById('footer-message').innerText = randomPhrase;
+        }
 
-        // Message aléatoire
-        let message = messages[Math.floor(Math.random() * messages.length)];
-        document.getElementById('finalMessage').textContent = message;
-    }
-</script>
+        function renderMenu() {
+            const container = document.getElementById('menu-content');
+            container.innerHTML = '';
+            const t = translations[currentLang];
 
+            menuData.forEach(section => {
+                // Section Title
+                const sectionTitle = document.createElement('h2');
+                sectionTitle.innerText = t.sections[section.category];
+                container.appendChild(sectionTitle);
+
+                // Items
+                section.items.forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = 'menu-item';
+                    
+                    let html = `
+                        <div class="item-header">
+                            <span class="item-title">${item.name}</span>
+                        </div>
+                    `;
+                    
+                    if (item.desc) {
+                        html += `<p>${item.desc}</p>`;
+                    }
+
+                    // Check if it has Menu/Solo options or single price
+                    if (item.priceSolo !== undefined) {
+                        // Burger/Baguette logic
+                        html += `
+                            <div class="btn-group">
+                                <button class="btn-add" onclick="addToTotal(${item.priceSolo})">
+                                    ${t.solo}<br>${item.priceSolo}€
+                                </button>
+                                <button class="btn-add" onclick="addToTotal(${item.priceMenu})">
+                                    ${t.menu}<br>${item.priceMenu}€
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        // Simple Item logic
+                        html += `
+                            <div class="btn-group">
+                                <button class="btn-add" onclick="addToTotal(${item.price})">
+                                    ${t.add} - ${item.price}€
+                                </button>
+                            </div>
+                        `;
+                    }
+
+                    el.innerHTML = html;
+                    container.appendChild(el);
+                });
+            });
+        }
+    </script>
 </body>
 </html>
