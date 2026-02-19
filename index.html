@@ -1,729 +1,182 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PLURIBUS: ÉCHO RÉSIDUEL</title>
-    <style>
-        :root {
-            --bg-color: #1a1a1a;
-            --text-color: #f0f0f0;
-            --accent-color: #888;
-            --font-main: 'Courier New', Courier, monospace;
-        }
-
-        /* THÈME: SEUL / CALME (Jaune/Blanc) */
-        body.theme-solo {
-            --bg-color: #fdf6e3; /* Blanc cassé/Jaune pâle */
-            --text-color: #2c3e50; /* Noir/Gris foncé */
-            --accent-color: #b58900;
-        }
-
-        /* THÈME: RUCHE / OPPRESSANT (Bleu/Noir) */
-        body.theme-hive {
-            --bg-color: #000510; /* Noir bleuté */
-            --text-color: #64b5f6; /* Bleu électrique */
-            --accent-color: #1e88e5;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-main);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            transition: background-color 1s ease, color 1s ease;
-            overflow: hidden;
-        }
-
-        #game-container {
-            width: 100%;
-            max-width: 800px;
-            border: 2px solid var(--text-color);
-            padding: 20px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
-        }
-
-        h1, h2 {
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-align: center;
-        }
-
-        #hud {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--accent-color);
-            padding-bottom: 10px;
-            font-size: 0.9em;
-        }
-
-        #story-text {
-            font-size: 1.1em;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            min-height: 150px;
-        }
-
-        .choices {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        button {
-            background: transparent;
-            border: 1px solid var(--text-color);
-            color: var(--text-color);
-            padding: 15px;
-            font-family: var(--font-main);
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
-        }
-
-        button:hover {
-            background-color: var(--text-color);
-            color: var(--bg-color);
-            font-weight: bold;
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        #input-area {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-        }
-
-        input {
-            padding: 10px;
-            font-size: 1.2em;
-            background: transparent;
-            border: 1px solid var(--text-color);
-            color: var(--text-color);
-            text-align: center;
-        }
-
-        .glitch {
-            animation: glitch 1s infinite;
-        }
-
-        @keyframes glitch {
-            0% { transform: translate(0) }
-            20% { transform: translate(-2px, 2px) }
-            40% { transform: translate(-2px, -2px) }
-            60% { transform: translate(2px, 2px) }
-            80% { transform: translate(2px, -2px) }
-            100% { transform: translate(0) }
-        }
-
-        #status-bar {
-            margin-top: 10px;
-            font-size: 0.8em;
-            color: var(--accent-color);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brunch & Smash Burger</title>
+<style>
+    body {
+        background-color: #000;
+        color: #fff;
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    h1, h2 {
+        text-align: center;
+        color: #fff;
+        text-shadow: 0 0 10px #fff;
+    }
+    select, button {
+        padding: 10px;
+        margin: 10px 0;
+        background-color: #000;
+        color: #fff;
+        border: 1px solid #fff;
+        width: 100%;
+        font-size: 16px;
+    }
+    .menu-section {
+        margin: 20px 0;
+        border-bottom: 1px solid #fff;
+        padding-bottom: 10px;
+    }
+    .cart {
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #fff;
+    }
+    .message {
+        margin-top: 10px;
+        font-style: italic;
+        color: #fff;
+    }
+</style>
 </head>
-<body class="theme-solo">
+<body>
 
-    <div id="game-container">
-        <div id="hud" style="display:none;">
-            <span id="chap-display">CHAPITRE 1</span>
-            <span id="stats-display">Soupçon: 0%</span>
-        </div>
+<div class="container" id="languageChoice">
+    <h1>Welcome / Bienvenue / Welkom</h1>
+    <p>Choisissez votre langue :</p>
+    <button onclick="setLanguage('en')">English</button>
+    <button onclick="setLanguage('fr')">Français</button>
+    <button onclick="setLanguage('nl')">Nederlands</button>
+</div>
 
-        <div id="main-menu">
-            <h1>PLURIBUS<br><small>Saison 2 : La Ruche Brisée</small></h1>
-            <p style="text-align:center;">Veuillez vous identifier pour la synchronisation.</p>
-            <div id="input-area">
-                <input type="text" id="player-name" placeholder="Votre Nom" autocomplete="off">
-                <button onclick="startGame()">INITIALISER LE RÉVEIL</button>
-            </div>
-            <p style="font-size:0.8em; text-align:center; margin-top:20px;">⚠️ Activez le son. Ce jeu utilise la synthèse vocale.</p>
-        </div>
+<div class="container" id="menu" style="display:none;">
+    <h1>🍔 Brunch & Smash Burger</h1>
 
-        <div id="game-area" style="display:none;">
-            <div id="story-text"></div>
-            <div class="choices" id="choices-container"></div>
-            <div id="status-bar"></div>
-        </div>
+    <div class="menu-section">
+        <h2>Smash Burgers</h2>
+        <select id="burgerSelect">
+            <option value="5">Small Smash - 5€</option>
+            <option value="7.5">Classic Smash - 7.5€</option>
+            <option value="8.5">Chèvre Smash - 8.5€</option>
+            <option value="9.5">Truffe Smash - 9.5€</option>
+            <option value="9.5">BBQ Smash - 9.5€</option>
+            <option value="9.5">Raclette Smash - 9.5€</option>
+            <option value="8.5">Crispy Chicken - 8.5€</option>
+        </select>
+        <button onclick="addItem('Smash Burger')">Ajouter au panier</button>
     </div>
 
-    <script>
-        // --- ETAT DU JEU ---
-        const state = {
-            name: "Inconnu",
-            chapter: 1,
-            sequence: 1,
-            suspicion: 0,     // 0-100 (Si 100 = Game Over)
-            humanity: 50,     // Détermine les fins
-            inventory: [],
-            flags: {}         // Pour se souvenir des choix passés
-        };
+    <div class="menu-section">
+        <h2>Baguettes</h2>
+        <select id="baguetteSelect">
+            <option value="9.5">Baguette Merguez - 9.5€</option>
+            <option value="9.5">Baguette Merguez Piquante - 9.5€</option>
+            <option value="9.5">Baguette Saucisse Poulet - 9.5€</option>
+            <option value="9.5">Baguette Kefta - 9.5€</option>
+        </select>
+        <button onclick="addItem('Baguette')">Ajouter au panier</button>
+    </div>
 
-        // --- MOTEUR AUDIO (TTS) ---
-        const synth = window.speechSynthesis;
-        let voices = [];
+    <div class="menu-section">
+        <h2>Sides</h2>
+        <select id="sideSelect">
+            <option value="3.5">Frites Maison - 3.5€</option>
+            <option value="5.5">Frites Lardon Hot Cheddar - 5.5€</option>
+            <option value="6">Tenders - 6€</option>
+            <option value="5">Frites Patate Douce - 5€</option>
+            <option value="2">Croquette Fromage - 2€</option>
+        </select>
+        <button onclick="addItem('Side')">Ajouter au panier</button>
+    </div>
 
-        function loadVoices() {
-            voices = synth.getVoices();
+    <div class="menu-section">
+        <h2>Desserts</h2>
+        <select id="dessertSelect">
+            <option value="6">Moelleux au Chocolat - 6€</option>
+            <option value="4">Tiramisu - 4€</option>
+            <option value="6.5">Brioche Perdue - 6.5€</option>
+        </select>
+        <button onclick="addItem('Dessert')">Ajouter au panier</button>
+    </div>
+
+    <div class="menu-section">
+        <h2>Boissons</h2>
+        <select id="drinkSelect">
+            <option value="2">Pepsi - 2€</option>
+            <option value="2">Ice Tea - 2€</option>
+            <option value="2">Oasis Pomme Poire - 2€</option>
+            <option value="4">Milk-Shake - 4€</option>
+        </select>
+        <button onclick="addItem('Boisson')">Ajouter au panier</button>
+    </div>
+
+    <div class="cart" id="cart">
+        <h2>Votre Panier</h2>
+        <ul id="cartItems"></ul>
+        <p id="total">Total: 0€</p>
+        <p id="finalMessage"></p>
+    </div>
+</div>
+
+<script>
+    const messages = [
+        "Bonne appétit !",
+        "Régalez-vous !",
+        "Vous avez de la chance de manger chez nous !",
+        "La qualité est toujours au rendez-vous !",
+        "Quel smash burger incroyable !",
+        "Spoiler : quoi que vous choisissiez, ce sera délicieux !",
+        "Excellent choix !",
+        "Bon choix !"
+    ];
+
+    let cart = [];
+    let total = 0;
+
+    function setLanguage(lang) {
+        document.getElementById('languageChoice').style.display = 'none';
+        document.getElementById('menu').style.display = 'block';
+        if(lang !== 'fr') alert("Language selection currently only affects text layout.");
+    }
+
+    function addItem(category) {
+        let selectId = '';
+        switch(category) {
+            case 'Smash Burger': selectId = 'burgerSelect'; break;
+            case 'Baguette': selectId = 'baguetteSelect'; break;
+            case 'Side': selectId = 'sideSelect'; break;
+            case 'Dessert': selectId = 'dessertSelect'; break;
+            case 'Boisson': selectId = 'drinkSelect'; break;
         }
 
-        if (speechSynthesis.onvoiceschanged !== undefined) {
-            speechSynthesis.onvoiceschanged = loadVoices;
-        }
+        let select = document.getElementById(selectId);
+        let name = select.options[select.selectedIndex].text.split(' - ')[0];
+        let price = parseFloat(select.value);
 
-        function speak(text, type = "narrator") {
-            // Annuler la parole précédente
-            synth.cancel();
+        cart.push({name, price});
+        total += price;
 
-            // Remplacer le placeholder {name} par le vrai nom
-            const textToSpeak = text.replace(/{name}/g, state.name);
-            
-            const utterThis = new SpeechSynthesisUtterance(textToSpeak);
-            utterThis.lang = 'fr-FR';
+        let cartList = document.getElementById('cartItems');
+        let li = document.createElement('li');
+        li.textContent = `${name} - ${price}€`;
+        cartList.appendChild(li);
 
-            // Sélection de la voix et réglages selon le type
-            // Note: Les navigateurs ont des voix différentes. On essaie de trouver une voix adaptée.
-            const frVoices = voices.filter(v => v.lang.includes('fr'));
-            const selectedVoice = frVoices.length > 0 ? frVoices[0] : null; // Par défaut
+        document.getElementById('total').textContent = `Total: ${total.toFixed(2)}€`;
 
-            if (selectedVoice) utterThis.voice = selectedVoice;
+        // Message aléatoire
+        let message = messages[Math.floor(Math.random() * messages.length)];
+        document.getElementById('finalMessage').textContent = message;
+    }
+</script>
 
-            if (type === "hive") {
-                utterThis.pitch = 0.5; // Voix grave
-                utterThis.rate = 0.8;  // Lent
-            } else if (type === "system") {
-                utterThis.pitch = 1.2; // Robotique
-                utterThis.rate = 1.1;
-            } else {
-                utterThis.pitch = 1.0; // Normal
-                utterThis.rate = 1.0;
-            }
-
-            synth.speak(utterThis);
-        }
-
-        // --- MOTEUR GRAPHIQUE ---
-        function setTheme(mode) {
-            const body = document.body;
-            if (mode === 'hive') {
-                body.className = 'theme-hive';
-            } else {
-                body.className = 'theme-solo';
-            }
-        }
-
-        // --- DONNÉES DU SCÉNARIO ---
-        // Structure: ID_SCENE: { text, theme, choices: [{text, next, effect}] }
-        const scenes = {
-            // CHAPITRE 1 : LE RÉVEIL (Bruxelles)
-            'start': {
-                text: "Système redémarré. Douleur pariétale détectée. {name}, ouvrez les yeux. Vous êtes dans votre appartement à Bruxelles. Tout est détruit. Le silence est anormal.",
-                theme: 'solo',
-                choices: [
-                    { text: "Se lever et vérifier la fenêtre", next: 'c1_window' },
-                    { text: "Rester au sol et écouter", next: 'c1_listen' }
-                ]
-            },
-            'c1_window': {
-                text: "Dehors, ils sont là. Les Autres. Immobiles dans la rue, le regard tourné vers le ciel violet. Vous n'êtes plus connecté à eux, mais ils ne le savent pas encore. Vous sentez votre cœur battre... une sensation individuelle terrifiante.",
-                theme: 'solo',
-                choices: [
-                    { text: "Sortir prudemment", next: 'c1_street' },
-                    { text: "Chercher une arme d'abord", next: 'c1_search', effect: () => { state.inventory.push('tuyau'); } }
-                ]
-            },
-            'c1_listen': {
-                text: "Vous entendez des pas dans le couloir. Rythmiques. Synchronisés. Ce n'est pas un humain normal. C'est une unité de la Ruche.",
-                theme: 'hive',
-                choices: [
-                    { text: "Se cacher sous le bureau", next: 'c1_hide' },
-                    { text: "Faire semblant d'être connecté (Regard vide)", next: 'c1_mimic' }
-                ]
-            },
-            'c1_search': {
-                text: "Vous trouvez un tuyau en métal lourd. Votre mémoire musculaire s'active : vous savez comment l'utiliser. C'est un reste des connaissances de la Ruche.",
-                theme: 'solo',
-                choices: [
-                    { text: "Sortir maintenant", next: 'c1_street' }
-                ]
-            },
-            'c1_mimic': {
-                text: "La porte s'ouvre. Un voisin, transformé, entre. Il vous scanne du regard. Vous fixez le vide. Il prononce d'une voix sans timbre : 'Unité {name}, rapport de statut.'",
-                theme: 'hive',
-                choices: [
-                    { text: "Répondre : 'Statut nominal. En attente.'", next: 'c1_street_hive', effect: () => { state.suspicion += 10; } },
-                    { text: "Ne rien dire (Risqué)", next: 'c1_fail_mimic' }
-                ]
-            },
-            'c1_hide': {
-                text: "L'unité entre. Elle renifle l'air. Elle sait qu'il y a une individualité ici. La peur fait monter votre rythme cardiaque. Elle approche de votre cachette.",
-                theme: 'hive',
-                choices: [
-                    { text: "Attaquer par surprise", next: 'c1_attack' },
-                    { text: "Fuir par l'escalier de secours", next: 'c1_street' }
-                ]
-            },
-            'c1_attack': {
-                text: "Violence brute. Vous le neutralisez, mais le bruit a alerté la rue. Vous devez fuir immédiatement.",
-                theme: 'solo',
-                choices: [
-                    { text: "Courir vers la Gare", next: 'c1_station' }
-                ]
-            },
-            'c1_street': {
-                text: "Vous êtes dans la rue. C'est oppressant. Des centaines de corps immobiles. Si vous courez, vous êtes repéré. Si vous marchez trop vite, vous êtes suspect.",
-                theme: 'hive',
-                choices: [
-                    { text: "Marcher au rythme des Autres (Imitation)", next: 'c1_station', effect: () => { state.suspicion += 5; } },
-                    { text: "Passer par les égouts (Sale mais sûr)", next: 'c1_sewers' }
-                ]
-            },
-            'c1_street_hive': {
-                text: "L'unité hoche la tête et sort. Vous la suivez dehors. Vous êtes infiltré au milieu d'eux. Le bourdonnement mental est insupportable.",
-                theme: 'hive',
-                choices: [
-                    { text: "Profiter de la couverture pour aller à la Gare", next: 'c1_station' }
-                ]
-            },
-            'c1_sewers': {
-                text: "Les égouts sont calmes. Vous êtes seul avec vos pensées. Vous réalisez que vous avez gardé les souvenirs d'un ingénieur civil de la Ruche. Vous connaissez le chemin.",
-                theme: 'solo',
-                choices: [
-                    { text: "Aller vers la Gare du Midi", next: 'c1_station_arrival' }
-                ]
-            },
-            'c1_station': {
-                text: "Gare du Midi. Des drones de Laxmi surveillent les entrées. Un train est à quai, moteur tournant. C'est le train pour le Sud.",
-                theme: 'hive',
-                choices: [
-                    { text: "Forcer le barrage (Combat)", next: 'c1_end_combat' },
-                    { text: "Utiliser un code d'accès volé (Mémoire Ruche)", next: 'c1_end_stealth' }
-                ]
-            },
-            'c1_station_arrival': {
-                 text: "Vous émergez directement sur le quai 4 via une trappe de maintenance. Le train est là.",
-                 theme: 'solo',
-                 choices: [
-                     { text: "Monter dans le train", next: 'c2_start' }
-                 ]
-            },
-            'c1_end_combat': {
-                text: "Vous vous battez comme un lion. Vous êtes blessé, mais vous sautez dans le train qui démarre. Les drones tirent mais ratent.",
-                theme: 'solo',
-                choices: [
-                    { text: "Terminer le Chapitre 1", next: 'c2_start' }
-                ]
-            },
-            'c1_end_stealth': {
-                text: "Vous tapez le code : 8841. Les portes s'ouvrent. 'Bienvenue, Unité Maintenance'. Vous montez calmement.",
-                theme: 'solo',
-                choices: [
-                    { text: "Terminer le Chapitre 1", next: 'c2_start' }
-                ]
-            },
-            'c1_fail_mimic': {
-                text: "Votre silence vous trahit. L'unité hurle. D'autres arrivent. C'est la fin de votre brève liberté.",
-                theme: 'hive',
-                choices: [
-                    { text: "RECOMMENCER", next: 'start', effect: () => resetGame() }
-                ]
-            },
-
-            // --- CHAPITRE 2 : LE TRAIN DES SILENCIEUX ---
-            
-            'c2_start': {
-                text: "Le train file à 300 km/h vers la frontière française. Vous êtes enfermé dans les toilettes du wagon 4. Le miroir vibre. Soudain, l'interphone grésille. Ce n'est pas le conducteur. C'est Laxmi.",
-                theme: 'solo',
-                choices: [
-                    { text: "Écouter le message", next: 'c2_speech' }
-                ]
-            },
-            'c2_speech': {
-                text: "La voix de Laxmi est douce, maternelle, mais amplifiée par chaque haut-parleur du train : '{name}... Je sais que tu as peur. L'individualité est une maladie froide. Reviens au wagon-bar. Nous avons gardé ta place au chaud dans le Lien.'",
-                theme: 'hive',
-                choices: [
-                    { text: "Sortir et affronter les regards (Courage)", next: 'c2_corridor', effect: () => { state.humanity += 10; } },
-                    { text: "Pirater le système de verrouillage pour avancer (Tech)", next: 'c2_hack', effect: () => { state.suspicion -= 10; } } // Réduit le soupçon grâce au hack
-                ]
-            },
-            'c2_hack': {
-                text: "Vous démontez le panneau de porte. Vos doigts se souviennent des schémas électriques de la Ruche. Vous déverrouillez la porte de service vers le wagon suivant sans alerter personne.",
-                theme: 'solo',
-                choices: [
-                    { text: "Se glisser dans le wagon 5", next: 'c2_wagon5' }
-                ]
-            },
-            'c2_corridor': {
-                text: "Vous entrez dans le couloir. Le wagon est remplid. Des dizaines de passagers sont assis, immobiles, mains sur les genoux. Au moment où vous passez, ils tournent tous la tête vers vous, en parfaite synchronisation. Un murmure parcourt la salle : 'Dissident...'",
-                theme: 'hive',
-                choices: [
-                    { text: "Baisser les yeux et avancer vite", next: 'c2_wagon5', effect: () => { state.suspicion += 20; } },
-                    { text: "Les fixer en retour : 'JE SUIS LIBRE !'", next: 'c2_outburst', effect: () => { state.humanity += 20; state.suspicion += 50; } }
-                ]
-            },
-            'c2_outburst': {
-                text: "Votre cri brise le silence. Quelques passagers tressaillent. Une femme pleure sans bruit, une larme solitaire coulant sur un visage inexpressif. Vous avez semé le doute, mais vous avez aussi signalé votre position.",
-                theme: 'hive',
-                choices: [
-                    { text: "Courir vers le wagon suivant", next: 'c2_wagon5' }
-                ]
-            },
-            'c2_wagon5': {
-                text: "Wagon 5. C'est le wagon-bar. Mais il n'y a pas de nourriture. Juste trois 'Sentinelles' (des hommes forts en costumes civils) qui bloquent l'allée. Ils ne sont pas armés, mais ils barrent la route physiquement. L'un d'eux s'avance : 'L'Unité {name} doit être réinitialisée.'",
-                theme: 'hive',
-                choices: [
-                    { text: "Utiliser la 'Voix de Commandement' (Bluff)", next: 'c2_voice_command' },
-                    { text: "Attraper un extincteur (Combat)", next: 'c2_fight' },
-                    { text: "Briser la vitre et grimper sur le toit (Folie)", next: 'c2_roof' }
-                ]
-            },
-            'c2_voice_command': {
-                text: "Vous canalisez l'autorité de la Ruche. Vous projetez votre voix : 'PROTOCOLE D'URGENCE 77. ÉCARTEZ-VOUS. ORDRE PRIORITAIRE.' Les Sentinelles hésitent. Leurs visages se tordent en confusion.",
-                theme: 'solo', // On reprend le contrôle
-                choices: [
-                    { text: "Passer en force pendant qu'ils buggent", next: 'c2_end_success' }
-                ]
-            },
-            'c2_fight': {
-                text: "Le jet de poudre blanche aveugle la première Sentinelle. Vous frappez le second avec le réservoir en acier. Le bruit sourd de l'impact vous rappelle la violence du monde réel. Le troisième vous agrippe.",
-                theme: 'hive',
-                choices: [
-                    { text: "Lui mordre la main (Instinct animal)", next: 'c2_end_messy' }
-                ]
-            },
-            'c2_roof': {
-                text: "Le vent vous gifle à 300 km/h. C'est terrifiant et grisant. Vous rampez sur le toit du train, agrippé au métal glissant. En bas, le paysage français défile comme un flou vert.",
-                theme: 'solo',
-                choices: [
-                    { text: "Atteindre la motrice avant le tunnel", next: 'c2_end_epic' }
-                ]
-            },
-            // --- FINS DU CHAPITRE 2 ---
-            'c2_end_success': {
-                text: "Vous atteignez la cabine de pilotage vide (automatisée). Vous forcez l'arrêt d'urgence. Le train crisse, étincelles hurlantes. Vous sautez dans un champ de blé français avant l'arrêt complet. Vous êtes en France. Seul.",
-                theme: 'solo',
-                choices: [
-                    { text: "S'enfoncer dans la forêt (Vers le Chapitre 3)", next: 'c3_start', effect: () => { state.chapter = 3; } }
-                ]
-            },
-            'c2_end_messy': {
-                text: "Vous vous libérez, laissant les Sentinelles blessées derrière vous. Vous sautez du train en marche alors qu'il ralentit pour un virage. Vous roulez dans les graviers. Douloureux, mais libre.",
-                theme: 'solo',
-                choices: [
-                    { text: "Boiter vers la forêt (Vers le Chapitre 3)", next: 'c3_start', effect: () => { state.chapter = 3; state.humanity -= 10; } } // Perte d'humanité due à la violence
-                ]
-            },
-            'c2_end_epic': {
-                text: "Juste avant le tunnel, vous sautez du toit vers une rivière en contrebas. L'eau glacée vous coupe le souffle, lavant la 'crasse psychique' du train. Vous nagez vers la rive. Survivant.",
-                theme: 'solo',
-                choices: [
-                    { text: "Sortir de l'eau (Vers le Chapitre 3)", next: 'c3_start', effect: () => { state.chapter = 3; } }
-                ]
-            },
-
-            // --- CHAPITRE 3 : LA TERRE BRÛLÉE (ESPAGNE) ---
-
-            'c3_start': {
-                text: "L'air est sec et brûlant. Vous avez marché des jours. Les Pyrénées sont derrière vous. Devant, un village espagnol abandonné, écrasé par le soleil. À l'entrée, un panneau griffonné : 'Ici, on ne partage pas le silence'.",
-                theme: 'solo',
-                choices: [
-                    { text: "Entrer dans le village pour chercher de l'eau", next: 'c3_village' },
-                    { text: "Contourner par les collines (Plus long)", next: 'c3_hills' }
-                ]
-            },
-            'c3_village': {
-                text: "Le village semble mort, mais des capteurs solaires bricolés tournent sur les toits. Soudain, un laser rouge se pose sur votre torse. Une voix rugueuse crie depuis un balcon : '{name}, arrête-toi ou je te grille les neurones !'",
-                theme: 'solo',
-                choices: [
-                    { text: "Lever les mains : 'Je suis seul, je cherche Carol !'", next: 'c3_renegades' },
-                    { text: "Plonger derrière une fontaine (Réflexe Ruche)", next: 'c3_combat_snipers' }
-                ]
-            },
-            'c3_renegades': {
-                text: "Trois individus descendent. Ils portent des lunettes teintées et des masques. Ce sont des Immunisés Renégats. Leur chef, Diego, vous observe : 'Tu as l'odeur de la Ruche, {name}. On ne laisse pas entrer les chevaux de Troie ici.'",
-                theme: 'solo',
-                choices: [
-                    { text: "Prouver votre humanité (Raconter un souvenir d'enfance)", next: 'c3_trust_win', effect: () => { state.humanity += 15; } },
-                    { text: "Négocier avec des infos sur le Train (Pragmatisme)", next: 'c3_deal', effect: () => { state.humanity -= 5; } }
-                ]
-            },
-            'c3_trust_win': {
-                text: "Diego baisse son arme. 'Personne dans le Lien ne se souvient de la couleur exacte des yeux de sa mère. Entre, {name}. On va te donner à boire.' Vous découvrez leur base : une ancienne église transformée en centre de radio.",
-                theme: 'solo',
-                choices: [
-                    { text: "Aider Diego à réparer la radio", next: 'c3_radio_task' }
-                ]
-            },
-            'c3_radio_task': {
-                text: "En manipulant les circuits, vous captez un signal étrange. Ce n'est pas humain. C'est une fréquence mathématique pure qui vient du ciel. Votre cerveau de 'Transfuge' commence à décoder automatiquement... C'est une carte.",
-                theme: 'hive', // Le signal alien provoque un changement de thème
-                choices: [
-                    { text: "Partager la carte avec les Renégats", next: 'c3_map_shared' },
-                    { text: "Garder les coordonnées pour vous seul", next: 'c3_map_secret' }
-                ]
-            },
-            'c3_combat_snipers': {
-                text: "Vous utilisez votre mémoire musculaire pour calculer la trajectoire du tir. Vous lancez un caillou pour créer une diversion et sprintez dans une ruelle. Les Renégats sont impressionnés par votre vitesse inhumaine.",
-                theme: 'solo',
-                choices: [
-                    { text: "Surgir derrière le tireur pour le désarmer", next: 'c3_trust_win' }
-                ]
-            },
-            'c3_deal': {
-                text: "Diego sourit froidement. 'Les infos sur le train de Laxmi valent cher. On te laisse passer, mais tu nous laisses ton téléphone et tes chaussures.' Vous repartez affaibli, mais vivant.",
-                theme: 'solo',
-                choices: [
-                    { text: "Continuer vers le Sud, pieds nus", next: 'c3_south_march' }
-                ]
-            },
-            'c3_map_shared': {
-                text: "Diego tape les coordonnées. 'C'est Gibraltar. Le bunker de Carol. Mais attention, {name}, Diabaté a envoyé ses drones là-bas. C'est une zone de guerre maintenant.'",
-                theme: 'solo',
-                choices: [
-                    { text: "Partir pour Gibraltar avec les Renégats", next: 'c3_end_war' }
-                ]
-            },
-            'c3_map_secret': {
-                text: "Vous effacez le journal de bord. Vous savez où Carol se cache. Vous quittez le camp la nuit tombée, volant une moto aux Renégats.",
-                theme: 'solo',
-                choices: [
-                    { text: "Rouler vers Gibraltar à toute vitesse", next: 'c3_end_solo' }
-                ]
-            },
-            'c3_hills': {
-                text: "Vous évitez le village, mais le manque d'eau vous fait délirer. Vous commencez à entendre les pensées des Autres restés à des kilomètres. La Ruche tente de vous aspirer à nouveau.",
-                theme: 'hive',
-                choices: [
-                    { text: "Lutter contre les voix : 'Je suis {name} !'", next: 'c3_village', effect: () => { state.suspicion += 30; } }
-                ]
-            },
-
-            // --- FINS DU CHAPITRE 3 ---
-            'c3_end_war': {
-                text: "Vous menez un convoi armé vers le Sud. Vous n'êtes plus une victime, vous êtes un soldat. L'horizon s'embrase. Gibraltar est en vue. Fin du Chapitre 3.",
-                theme: 'solo',
-                choices: [
-                    { text: "Lancer l'assaut final (Chapitre 4)", next: 'c4_start', effect: () => { state.chapter = 4; } }
-                ]
-            },
-            'c3_end_solo': {
-                text: "Seul sur la route, le vent brûlant vous rappelle que vous êtes vivant. Les drones de Diabaté survolent la côte. Le bunker de Carol est là, sous le rocher. Fin du Chapitre 3.",
-                theme: 'solo',
-                choices: [
-                    { text: "Approcher du bunker (Chapitre 4)", next: 'c4_start', effect: () => { state.chapter = 4; } }
-                ]
-            },
-            'c3_south_march': {
-                text: "Le voyage est un calvaire. Vous arrivez à Gibraltar épuisé et mourant. Vous avez survécu, mais à quel prix ? Fin du Chapitre 3.",
-                theme: 'solo',
-                choices: [
-                    { text: "Chercher Carol (Chapitre 4)", next: 'c4_start', effect: () => { state.chapter = 4; state.humanity -= 20; } }
-                ]
-            },
-
-            // --- CHAPITRE 4 : LE SIGNAL MAÎTRE (GIBRALTAR) ---
-
-            'c4_start': {
-                text: "Le Rocher de Gibraltar tremble. À l'intérieur du bunker, l'air vibre d'un bourdonnement électrique. Carol est là, devant une console massive. Elle ne vous regarde pas, ses yeux sont fixés sur un compte à rebours. 'Tu es en retard, {name}.'",
-                theme: 'solo',
-                choices: [
-                    { text: "Demander : 'C'est quoi ce signal ?'", next: 'c4_explanation' },
-                    { text: "Regarder par les moniteurs : Où sont les autres ?", next: 'c4_monitors' }
-                ]
-            },
-            'c4_explanation': {
-                text: "Carol se tourne enfin. 'Le virus n'était qu'une antenne. Les extraterrestres n'ont pas envoyé la paix, ils ont envoyé un moissonneur. Dans dix minutes, la fréquence passera de la connexion à l'effacement. Huit milliards de cerveaux seront formatés pour devenir... une base de données.'",
-                theme: 'hive',
-                choices: [
-                    { text: "L'aider à lancer le brouilleur", next: 'c4_the_plan' },
-                    { text: "Hésiter : Et si Laxmi a raison ?", next: 'c4_doubts' }
-                ]
-            },
-            'c4_monitors': {
-                text: "Les écrans montrent des milliers d'Autres convergeant vers le rocher, menés par les drones de Diabaté. Laxmi est parmi eux. Elle ne vient pas pour négocier. Elle vient pour protéger le Lien qu'elle croit divin.",
-                theme: 'hive',
-                choices: [
-                    { text: "Préparer les défenses du bunker", next: 'c4_defense' }
-                ]
-            },
-            'c4_doubts': {
-                text: "La voix de Laxmi résonne soudain dans votre tête, court-circuitant vos implants : '{name}... Carol veut vous ramener dans un monde de haine et de guerre. Dans la Ruche, il n'y a plus de douleur. Choisissez l'éternité.'",
-                theme: 'hive',
-                choices: [
-                    { text: "Repousser Laxmi : 'La douleur est humaine !'", next: 'c4_the_plan', effect: () => { state.humanity += 20; } },
-                    { text: "Écouter Laxmi : 'Peut-être avez-vous raison...'", next: 'c4_surrender', effect: () => { state.humanity -= 30; } }
-                ]
-            },
-            'c4_the_plan': {
-                text: "Carol vous donne un processeur. 'Il faut l'insérer dans l'émetteur principal au sommet du rocher. Je vais retenir les drones de Diabaté depuis ici. Si tu réussis, le signal alien est brisé. Mais le choc pourrait tuer tous ceux qui sont encore connectés.'",
-                theme: 'solo',
-                choices: [
-                    { text: "Courir vers le sommet (Action)", next: 'c4_climb' }
-                ]
-            },
-            'c4_climb': {
-                text: "Vous montez les escaliers de service. À mi-chemin, Diabaté bloque le passage. Il n'est pas connecté, il est juste armé d'un fusil à impulsion. 'Rien de personnel, {name}. Mais le Lien est mon meilleur client.'",
-                theme: 'solo',
-                choices: [
-                    { text: "Lancer un assaut de Mémoire Musculaire", next: 'c4_fight_diabate' },
-                    { text: "Lui proposer de racheter son contrat", next: 'c4_bribe' }
-                ]
-            },
-            'c4_fight_diabate': {
-                text: "Le combat est brutal. Vous utilisez les techniques de combat de trois soldats différents stockées dans votre mémoire. Diabaté est surpris par votre férocité. Vous le jetez par-dessus la balustrade.",
-                theme: 'solo',
-                choices: [
-                    { text: "Atteindre l'émetteur", next: 'c4_final_choice' }
-                ]
-            },
-            'c4_final_choice': {
-                text: "Vous êtes au sommet. L'émetteur crache des éclairs bleus vers le ciel noir. Le signal alien est à son maximum. Vous avez le processeur en main. Laxmi apparaît derrière vous, son visage baigné de larmes. 'Ne nous tuez pas, {name}.'",
-                theme: 'hive',
-                choices: [
-                    { text: "[FIN A] Insérer le processeur (Libérer l'humanité)", next: 'fin_liberte' },
-                    { text: "[FIN B] Détruire le processeur (Rejoindre la Ruche)", next: 'fin_ruche' },
-                    { text: "[FIN C] Modifier le code (L'Individualité Partagée)", next: 'fin_equilibre' }
-                ]
-            },
-
-            // --- LES 5 FINS ALTERNATIVES ---
-
-            'fin_liberte': {
-                text: "L'onde de choc brise le ciel. Partout sur Terre, les gens s'effondrent. Le Lien est mort. Vous voyez les yeux des Autres retrouver leur éclat, puis la peur. L'humanité est libre, mais le monde est en ruines. Carol a gagné, mais à quel prix ? {name}, vous êtes un héros dans un désert.",
-                theme: 'solo',
-                choices: [{ text: "CRÉDITS", next: 'start', effect: () => resetGame() }]
-            },
-            'fin_ruche': {
-                text: "Vous écrasez le processeur sous votre botte. Vous tendez la main à Laxmi. Le Signal Maître descend. Votre esprit se dissout dans un océan de pensées. Plus de {name}. Plus de douleur. Juste nous. Pour toujours. L'humanité est devenue une archive cosmique.",
-                theme: 'hive',
-                choices: [{ text: "CRÉDITS", next: 'start', effect: () => resetGame() }]
-            },
-            'fin_equilibre': {
-                text: "Grâce à vos souvenirs de Transfuge, vous créez un pare-feu. Le signal alien est bloqué, mais le Lien terrestre subsiste en option. Les humains peuvent se connecter ou se déconnecter à volonté. Une nouvelle espèce est née. {name}, vous êtes le pont entre deux mondes.",
-                theme: 'solo',
-                choices: [{ text: "CRÉDITS", next: 'start', effect: () => resetGame() }]
-            },
-            'c4_surrender': {
-                text: "Vous posez vos armes. Vous laissez la Ruche vous envahir. Carol hurle alors que les drones détruisent la console. Laxmi vous embrasse. 'Bienvenue à la maison, {name}.' Vous ne vous réveillerez plus jamais.",
-                theme: 'hive',
-                choices: [{ text: "FIN TRAGIQUE : CRÉDITS", next: 'start', effect: () => resetGame() }]
-            },
-            'c1_fail_mimic': {
-                text: "Soupçon à 100%. Les Autres vous ont démasqué. Ils ne vous tuent pas, ils vous 'réparent'. Votre identité {name} est effacée et remplacée par un drone de maintenance. Fin de la rébellion.",
-                theme: 'hive',
-                choices: [{ text: "GAME OVER : RECOMMENCER", next: 'start', effect: () => resetGame() }]
-            }
-        };
-
-        // --- LOGIQUE DU JEU ---
-
-        function startGame() {
-            const nameInput = document.getElementById('player-name').value;
-            if (nameInput.trim() === "") {
-                alert("Entrez un nom pour continuer.");
-                return;
-            }
-            state.name = nameInput;
-            
-            document.getElementById('main-menu').style.display = 'none';
-            document.getElementById('hud').style.display = 'flex';
-            document.getElementById('game-area').style.display = 'block';
-
-            loadSequence('start');
-        }
-
-        function resetGame() {
-            state.suspicion = 0;
-            state.inventory = [];
-            state.chapter = 1;
-            updateHUD();
-        }
-
-        function updateHUD() {
-            document.getElementById('stats-display').innerText = `Soupçon: ${state.suspicion}% | Humanité: ${state.humanity}`;
-            document.getElementById('chap-display').innerText = `CHAPITRE ${state.chapter}`;
-            
-            // Changement couleur HUD si soupçon élevé
-            if(state.suspicion > 50) {
-                document.getElementById('stats-display').style.color = "red";
-            } else {
-                document.getElementById('stats-display').style.color = "inherit";
-            }
-        }
-
-        function loadSequence(sceneId) {
-            const scene = scenes[sceneId];
-            if (!scene) {
-                console.error("Scène introuvable: " + sceneId);
-                return;
-            }
-
-            // Mise à jour de l'affichage
-            const textBox = document.getElementById('story-text');
-            const choicesBox = document.getElementById('choices-container');
-            const statusBar = document.getElementById('status-bar');
-
-            // 1. Appliquer le thème
-            setTheme(scene.theme);
-
-            // 2. Afficher le texte (avec effet machine à écrire léger ou direct)
-            const processedText = scene.text.replace(/{name}/g, state.name);
-            textBox.innerHTML = processedText;
-
-            // 3. Lire le texte
-            speak(scene.text, scene.theme === 'hive' ? 'hive' : 'narrator');
-
-            // 4. Générer les choix
-            choicesBox.innerHTML = '';
-            scene.choices.forEach(choice => {
-                const btn = document.createElement('button');
-                btn.innerText = `> ${choice.text}`;
-                btn.onclick = () => {
-                    // Appliquer les effets du choix
-                    if (choice.effect) choice.effect();
-                    
-                    // Vérifier Game Over par soupçon
-                    if (state.suspicion >= 100) {
-                        loadSequence('c1_fail_mimic');
-                        return;
-                    }
-
-                    // Mise à jour chapitre si transition
-                    if (choice.next.startsWith('c2')) state.chapter = 2;
-                    if (choice.next.startsWith('c3')) state.chapter = 3;
-                    if (choice.next.startsWith('c4')) state.chapter = 4;
-                    
-                    updateHUD();
-                    loadSequence(choice.next);
-                };
-                choicesBox.appendChild(btn);
-            });
-
-            // Status contextuel
-            if (scene.theme === 'hive') {
-                statusBar.innerText = "⚠️ PROXIMITÉ RUCHE DÉTECTÉE - RISQUE ÉLEVÉ";
-            } else {
-                statusBar.innerText = "● Signal Sécurisé - Vous êtes seul";
-            }
-        }
-
-        // Initialisation voix au chargement
-        loadVoices();
-
-    </script>
 </body>
 </html>
