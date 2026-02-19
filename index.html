@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BRUNCH & SMASH BURGER</title>
     <style>
-        /* CSS BLANC ET NOIR */
+        /* CSS BLANC ET NOIR - MINIMALISTE & PRO */
         :root {
-            --bg: #ffffff; /* Fond blanc */
-            --text: #000000; /* Texte noir */
-            --border: #000000; /* Bordures noires */
+            --bg: #ffffff;
+            --text: #000000;
+            --border: #000000;
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,7 +19,7 @@
             color: var(--text);
             font-family: 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.5;
-            padding-bottom: 80px; /* Espace pour le panier en bas */
+            padding-bottom: 80px;
         }
 
         /* ECRAN DE LANGUE */
@@ -39,10 +39,13 @@
         }
         .lang-btn:hover, .lang-btn:active { background: var(--text); color: var(--bg); }
 
-        /* HEADER */
+        /* HEADER PRO */
         header { text-align: center; padding: 30px 20px; border-bottom: 1px solid var(--border); }
-        h1 { font-size: 24px; letter-spacing: 3px; text-transform: uppercase; font-weight: bold; }
-        .rating { font-size: 12px; margin-top: 10px; letter-spacing: 1px; font-weight: bold; }
+        .logo-icon { font-size: 32px; margin-bottom: 10px; }
+        h1 { font-size: 26px; letter-spacing: 3px; text-transform: uppercase; font-weight: 900; }
+        .slogan { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; margin-top: 5px; }
+        .rating { font-size: 14px; margin-top: 15px; font-weight: bold; display: inline-block; border: 1px solid var(--text); padding: 5px 15px; border-radius: 20px;}
+        .philosophy { font-size: 12px; font-style: italic; color: #444; margin-top: 20px; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.4; }
 
         /* CONTENU PRINCIPAL */
         #app { display: none; padding: 20px; max-width: 600px; margin: 0 auto; }
@@ -56,7 +59,7 @@
         .item { margin-bottom: 25px; }
         .item-header { display: flex; justify-content: space-between; align-items: baseline; }
         .item-name { font-size: 16px; font-weight: bold; text-transform: uppercase; }
-        .item-desc { font-size: 12px; color: #555555; margin: 5px 0 10px 0; } /* Gris foncé pour la description */
+        .item-desc { font-size: 12px; color: #555555; margin: 5px 0 10px 0; }
         
         .action-row { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn-add {
@@ -88,7 +91,7 @@
         .btn-remove { background: transparent; color: #ff0000; border: 1px solid #ff0000; padding: 5px 10px; cursor: pointer; font-size: 12px; margin-left: 10px; font-weight: bold;}
         
         .checkout-area { padding: 20px; border-top: 1px solid var(--border); }
-        .checkout-msg { font-size: 14px; text-align: center; margin-bottom: 20px; font-weight: bold; display: none; padding: 10px; border: 2px dashed var(--text);}
+        .checkout-msg { font-size: 14px; text-align: center; margin-bottom: 20px; font-weight: bold; display: none; padding: 15px; border: 2px solid var(--text); background: #f9f9f9;}
         .btn-checkout { width: 100%; background: var(--text); color: var(--bg); border: none; padding: 15px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
 
         /* TOAST (CITATIONS) */
@@ -106,7 +109,8 @@
 <body>
 
     <div id="lang-screen">
-        <h1 style="margin-bottom: 40px;">BRUNCH & SMASH</h1>
+        <h1 style="margin-bottom: 10px;">BRUNCH & SMASH</h1>
+        <div style="margin-bottom: 40px; font-size: 12px; font-weight: bold; letter-spacing: 2px;">100% FAIT MAISON</div>
         <button class="lang-btn" onclick="initApp('fr')">Français</button>
         <button class="lang-btn" onclick="initApp('en')">English</button>
         <button class="lang-btn" onclick="initApp('nl')">Nederlands</button>
@@ -116,8 +120,12 @@
 
     <div id="app">
         <header>
-            <h1>BRUNCH & SMASH BURGER</h1>
-            <div class="rating">GOOGLE 4.9/5 | OPEN</div>
+            <div class="logo-icon">🍔</div>
+            <h1>BRUNCH & SMASH</h1>
+            <div class="slogan">100% Fait Maison • Premium Fresh Food</div>
+            <div class="rating">★ 4,9/5 sur 317 avis Google</div>
+            <div class="philosophy" id="philosophy-text">
+                </div>
         </header>
 
         <div id="menu-container"></div>
@@ -133,8 +141,7 @@
             <h2 id="ui-cart-title" style="font-size: 18px; text-transform: uppercase;">VOTRE SÉLECTION</h2>
             <button class="close-cart" onclick="closeCart()">X</button>
         </div>
-        <div class="cart-items" id="cart-items-container">
-            </div>
+        <div class="cart-items" id="cart-items-container"></div>
         <div class="checkout-area">
             <div class="checkout-msg" id="checkout-message"></div>
             <button class="btn-checkout" id="btn-validate" onclick="validateOrder()">VALIDER LA COMMANDE</button>
@@ -164,8 +171,9 @@
                 { id: "b1", name: "Baguette Classic Smash", desc: { fr: "Pain frais, double steak, double cheddar, cornichon, sauce smash", en: "Fresh bread, double beef, double cheddar, pickle, smash sauce", nl: "Vers brood, dubbel rundvlees, dubbele cheddar, augurk, smash saus" }, priceAlone: 9.5, priceMenu: 12.5 },
                 { id: "b2", name: "Baguette BBQ Smash", desc: { fr: "Pain frais, double steak, double cheddar, bacon, salade, tomate, oignons caramélisés, sauce BBQ", en: "Fresh bread, double beef, double cheddar, bacon, lettuce, tomato, caramelized onions, BBQ sauce", nl: "Vers brood, dubbel rundvlees, dubbele cheddar, bacon, sla, tomaat, gekarameliseerde uien, BBQ saus" }, priceAlone: 9.5, priceMenu: 12.5 },
                 { id: "b3", name: "Baguette Raclette Smash", desc: { fr: "Pain frais, double steak, raclette savoyarde, salade, tomate, oignons caramélisés, sauce crème ail", en: "Fresh bread, double beef, raclette cheese, lettuce, tomato, caramelized onions, garlic cream sauce", nl: "Vers brood, dubbel rundvlees, raclette kaas, sla, tomaat, gekarameliseerde uien, knoflookroomsaus" }, priceAlone: 9.5, priceMenu: 12.5 },
-                { id: "b4", name: "Baguette Saucisse Poulet", desc: { fr: "Pain frais, Saucisse poulet, double cheddar, oignons/cornichon, salade, tomate, sauce", en: "Fresh bread, Chicken sausage, double cheddar, onions/pickles, lettuce, tomato, sauce", nl: "Vers brood, Kippenworst, dubbele cheddar, uien/augurken, sla, tomaat, saus" }, priceAlone: 9.5, priceMenu: 12.5 },
-                { id: "b5", name: "Baguette Kefta", desc: { fr: "Pain frais, Double steak, double cheddar, oignons/cornichon, salade, tomate, sauce", en: "Fresh bread, Double beef, double cheddar, onions/pickles, lettuce, tomato, sauce", nl: "Vers brood, Dubbel rundvlees, dubbele cheddar, uien/augurken, sla, tomaat, saus" }, priceAlone: 9.5, priceMenu: 12.5 }
+                { id: "b4", name: "Baguette Crispy Chicken", desc: { fr: "Pain frais, poulet frit, double cheddar, salade, tomate, oignons caramélisés, mayo Sriracha", en: "Fresh bread, fried chicken, double cheddar, lettuce, tomato, caramelized onions, Sriracha mayo", nl: "Vers brood, gebakken kip, dubbele cheddar, sla, tomaat, gekarameliseerde uien, Sriracha mayo" }, priceAlone: 9.5, priceMenu: 12.5 },
+                { id: "b5", name: "Baguette Truffe Smash", desc: { fr: "Pain frais, double steak, double cheddar, salade, tomate, oignons caramélisés, sauce truffe", en: "Fresh bread, double beef, double cheddar, lettuce, tomato, caramelized onions, truffle sauce", nl: "Vers brood, dubbel rundvlees, dubbele cheddar, sla, tomaat, gekarameliseerde uien, truffelsaus" }, priceAlone: 9.5, priceMenu: 12.5 },
+                { id: "b6", name: "Baguette Chèvre", desc: { fr: "Pain frais, double steak, chèvre, salade, tomate, oignons caramélisés, miel, moutarde", en: "Fresh bread, double beef, goat cheese, lettuce, tomato, caramelized onions, honey, mustard", nl: "Vers brood, dubbel rundvlees, geitenkaas, sla, tomaat, gekarameliseerde uien, honing, mosterd" }, priceAlone: 9.5, priceMenu: 12.5 }
             ]
         },
         extras: {
@@ -220,33 +228,60 @@
 
     // --- TRADUCTIONS UI ---
     const ui = {
-        fr: { viewCart: "VOIR PANIER", addAlone: "SEUL", addMenu: "MENU (+ FRITES & SAUCE)", total: "TOTAL", remove: "SUPPRIMER", empty: "Panier vide", checkout: "VALIDER LA COMMANDE", finalMsg: "LE CHOIX EST FAIT. Dirigez-vous vers l'équipe pour lancer la préparation." },
-        en: { viewCart: "VIEW CART", addAlone: "ALONE", addMenu: "MENU (+ FRIES & SAUCE)", total: "TOTAL", remove: "REMOVE", empty: "Cart empty", checkout: "CONFIRM ORDER", finalMsg: "THE CHOICE IS MADE. Please show this to our team to start preparing." },
-        nl: { viewCart: "BEKIJK MANDJE", addAlone: "ALLEEN", addMenu: "MENU (+ FRIET & SAUS)", total: "TOTAAL", remove: "VERWIJDER", empty: "Mandje leeg", checkout: "BESTELLING BEVESTIGEN", finalMsg: "DE KEUZE IS GEMAAKT. Laat dit aan ons team zien om de bereiding te starten." }
+        fr: { 
+            viewCart: "VOIR PANIER", addAlone: "SEUL", addMenu: "MENU (+ FRITES & SAUCE)", total: "TOTAL", remove: "SUPPRIMER", empty: "Panier vide", checkout: "VALIDER LA COMMANDE", 
+            finalMsg: "Excellent choix. Veuillez présenter cet écran à notre équipe pour envoyer votre commande en cuisine.",
+            philosophy: "L'altruisme est la base et philosophie fondamentale de notre restaurant. Si votre dopamine atteint son pic en mangeant chez nous, alors nous sommes tout aussi heureux."
+        },
+        en: { 
+            viewCart: "VIEW CART", addAlone: "ALONE", addMenu: "MENU (+ FRIES & SAUCE)", total: "TOTAL", remove: "REMOVE", empty: "Cart empty", checkout: "CONFIRM ORDER", 
+            finalMsg: "Excellent choice. Please present this screen to our team to send your order to the kitchen.",
+            philosophy: "Altruism is the core philosophy of our restaurant. If your dopamine peaks while eating here, then we are equally happy."
+        },
+        nl: { 
+            viewCart: "BEKIJK MANDJE", addAlone: "ALLEEN", addMenu: "MENU (+ FRIET & SAUS)", total: "TOTAAL", remove: "VERWIJDER", empty: "Mandje leeg", checkout: "BESTELLING BEVESTIGEN", 
+            finalMsg: "Uitstekende keuze. Laat dit scherm aan ons team zien om uw bestelling naar de keuken te sturen.",
+            philosophy: "Altruïsme is de basisfilosofie van ons restaurant. Als je dopamine piekt tijdens het eten bij ons, dan zijn we net zo gelukkig."
+        }
     };
 
-    // --- CITATIONS (FILMS / PHILO) ---
+    // --- CITATIONS (FILMS / PHILO / SPORT) ---
     const quotes = {
         fr: [
-            "L'appétit vient en mangeant.",
-            "Il n'y a pas d'amour plus sincère que l'amour de la nourriture. (G.B. Shaw)",
-            "Je vais lui faire une offre qu'il ne pourra pas refuser. (Le Parrain)",
-            "Que la saveur soit avec toi.",
-            "La vie, c'est comme un menu de Smash Burgers, on y trouve toujours son bonheur."
+            "Je vais lui faire un burger qu'il ne pourra pas refuser. (Le Parrain)",
+            "Être, ou ne pas avoir faim, telle est la question. (Shakespeare)",
+            "Vole comme le papillon, pique comme la sauce Sriracha. (Mohamed Ali)",
+            "Je reviendrai... pour le dessert. (Terminator)",
+            "Stay hungry, stay foolish... Mais surtout stay hungry. (Steve Jobs)",
+            "La perfection est atteinte non pas lorsqu'il n'y a plus rien à ajouter, mais plus rien à retirer. (St Exupéry)",
+            "I drink your milkshake ! (There Will Be Blood)",
+            "C'est à moi que tu parles ? Ah non, tu commandes. (Taxi Driver)",
+            "Mamba Mentality : Chaque bouchée doit être légendaire. (Kobe Bryant)",
+            "Un petit pas pour l'homme, un grand pas pour ton estomac. (Neil Armstrong)",
+            "J'adore l'odeur du Smash Burger au petit matin. (Apocalypse Now)",
+            "Que la saveur soit avec toi. (Maître Yoda)"
         ],
         en: [
-            "Appetite comes with eating.",
-            "There is no sincerer love than the love of food. (G.B. Shaw)",
             "I'm going to make him a burger he can't refuse. (The Godfather)",
-            "May the flavor be with you.",
-            "Life is like a box of burgers, you always know it's going to be good."
+            "To be, or not to be hungry, that is the question. (Shakespeare)",
+            "Float like a butterfly, sting like Sriracha sauce. (Muhammad Ali)",
+            "I'll be back... for dessert. (Terminator)",
+            "Stay hungry, stay foolish... But mostly, stay hungry. (Steve Jobs)",
+            "I drink your milkshake! (There Will Be Blood)",
+            "You talkin' to me? Oh, you're ordering. (Taxi Driver)",
+            "Mamba Mentality: Every bite must be legendary. (Kobe Bryant)",
+            "One small step for man, one giant leap for your stomach. (Neil Armstrong)",
+            "I love the smell of a Smash Burger in the morning. (Apocalypse Now)",
+            "May the flavor be with you. (Yoda)"
         ],
         nl: [
-            "De eetlust komt tijdens het eten.",
-            "Er is geen oprechtere liefde dan de liefde voor eten. (G.B. Shaw)",
             "Ik ga hem een burger aanbieden die hij niet kan weigeren. (The Godfather)",
-            "Moge de smaak met je zijn.",
-            "Het leven is als een doos burgers, je weet altijd dat het goed zal zijn."
+            "Vlieg als een vlinder, steek als Sriracha saus. (Muhammad Ali)",
+            "I'll be back... voor het dessert. (Terminator)",
+            "Stay hungry, stay foolish... Maar vooral stay hungry. (Steve Jobs)",
+            "Mamba Mentality: Elke hap moet legendarisch zijn. (Kobe Bryant)",
+            "Moge de smaak met je zijn. (Yoda)",
+            "Een kleine stap voor een mens, een reuzensprong voor je maag. (Neil Armstrong)"
         ]
     };
 
@@ -260,9 +295,13 @@
         currentLang = lang;
         document.getElementById('lang-screen').style.display = 'none';
         document.getElementById('app').style.display = 'block';
+        
+        // Update UI Translations
         document.getElementById('ui-view-cart').innerText = ui[lang].viewCart;
         document.getElementById('ui-cart-title').innerText = ui[lang].viewCart;
         document.getElementById('btn-validate').innerText = ui[lang].checkout;
+        document.getElementById('philosophy-text').innerText = ui[lang].philosophy;
+        
         renderMenu();
     }
 
@@ -273,14 +312,12 @@
         for (const catKey in menuData) {
             const cat = menuData[catKey];
             
-            // Titre de section
             const sectionTitle = document.createElement('h2');
             sectionTitle.className = 'section-title';
-            sectionTitle.id = cat.id; // Utilisé pour le défilement automatique
+            sectionTitle.id = cat.id;
             sectionTitle.innerText = cat.title[currentLang];
             container.appendChild(sectionTitle);
 
-            // Articles
             cat.items.forEach(item => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'item';
@@ -320,29 +357,22 @@
         updateCart();
         showQuote();
 
-        // Système de défilement (Entonnoir de vente)
+        // Entonnoir : défilement auto vers l'étape logique suivante
         setTimeout(() => {
             if (categoryId === 'smash' || categoryId === 'baguettes') {
-                // Si Burger/Baguette -> Va aux suppléments
                 document.getElementById('extras').scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else if (categoryId === 'extras') {
-                // Si Supplément -> Va aux boissons
                 document.getElementById('drinks').scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else if (categoryId === 'drinks' || categoryId === 'sides') {
-                // Si Boisson ou Accompagnement (sides) -> Va aux desserts
                 document.getElementById('desserts').scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-        }, 700); // Petit délai de 0.7s pour laisser l'utilisateur voir son clic et la citation
+        }, 700);
     }
 
     function removeFromCart(index) {
         cart.splice(index, 1);
         updateCart();
-        
-        // Si panier vide, on ferme le modal
-        if(cart.length === 0) {
-            closeCart();
-        }
+        if(cart.length === 0) closeCart();
     }
 
     function updateCart() {
@@ -350,11 +380,7 @@
         const cartTotalText = document.getElementById('cart-total-bar');
         const itemsContainer = document.getElementById('cart-items-container');
         
-        if (cart.length > 0) {
-            cartBar.style.display = 'flex';
-        } else {
-            cartBar.style.display = 'none';
-        }
+        cartBar.style.display = cart.length > 0 ? 'flex' : 'none';
 
         let total = 0;
         itemsContainer.innerHTML = '';
@@ -398,14 +424,13 @@
         clearTimeout(toastTimeout);
         toastTimeout = setTimeout(() => {
             toast.classList.remove('show');
-        }, 4000); // Reste à l'écran 4 secondes
+        }, 4000);
     }
 
     function validateOrder() {
         const msgDiv = document.getElementById('checkout-message');
         document.getElementById('btn-validate').style.display = 'none';
         
-        // Cache les boutons de suppression pour verrouiller la vue
         const removeBtns = document.querySelectorAll('.btn-remove');
         removeBtns.forEach(btn => btn.style.display = 'none');
 
