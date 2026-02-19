@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BRUNCH & SMASH BURGER</title>
     <style>
-        /* CSS STRICTEMENT NOIR ET BLANC */
+        /* CSS BLANC ET NOIR */
         :root {
-            --bg: #000000;
-            --text: #ffffff;
-            --border: #ffffff;
+            --bg: #ffffff; /* Fond blanc */
+            --text: #000000; /* Texte noir */
+            --border: #000000; /* Bordures noires */
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,27 +41,27 @@
 
         /* HEADER */
         header { text-align: center; padding: 30px 20px; border-bottom: 1px solid var(--border); }
-        h1 { font-size: 24px; letter-spacing: 3px; text-transform: uppercase; font-weight: 300; }
-        .rating { font-size: 12px; margin-top: 10px; letter-spacing: 1px; }
+        h1 { font-size: 24px; letter-spacing: 3px; text-transform: uppercase; font-weight: bold; }
+        .rating { font-size: 12px; margin-top: 10px; letter-spacing: 1px; font-weight: bold; }
 
         /* CONTENU PRINCIPAL */
         #app { display: none; padding: 20px; max-width: 600px; margin: 0 auto; }
         
         .section-title {
-            font-size: 20px; font-weight: 400; text-transform: uppercase;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 5px; margin: 30px 0 15px 0; letter-spacing: 2px;
+            font-size: 20px; font-weight: bold; text-transform: uppercase;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 5px; margin: 40px 0 15px 0; letter-spacing: 2px;
         }
 
         .item { margin-bottom: 25px; }
         .item-header { display: flex; justify-content: space-between; align-items: baseline; }
         .item-name { font-size: 16px; font-weight: bold; text-transform: uppercase; }
-        .item-desc { font-size: 12px; color: #aaaaaa; margin: 5px 0 10px 0; }
+        .item-desc { font-size: 12px; color: #555555; margin: 5px 0 10px 0; } /* Gris foncé pour la description */
         
         .action-row { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn-add {
             flex: 1; background: transparent; color: var(--text);
-            border: 1px solid var(--border); padding: 8px; font-size: 12px;
+            border: 1px solid var(--border); padding: 8px; font-size: 12px; font-weight: bold;
             cursor: pointer; text-transform: uppercase; text-align: center;
         }
         .btn-add:hover, .btn-add:active { background: var(--text); color: var(--bg); }
@@ -81,14 +81,14 @@
             z-index: 2000; overflow-y: auto; padding-bottom: 20px;
         }
         .cart-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
-        .close-cart { background: transparent; color: var(--text); border: none; font-size: 20px; cursor: pointer; }
+        .close-cart { background: transparent; color: var(--text); border: none; font-size: 20px; cursor: pointer; font-weight: bold; }
         .cart-items { padding: 20px; flex-grow: 1; }
-        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding: 15px 0; }
-        .cart-item-info { flex: 1; }
-        .btn-remove { background: transparent; color: var(--text); border: 1px solid var(--border); padding: 5px 10px; cursor: pointer; font-size: 12px; margin-left: 10px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dotted #ccc; padding: 15px 0; }
+        .cart-item-info { flex: 1; font-weight: bold; }
+        .btn-remove { background: transparent; color: #ff0000; border: 1px solid #ff0000; padding: 5px 10px; cursor: pointer; font-size: 12px; margin-left: 10px; font-weight: bold;}
         
         .checkout-area { padding: 20px; border-top: 1px solid var(--border); }
-        .checkout-msg { font-size: 14px; text-align: center; margin-bottom: 20px; font-style: italic; display: none;}
+        .checkout-msg { font-size: 14px; text-align: center; margin-bottom: 20px; font-weight: bold; display: none; padding: 10px; border: 2px dashed var(--text);}
         .btn-checkout { width: 100%; background: var(--text); color: var(--bg); border: none; padding: 15px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
 
         /* TOAST (CITATIONS) */
@@ -98,6 +98,7 @@
             font-size: 14px; font-style: italic; font-weight: bold; text-align: center;
             width: 90%; max-width: 400px; z-index: 3000; border: 1px solid var(--bg);
             transition: top 0.4s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         #toast.show { top: 20px; }
     </style>
@@ -160,10 +161,24 @@
             id: "baguettes",
             title: { fr: "BAGUETTES", en: "BAGUETTES", nl: "STOKBRODEN" },
             items: [
-                { id: "b1", name: "Baguette Merguez", desc: { fr: "Pain frais, Merguez, double cheddar, oignons/cornichon, salade, tomate, sauce", en: "Fresh bread, Merguez, double cheddar, onions/pickles, lettuce, tomato, sauce", nl: "Vers brood, Merguez, dubbele cheddar, uien/augurken, sla, tomaat, saus" }, priceAlone: 9.5, priceMenu: 12.5 },
-                { id: "b2", name: "Baguette Merguez Piquante", desc: { fr: "Pain frais, Merguez piquante, double cheddar, oignons/cornichon, salade, tomate, sauce", en: "Fresh bread, Spicy Merguez, double cheddar, onions/pickles, lettuce, tomato, sauce", nl: "Vers brood, Pittige Merguez, dubbele cheddar, uien/augurken, sla, tomaat, saus" }, priceAlone: 9.5, priceMenu: 12.5 },
-                { id: "b3", name: "Baguette Saucisse Poulet", desc: { fr: "Pain frais, Saucisse poulet, double cheddar, oignons/cornichon, salade, tomate, sauce", en: "Fresh bread, Chicken sausage, double cheddar, onions/pickles, lettuce, tomato, sauce", nl: "Vers brood, Kippenworst, dubbele cheddar, uien/augurken, sla, tomaat, saus" }, priceAlone: 9.5, priceMenu: 12.5 },
-                { id: "b4", name: "Baguette Kefta", desc: { fr: "Pain frais, Double steak, double cheddar, oignons/cornichon, salade, tomate, sauce", en: "Fresh bread, Double beef, double cheddar, onions/pickles, lettuce, tomato, sauce", nl: "Vers brood, Dubbel rundvlees, dubbele cheddar, uien/augurken, sla, tomaat, saus" }, priceAlone: 9.5, priceMenu: 12.5 }
+                { id: "b1", name: "Baguette Classic Smash", desc: { fr: "Pain frais, double steak, double cheddar, cornichon, sauce smash", en: "Fresh bread, double beef, double cheddar, pickle, smash sauce", nl: "Vers brood, dubbel rundvlees, dubbele cheddar, augurk, smash saus" }, priceAlone: 9.5, priceMenu: 12.5 },
+                { id: "b2", name: "Baguette BBQ Smash", desc: { fr: "Pain frais, double steak, double cheddar, bacon, salade, tomate, oignons caramélisés, sauce BBQ", en: "Fresh bread, double beef, double cheddar, bacon, lettuce, tomato, caramelized onions, BBQ sauce", nl: "Vers brood, dubbel rundvlees, dubbele cheddar, bacon, sla, tomaat, gekarameliseerde uien, BBQ saus" }, priceAlone: 9.5, priceMenu: 12.5 },
+                { id: "b3", name: "Baguette Raclette Smash", desc: { fr: "Pain frais, double steak, raclette savoyarde, salade, tomate, oignons caramélisés, sauce crème ail", en: "Fresh bread, double beef, raclette cheese, lettuce, tomato, caramelized onions, garlic cream sauce", nl: "Vers brood, dubbel rundvlees, raclette kaas, sla, tomaat, gekarameliseerde uien, knoflookroomsaus" }, priceAlone: 9.5, priceMenu: 12.5 },
+                { id: "b4", name: "Baguette Saucisse Poulet", desc: { fr: "Pain frais, Saucisse poulet, double cheddar, oignons/cornichon, salade, tomate, sauce", en: "Fresh bread, Chicken sausage, double cheddar, onions/pickles, lettuce, tomato, sauce", nl: "Vers brood, Kippenworst, dubbele cheddar, uien/augurken, sla, tomaat, saus" }, priceAlone: 9.5, priceMenu: 12.5 },
+                { id: "b5", name: "Baguette Kefta", desc: { fr: "Pain frais, Double steak, double cheddar, oignons/cornichon, salade, tomate, sauce", en: "Fresh bread, Double beef, double cheddar, onions/pickles, lettuce, tomato, sauce", nl: "Vers brood, Dubbel rundvlees, dubbele cheddar, uien/augurken, sla, tomaat, saus" }, priceAlone: 9.5, priceMenu: 12.5 }
+            ]
+        },
+        extras: {
+            id: "extras",
+            title: { fr: "SUPPLÉMENTS", en: "EXTRAS", nl: "EXTRA'S" },
+            items: [
+                { id: "ex1", name: "Steak Haché", priceAlone: 2 },
+                { id: "ex2", name: "Crispy Chicken", priceAlone: 2.5 },
+                { id: "ex3", name: "Cornichons / Jalapeños", priceAlone: 0.5 },
+                { id: "ex4", name: "Fromage (Chèvre, Provolone, Raclette...)", priceAlone: 1.5 },
+                { id: "ex5", name: "Champignons Marinés", priceAlone: 1.5 },
+                { id: "ex6", name: "Sauce Hot Cheddar", priceAlone: 1.5 },
+                { id: "ex7", name: "Supplément Sauce", priceAlone: 1 }
             ]
         },
         sides: {
@@ -189,7 +204,6 @@
                 { id: "d6", name: "Oasis Tropical", priceAlone: 2 },
                 { id: "d7", name: "Schweppes Agrume", priceAlone: 2 },
                 { id: "d8", name: "Uludag", priceAlone: 2 },
-                { id: "d9", name: "Thé à la Menthe", priceAlone: 2 },
                 { id: "d10", name: "Milk-Shake", priceAlone: 4 }
             ]
         },
@@ -201,27 +215,14 @@
                 { id: "ds2", name: "Tiramisu", priceAlone: 4 },
                 { id: "ds3", name: "Brioche perdue", priceAlone: 6.5 }
             ]
-        },
-        extras: {
-            id: "extras",
-            title: { fr: "SUPPLÉMENTS", en: "EXTRAS", nl: "EXTRA'S" },
-            items: [
-                { id: "ex1", name: "Steak Haché", priceAlone: 2 },
-                { id: "ex2", name: "Crispy Chicken", priceAlone: 2.5 },
-                { id: "ex3", name: "Cornichons / Jalapeños", priceAlone: 0.5 },
-                { id: "ex4", name: "Fromage (Chèvre, Provolone, Raclette...)", priceAlone: 1.5 },
-                { id: "ex5", name: "Champignons Marinés", priceAlone: 1.5 },
-                { id: "ex6", name: "Sauce Hot Cheddar", priceAlone: 1.5 },
-                { id: "ex7", name: "Supplément Sauce", priceAlone: 1 }
-            ]
         }
     };
 
     // --- TRADUCTIONS UI ---
     const ui = {
-        fr: { viewCart: "VOIR PANIER", addAlone: "SEUL", addMenu: "MENU (+ FRITES & SAUCE)", total: "TOTAL", remove: "SUPPRIMER", empty: "Panier vide", checkout: "VALIDER LA COMMANDE", finalMsg: "Excellent choix. Veuillez présenter cette page à notre équipe pour valider l'envoi en cuisine." },
-        en: { viewCart: "VIEW CART", addAlone: "ALONE", addMenu: "MENU (+ FRIES & SAUCE)", total: "TOTAL", remove: "REMOVE", empty: "Cart empty", checkout: "CONFIRM ORDER", finalMsg: "Excellent choice. Please present this screen to our team to send your order to the kitchen." },
-        nl: { viewCart: "BEKIJK WINKELWAGEN", addAlone: "ALLEEN", addMenu: "MENU (+ FRIET & SAUS)", total: "TOTAAL", remove: "VERWIJDER", empty: "Winkelwagen leeg", checkout: "BESTELLING BEVESTIGEN", finalMsg: "Uitstekende keuze. Laat dit scherm aan ons team zien om uw bestelling naar de keuken te sturen." }
+        fr: { viewCart: "VOIR PANIER", addAlone: "SEUL", addMenu: "MENU (+ FRITES & SAUCE)", total: "TOTAL", remove: "SUPPRIMER", empty: "Panier vide", checkout: "VALIDER LA COMMANDE", finalMsg: "LE CHOIX EST FAIT. Dirigez-vous vers l'équipe pour lancer la préparation." },
+        en: { viewCart: "VIEW CART", addAlone: "ALONE", addMenu: "MENU (+ FRIES & SAUCE)", total: "TOTAL", remove: "REMOVE", empty: "Cart empty", checkout: "CONFIRM ORDER", finalMsg: "THE CHOICE IS MADE. Please show this to our team to start preparing." },
+        nl: { viewCart: "BEKIJK MANDJE", addAlone: "ALLEEN", addMenu: "MENU (+ FRIET & SAUS)", total: "TOTAAL", remove: "VERWIJDER", empty: "Mandje leeg", checkout: "BESTELLING BEVESTIGEN", finalMsg: "DE KEUZE IS GEMAAKT. Laat dit aan ons team zien om de bereiding te starten." }
     };
 
     // --- CITATIONS (FILMS / PHILO) ---
@@ -230,21 +231,21 @@
             "L'appétit vient en mangeant.",
             "Il n'y a pas d'amour plus sincère que l'amour de la nourriture. (G.B. Shaw)",
             "Je vais lui faire une offre qu'il ne pourra pas refuser. (Le Parrain)",
-            "Que la saveur soit avec toi. (Inspiré de Star Wars)",
+            "Que la saveur soit avec toi.",
             "La vie, c'est comme un menu de Smash Burgers, on y trouve toujours son bonheur."
         ],
         en: [
             "Appetite comes with eating.",
             "There is no sincerer love than the love of food. (G.B. Shaw)",
             "I'm going to make him a burger he can't refuse. (The Godfather)",
-            "May the flavor be with you. (Star Wars inspired)",
+            "May the flavor be with you.",
             "Life is like a box of burgers, you always know it's going to be good."
         ],
         nl: [
             "De eetlust komt tijdens het eten.",
             "Er is geen oprechtere liefde dan de liefde voor eten. (G.B. Shaw)",
             "Ik ga hem een burger aanbieden die hij niet kan weigeren. (The Godfather)",
-            "Moge de smaak met je zijn. (Star Wars geïnspireerd)",
+            "Moge de smaak met je zijn.",
             "Het leven is als een doos burgers, je weet altijd dat het goed zal zijn."
         ]
     };
@@ -275,7 +276,7 @@
             // Titre de section
             const sectionTitle = document.createElement('h2');
             sectionTitle.className = 'section-title';
-            sectionTitle.id = cat.id; // Pour l'ancre de défilement
+            sectionTitle.id = cat.id; // Utilisé pour le défilement automatique
             sectionTitle.innerText = cat.title[currentLang];
             container.appendChild(sectionTitle);
 
@@ -292,11 +293,11 @@
                 let buttonsHtml = '';
                 if (item.priceMenu) {
                     buttonsHtml = `
-                        <button class="btn-add" onclick="addToCart('${item.name}', ${item.priceAlone}, false, '${cat.id}')">${ui[currentLang].addAlone} - ${item.priceAlone}€</button>
-                        <button class="btn-add" onclick="addToCart('${item.name}', ${item.priceMenu}, true, '${cat.id}')">${ui[currentLang].addMenu} - ${item.priceMenu}€</button>
+                        <button class="btn-add" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.priceAlone}, false, '${cat.id}')">${ui[currentLang].addAlone} - ${item.priceAlone}€</button>
+                        <button class="btn-add" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.priceMenu}, true, '${cat.id}')">${ui[currentLang].addMenu} - ${item.priceMenu}€</button>
                     `;
                 } else {
-                    buttonsHtml = `<button class="btn-add" onclick="addToCart('${item.name}', ${item.priceAlone}, false, '${cat.id}')">+ AJOUTER - ${item.priceAlone}€</button>`;
+                    buttonsHtml = `<button class="btn-add" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.priceAlone}, false, '${cat.id}')">+ AJOUTER - ${item.priceAlone}€</button>`;
                 }
 
                 itemDiv.innerHTML = `
@@ -319,12 +320,19 @@
         updateCart();
         showQuote();
 
-        // Si l'utilisateur a choisi un plat principal, on le fait descendre vers les suppléments ou boissons
-        if (categoryId === 'smash' || categoryId === 'baguettes') {
-            setTimeout(() => {
-                document.getElementById('drinks').scrollIntoView({ behavior: 'smooth' });
-            }, 600); // Léger délai pour lui laisser voir la citation
-        }
+        // Système de défilement (Entonnoir de vente)
+        setTimeout(() => {
+            if (categoryId === 'smash' || categoryId === 'baguettes') {
+                // Si Burger/Baguette -> Va aux suppléments
+                document.getElementById('extras').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else if (categoryId === 'extras') {
+                // Si Supplément -> Va aux boissons
+                document.getElementById('drinks').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else if (categoryId === 'drinks' || categoryId === 'sides') {
+                // Si Boisson ou Accompagnement (sides) -> Va aux desserts
+                document.getElementById('desserts').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 700); // Petit délai de 0.7s pour laisser l'utilisateur voir son clic et la citation
     }
 
     function removeFromCart(index) {
@@ -390,7 +398,7 @@
         clearTimeout(toastTimeout);
         toastTimeout = setTimeout(() => {
             toast.classList.remove('show');
-        }, 6000); // Reste à l'écran 6 secondes comme demandé
+        }, 4000); // Reste à l'écran 4 secondes
     }
 
     function validateOrder() {
