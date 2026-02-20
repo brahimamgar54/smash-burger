@@ -94,18 +94,17 @@
         .checkout-msg { font-size: 14px; text-align: center; margin-bottom: 20px; display: none; padding: 20px; border: 2px solid var(--text); background: var(--bg);}
         .btn-checkout { width: 100%; background: var(--text); color: var(--bg); border: none; padding: 15px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
 
-        /* TOAST (CITATIONS NEURO-CINÉMATOGRAPHIQUES) */
+        /* TOAST (CITATIONS) */
         #toast {
             position: fixed; top: -150px; left: 50%; transform: translateX(-50%);
             background: var(--text); color: var(--bg); padding: 15px 20px;
-            font-size: 13px; font-weight: 500; text-align: center;
+            font-size: 14px; font-weight: bold; font-style: italic; text-align: center;
             width: 90%; max-width: 450px; z-index: 3000; border: 1px solid var(--bg);
             transition: top 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             line-height: 1.4;
         }
         #toast.show { top: 20px; }
-        .toast-movie { display: block; margin-top: 5px; font-style: italic; font-size: 11px; opacity: 0.8; font-weight: bold; text-transform: uppercase;}
     </style>
 </head>
 <body>
@@ -242,31 +241,43 @@
         }
     };
 
-    // --- CITATIONS NEURO-PSYCHOLOGIQUES & CINÉMA ---
+    // --- CITATIONS (10 SOURCES CULTES) ---
     const quotes = {
         fr: [
-            { text: "L'anticipation visuelle libère déjà votre dopamine. Ne luttez pas.", movie: "Je reviendrai... pour le dessert. — Terminator" },
-            { text: "L'umami stimule vos récepteurs glutamatergiques. C'est de la chimie pure.", movie: "I drink your milkshake ! — There Will Be Blood" },
-            { text: "La salivation est une réponse parasympathique involontaire face à la perfection.", movie: "Je vais lui faire un burger qu'il ne pourra pas refuser. — Le Parrain" },
-            { text: "Le croustillant active la perception multisensorielle du plaisir neuronal.", movie: "C'est à moi que tu parles ? Ah non, tu commandes. — Taxi Driver" },
-            { text: "Le contraste thermique chaud-froid court-circuite votre lobe frontal.", movie: "J'adore l'odeur du Smash Burger au petit matin. — Apocalypse Now" },
-            { text: "L'instinct reptilien exige des protéines. Le raffinement exige ce menu.", movie: "Que la saveur soit avec toi. — Maître Yoda" },
-            { text: "Votre système de récompense s'apprête à saturer totalement.", movie: "Un petit pas pour l'homme, un grand pas pour ton estomac. — Neil Armstrong" },
-            { text: "La faim n'est qu'un signal. La satisfaction est une science.", movie: "Mamba Mentality : Chaque bouchée doit être légendaire. — Kobe Bryant" }
+            "« Je ne suis pas en danger. C'est moi le danger... et c'est moi qui commande. » (Breaking Bad)",
+            "« Première règle du Smash Club : il faut parler du Smash Club. » (Fight Club)",
+            "« Choisis la pilule bleue, tu retournes à la réalité. Choisis ce menu, et tu restes au pays des merveilles. » (Matrix)",
+            "« Un burger pour les gouverner tous, et dans la sauce les lier. » (Le Seigneur des Anneaux)",
+            "« Tout ce que je sais, c'est que je ne sais pas comment résister à ce repas. » (Socrate)",
+            "« Ce qui ne nous tue pas nous donne faim. » (Nietzsche)",
+            "« La route ? Là où on va, on n'a pas besoin de route... juste d'un bon repas. » (Retour vers le futur)",
+            "« Soyez insatiables, soyez fous. » (Steve Jobs)",
+            "« Un petit pas pour l'homme, un grand bond pour votre estomac. » (Neil Armstrong)",
+            "« Vos papilles ont dépensé sans compter ! » (Jurassic Park)"
         ],
         en: [
-            { text: "Visual anticipation is already releasing dopamine. Do not resist.", movie: "I'll be back... for dessert. — Terminator" },
-            { text: "Umami stimulates your glutamatergic receptors. It's pure chemistry.", movie: "I drink your milkshake! — There Will Be Blood" },
-            { text: "Salivation is an involuntary parasympathetic response to perfection.", movie: "I'm gonna make him a burger he can't refuse. — The Godfather" },
-            { text: "Crunchiness activates the multisensory perception of neural pleasure.", movie: "You talkin' to me? Oh, you're ordering. — Taxi Driver" },
-            { text: "The hot-cold thermal contrast short-circuits your frontal lobe.", movie: "I love the smell of a Smash Burger in the morning. — Apocalypse Now" },
-            { text: "Your reward system is about to fully saturate.", movie: "One small step for man, one giant leap for your stomach. — Neil Armstrong" }
+            "« I am not in danger. I am the danger... and the one ordering. » (Breaking Bad)",
+            "« The first rule of Smash Club: you DO talk about Smash Club. » (Fight Club)",
+            "« Take the blue pill, you wake up in your bed. Take this menu, and you stay in Wonderland. » (The Matrix)",
+            "« One burger to rule them all, and in the sauce bind them. » (The Lord of the Rings)",
+            "« The only true wisdom is in knowing you cannot resist this meal. » (Socrates)",
+            "« That which does not kill us makes us hungry. » (Nietzsche)",
+            "« Roads? Where we're going, we don't need roads... just a good meal. » (Back to the Future)",
+            "« Stay hungry, stay foolish. » (Steve Jobs)",
+            "« That's one small step for man, one giant leap for your stomach. » (Neil Armstrong)",
+            "« Your taste buds spared no expense! » (Jurassic Park)"
         ],
         nl: [
-            { text: "Visuele anticipatie geeft al dopamine af. Verzet je niet.", movie: "I'll be back... voor het dessert. — Terminator" },
-            { text: "Umami stimuleert je glutamaterge receptoren. Pure chemie.", movie: "Ik ga hem een burger aanbieden die hij niet kan weigeren. — The Godfather" },
-            { text: "Krokantheid activeert de multisensorische perceptie van neuraal genot.", movie: "Moge de smaak met je zijn. — Yoda" },
-            { text: "Je beloningssysteem staat op het punt volledig te verzadigen.", movie: "Mamba Mentality: Elke hap moet legendarisch zijn. — Kobe Bryant" }
+            "« Ik ben niet in gevaar. Ik ben het gevaar... en degene die bestelt. » (Breaking Bad)",
+            "« De eerste regel van Smash Club: je MOET praten over Smash Club. » (Fight Club)",
+            "« Neem de blauwe pil en je wordt wakker. Neem dit menu, en blijf in Wonderland. » (The Matrix)",
+            "« Eén burger om hen allen te regeren, en in de saus te binden. » (The Lord of the Rings)",
+            "« De enige echte wijsheid is weten dat je deze maaltijd niet kunt weerstaan. » (Socrates)",
+            "« Wat ons niet doodt, maakt ons hongerig. » (Nietzsche)",
+            "« Wegen? Waar we heen gaan, hebben we geen wegen nodig... alleen een goede maaltijd. » (Back to the Future)",
+            "« Blijf hongerig, blijf dwaas. » (Steve Jobs)",
+            "« Een kleine stap voor een mens, een reuzensprong voor je maag. » (Neil Armstrong)",
+            "« Je smaakpapillen hebben kosten noch moeite gespaard! » (Jurassic Park)"
         ]
     };
 
@@ -404,10 +415,7 @@
         const quotesArray = quotes[currentLang];
         const randomQuote = quotesArray[Math.floor(Math.random() * quotesArray.length)];
         
-        toast.innerHTML = `
-            ${randomQuote.text}
-            <span class="toast-movie">${randomQuote.movie}</span>
-        `;
+        toast.innerText = randomQuote;
         toast.classList.add('show');
 
         clearTimeout(toastTimeout);
