@@ -40,12 +40,11 @@
         .lang-btn:hover, .lang-btn:active { background: var(--text); color: var(--bg); }
 
         /* HEADER PRO */
-        header { text-align: center; padding: 30px 20px; border-bottom: 1px solid var(--border); }
+        header { text-align: center; padding: 40px 20px 30px 20px; border-bottom: 1px solid var(--border); }
         .logo-icon { font-size: 32px; margin-bottom: 10px; }
         h1 { font-size: 26px; letter-spacing: 3px; text-transform: uppercase; font-weight: 900; }
         .slogan { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; margin-top: 5px; }
-        .rating { font-size: 14px; margin-top: 15px; font-weight: bold; display: inline-block; border: 1px solid var(--text); padding: 5px 15px; border-radius: 20px;}
-        .philosophy { font-size: 12px; font-style: italic; color: #444; margin-top: 20px; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.4; }
+        .rating { font-size: 14px; margin-top: 20px; font-weight: bold; display: inline-block; border: 1px solid var(--text); padding: 8px 20px; border-radius: 20px;}
 
         /* CONTENU PRINCIPAL */
         #app { display: none; padding: 20px; max-width: 600px; margin: 0 auto; }
@@ -66,6 +65,7 @@
             flex: 1; background: transparent; color: var(--text);
             border: 1px solid var(--border); padding: 8px; font-size: 12px; font-weight: bold;
             cursor: pointer; text-transform: uppercase; text-align: center;
+            transition: background 0.2s, color 0.2s;
         }
         .btn-add:hover, .btn-add:active { background: var(--text); color: var(--bg); }
 
@@ -83,27 +83,29 @@
             background: var(--bg); display: none; flex-direction: column;
             z-index: 2000; overflow-y: auto; padding-bottom: 20px;
         }
-        .cart-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
-        .close-cart { background: transparent; color: var(--text); border: none; font-size: 20px; cursor: pointer; font-weight: bold; }
+        .cart-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .close-cart { background: transparent; color: var(--text); border: none; font-size: 24px; cursor: pointer; font-weight: bold; }
         .cart-items { padding: 20px; flex-grow: 1; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dotted #ccc; padding: 15px 0; }
         .cart-item-info { flex: 1; font-weight: bold; }
-        .btn-remove { background: transparent; color: #ff0000; border: 1px solid #ff0000; padding: 5px 10px; cursor: pointer; font-size: 12px; margin-left: 10px; font-weight: bold;}
+        .btn-remove { background: transparent; color: #000; border: 1px solid #000; padding: 5px 10px; cursor: pointer; font-size: 11px; margin-left: 10px; font-weight: bold; text-transform: uppercase;}
         
         .checkout-area { padding: 20px; border-top: 1px solid var(--border); }
-        .checkout-msg { font-size: 14px; text-align: center; margin-bottom: 20px; font-weight: bold; display: none; padding: 15px; border: 2px solid var(--text); background: #f9f9f9;}
+        .checkout-msg { font-size: 14px; text-align: center; margin-bottom: 20px; display: none; padding: 20px; border: 2px solid var(--text); background: var(--bg);}
         .btn-checkout { width: 100%; background: var(--text); color: var(--bg); border: none; padding: 15px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
 
-        /* TOAST (CITATIONS) */
+        /* TOAST (CITATIONS NEURO-CINÉMATOGRAPHIQUES) */
         #toast {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            position: fixed; top: -150px; left: 50%; transform: translateX(-50%);
             background: var(--text); color: var(--bg); padding: 15px 20px;
-            font-size: 14px; font-style: italic; font-weight: bold; text-align: center;
-            width: 90%; max-width: 400px; z-index: 3000; border: 1px solid var(--bg);
-            transition: top 0.4s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-size: 13px; font-weight: 500; text-align: center;
+            width: 90%; max-width: 450px; z-index: 3000; border: 1px solid var(--bg);
+            transition: top 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            line-height: 1.4;
         }
         #toast.show { top: 20px; }
+        .toast-movie { display: block; margin-top: 5px; font-style: italic; font-size: 11px; opacity: 0.8; font-weight: bold; text-transform: uppercase;}
     </style>
 </head>
 <body>
@@ -124,8 +126,6 @@
             <h1>BRUNCH & SMASH</h1>
             <div class="slogan">100% Fait Maison • Premium Fresh Food</div>
             <div class="rating">★ 4,9/5 sur 317 avis Google</div>
-            <div class="philosophy" id="philosophy-text">
-                </div>
         </header>
 
         <div id="menu-container"></div>
@@ -138,8 +138,8 @@
 
     <div id="cart-modal">
         <div class="cart-header">
-            <h2 id="ui-cart-title" style="font-size: 18px; text-transform: uppercase;">VOTRE SÉLECTION</h2>
-            <button class="close-cart" onclick="closeCart()">X</button>
+            <h2 id="ui-cart-title" style="font-size: 18px; text-transform: uppercase; letter-spacing: 1px;">VOTRE SÉLECTION</h2>
+            <button class="close-cart" onclick="closeCart()">✕</button>
         </div>
         <div class="cart-items" id="cart-items-container"></div>
         <div class="checkout-area">
@@ -149,7 +149,7 @@
     </div>
 
 <script>
-    // --- DONNÉES DU MENU ---
+    // --- DONNÉES DU MENU (Sides déplacés à la fin) ---
     const menuData = {
         smash: {
             id: "smash",
@@ -189,17 +189,6 @@
                 { id: "ex7", name: "Supplément Sauce", priceAlone: 1 }
             ]
         },
-        sides: {
-            id: "sides",
-            title: { fr: "SIDES", en: "SIDES", nl: "BIJGERECHTEN" },
-            items: [
-                { id: "sd1", name: "Frites Maison", priceAlone: 3.5 },
-                { id: "sd2", name: "Frites Lardon Hot Cheddar", priceAlone: 5.5 },
-                { id: "sd3", name: "Tenders", priceAlone: 6 },
-                { id: "sd4", name: "Frites Patate Douce", priceAlone: 5 },
-                { id: "sd5", name: "Croquette Fromage", priceAlone: 2 }
-            ]
-        },
         drinks: {
             id: "drinks",
             title: { fr: "BOISSONS", en: "DRINKS", nl: "DRANKEN" },
@@ -223,70 +212,67 @@
                 { id: "ds2", name: "Tiramisu", priceAlone: 4 },
                 { id: "ds3", name: "Brioche perdue", priceAlone: 6.5 }
             ]
+        },
+        sides: {
+            id: "sides",
+            title: { fr: "SIDES", en: "SIDES", nl: "BIJGERECHTEN" },
+            items: [
+                { id: "sd1", name: "Frites Maison", priceAlone: 3.5 },
+                { id: "sd2", name: "Frites Lardon Hot Cheddar", priceAlone: 5.5 },
+                { id: "sd3", name: "Tenders", priceAlone: 6 },
+                { id: "sd4", name: "Frites Patate Douce", priceAlone: 5 },
+                { id: "sd5", name: "Croquette Fromage", priceAlone: 2 }
+            ]
         }
     };
 
     // --- TRADUCTIONS UI ---
     const ui = {
         fr: { 
-            viewCart: "VOIR PANIER", addAlone: "SEUL", addMenu: "MENU (+ FRITES & SAUCE)", total: "TOTAL", remove: "SUPPRIMER", empty: "Panier vide", checkout: "VALIDER LA COMMANDE", 
-            finalMsg: "Excellent choix. Veuillez présenter cet écran à notre équipe pour envoyer votre commande en cuisine.",
-            philosophy: "L'altruisme est la base et philosophie fondamentale de notre restaurant. Si votre dopamine atteint son pic en mangeant chez nous, alors nous sommes tout aussi heureux."
+            viewCart: "VOIR PANIER", addAlone: "SEUL", addMenu: "MENU (+ FRITES & SAUCE)", total: "TOTAL", remove: "RETIRER", empty: "Votre sélection est vide.", checkout: "VALIDER LA COMMANDE", 
+            finalMsg: "<span style='font-weight:bold; font-size:16px;'>LE CHOIX EST FAIT.</span><br><br>Dirigez-vous vers l'équipe avec cet écran pour lancer la préparation."
         },
         en: { 
-            viewCart: "VIEW CART", addAlone: "ALONE", addMenu: "MENU (+ FRIES & SAUCE)", total: "TOTAL", remove: "REMOVE", empty: "Cart empty", checkout: "CONFIRM ORDER", 
-            finalMsg: "Excellent choice. Please present this screen to our team to send your order to the kitchen.",
-            philosophy: "Altruism is the core philosophy of our restaurant. If your dopamine peaks while eating here, then we are equally happy."
+            viewCart: "VIEW CART", addAlone: "ALONE", addMenu: "MENU (+ FRIES & SAUCE)", total: "TOTAL", remove: "REMOVE", empty: "Your selection is empty.", checkout: "CONFIRM ORDER", 
+            finalMsg: "<span style='font-weight:bold; font-size:16px;'>THE CHOICE IS MADE.</span><br><br>Head to the team with this screen to start preparation."
         },
         nl: { 
-            viewCart: "BEKIJK MANDJE", addAlone: "ALLEEN", addMenu: "MENU (+ FRIET & SAUS)", total: "TOTAAL", remove: "VERWIJDER", empty: "Mandje leeg", checkout: "BESTELLING BEVESTIGEN", 
-            finalMsg: "Uitstekende keuze. Laat dit scherm aan ons team zien om uw bestelling naar de keuken te sturen.",
-            philosophy: "Altruïsme is de basisfilosofie van ons restaurant. Als je dopamine piekt tijdens het eten bij ons, dan zijn we net zo gelukkig."
+            viewCart: "BEKIJK MANDJE", addAlone: "ALLEEN", addMenu: "MENU (+ FRIET & SAUS)", total: "TOTAAL", remove: "VERWIJDER", empty: "Uw selectie is leeg.", checkout: "BESTELLING BEVESTIGEN", 
+            finalMsg: "<span style='font-weight:bold; font-size:16px;'>DE KEUZE IS GEMAAKT.</span><br><br>Ga met dit scherm naar het team om de voorbereiding te starten."
         }
     };
 
-    // --- CITATIONS (FILMS / PHILO / SPORT) ---
+    // --- CITATIONS NEURO-PSYCHOLOGIQUES & CINÉMA ---
     const quotes = {
         fr: [
-            "Je vais lui faire un burger qu'il ne pourra pas refuser. (Le Parrain)",
-            "Être, ou ne pas avoir faim, telle est la question. (Shakespeare)",
-            "Vole comme le papillon, pique comme la sauce Sriracha. (Mohamed Ali)",
-            "Je reviendrai... pour le dessert. (Terminator)",
-            "Stay hungry, stay foolish... Mais surtout stay hungry. (Steve Jobs)",
-            "La perfection est atteinte non pas lorsqu'il n'y a plus rien à ajouter, mais plus rien à retirer. (St Exupéry)",
-            "I drink your milkshake ! (There Will Be Blood)",
-            "C'est à moi que tu parles ? Ah non, tu commandes. (Taxi Driver)",
-            "Mamba Mentality : Chaque bouchée doit être légendaire. (Kobe Bryant)",
-            "Un petit pas pour l'homme, un grand pas pour ton estomac. (Neil Armstrong)",
-            "J'adore l'odeur du Smash Burger au petit matin. (Apocalypse Now)",
-            "Que la saveur soit avec toi. (Maître Yoda)"
+            { text: "L'anticipation visuelle libère déjà votre dopamine. Ne luttez pas.", movie: "Je reviendrai... pour le dessert. — Terminator" },
+            { text: "L'umami stimule vos récepteurs glutamatergiques. C'est de la chimie pure.", movie: "I drink your milkshake ! — There Will Be Blood" },
+            { text: "La salivation est une réponse parasympathique involontaire face à la perfection.", movie: "Je vais lui faire un burger qu'il ne pourra pas refuser. — Le Parrain" },
+            { text: "Le croustillant active la perception multisensorielle du plaisir neuronal.", movie: "C'est à moi que tu parles ? Ah non, tu commandes. — Taxi Driver" },
+            { text: "Le contraste thermique chaud-froid court-circuite votre lobe frontal.", movie: "J'adore l'odeur du Smash Burger au petit matin. — Apocalypse Now" },
+            { text: "L'instinct reptilien exige des protéines. Le raffinement exige ce menu.", movie: "Que la saveur soit avec toi. — Maître Yoda" },
+            { text: "Votre système de récompense s'apprête à saturer totalement.", movie: "Un petit pas pour l'homme, un grand pas pour ton estomac. — Neil Armstrong" },
+            { text: "La faim n'est qu'un signal. La satisfaction est une science.", movie: "Mamba Mentality : Chaque bouchée doit être légendaire. — Kobe Bryant" }
         ],
         en: [
-            "I'm going to make him a burger he can't refuse. (The Godfather)",
-            "To be, or not to be hungry, that is the question. (Shakespeare)",
-            "Float like a butterfly, sting like Sriracha sauce. (Muhammad Ali)",
-            "I'll be back... for dessert. (Terminator)",
-            "Stay hungry, stay foolish... But mostly, stay hungry. (Steve Jobs)",
-            "I drink your milkshake! (There Will Be Blood)",
-            "You talkin' to me? Oh, you're ordering. (Taxi Driver)",
-            "Mamba Mentality: Every bite must be legendary. (Kobe Bryant)",
-            "One small step for man, one giant leap for your stomach. (Neil Armstrong)",
-            "I love the smell of a Smash Burger in the morning. (Apocalypse Now)",
-            "May the flavor be with you. (Yoda)"
+            { text: "Visual anticipation is already releasing dopamine. Do not resist.", movie: "I'll be back... for dessert. — Terminator" },
+            { text: "Umami stimulates your glutamatergic receptors. It's pure chemistry.", movie: "I drink your milkshake! — There Will Be Blood" },
+            { text: "Salivation is an involuntary parasympathetic response to perfection.", movie: "I'm gonna make him a burger he can't refuse. — The Godfather" },
+            { text: "Crunchiness activates the multisensory perception of neural pleasure.", movie: "You talkin' to me? Oh, you're ordering. — Taxi Driver" },
+            { text: "The hot-cold thermal contrast short-circuits your frontal lobe.", movie: "I love the smell of a Smash Burger in the morning. — Apocalypse Now" },
+            { text: "Your reward system is about to fully saturate.", movie: "One small step for man, one giant leap for your stomach. — Neil Armstrong" }
         ],
         nl: [
-            "Ik ga hem een burger aanbieden die hij niet kan weigeren. (The Godfather)",
-            "Vlieg als een vlinder, steek als Sriracha saus. (Muhammad Ali)",
-            "I'll be back... voor het dessert. (Terminator)",
-            "Stay hungry, stay foolish... Maar vooral stay hungry. (Steve Jobs)",
-            "Mamba Mentality: Elke hap moet legendarisch zijn. (Kobe Bryant)",
-            "Moge de smaak met je zijn. (Yoda)",
-            "Een kleine stap voor een mens, een reuzensprong voor je maag. (Neil Armstrong)"
+            { text: "Visuele anticipatie geeft al dopamine af. Verzet je niet.", movie: "I'll be back... voor het dessert. — Terminator" },
+            { text: "Umami stimuleert je glutamaterge receptoren. Pure chemie.", movie: "Ik ga hem een burger aanbieden die hij niet kan weigeren. — The Godfather" },
+            { text: "Krokantheid activeert de multisensorische perceptie van neuraal genot.", movie: "Moge de smaak met je zijn. — Yoda" },
+            { text: "Je beloningssysteem staat op het punt volledig te verzadigen.", movie: "Mamba Mentality: Elke hap moet legendarisch zijn. — Kobe Bryant" }
         ]
     };
 
     let currentLang = 'fr';
     let cart = [];
+    let currentTotal = 0;
     let toastTimeout;
 
     // --- FONCTIONS ---
@@ -296,11 +282,9 @@
         document.getElementById('lang-screen').style.display = 'none';
         document.getElementById('app').style.display = 'block';
         
-        // Update UI Translations
         document.getElementById('ui-view-cart').innerText = ui[lang].viewCart;
         document.getElementById('ui-cart-title').innerText = ui[lang].viewCart;
         document.getElementById('btn-validate').innerText = ui[lang].checkout;
-        document.getElementById('philosophy-text').innerText = ui[lang].philosophy;
         
         renderMenu();
     }
@@ -363,10 +347,12 @@
                 document.getElementById('extras').scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else if (categoryId === 'extras') {
                 document.getElementById('drinks').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } else if (categoryId === 'drinks' || categoryId === 'sides') {
+            } else if (categoryId === 'drinks') {
                 document.getElementById('desserts').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else if (categoryId === 'desserts') {
+                document.getElementById('sides').scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-        }, 700);
+        }, 800);
     }
 
     function removeFromCart(index) {
@@ -382,25 +368,25 @@
         
         cartBar.style.display = cart.length > 0 ? 'flex' : 'none';
 
-        let total = 0;
+        currentTotal = 0;
         itemsContainer.innerHTML = '';
 
         cart.forEach((item, index) => {
-            total += item.price;
+            currentTotal += item.price;
             itemsContainer.innerHTML += `
                 <div class="cart-item">
                     <div class="cart-item-info">${item.name}</div>
-                    <div>${item.price.toFixed(2)}€</div>
+                    <div style="font-weight:bold;">${item.price.toFixed(2)}€</div>
                     <button class="btn-remove" onclick="removeFromCart(${index})">${ui[currentLang].remove}</button>
                 </div>
             `;
         });
 
         if (cart.length === 0) {
-            itemsContainer.innerHTML = `<p style="text-align:center;">${ui[currentLang].empty}</p>`;
+            itemsContainer.innerHTML = `<p style="text-align:center; padding:20px;">${ui[currentLang].empty}</p>`;
         }
 
-        cartTotalText.innerText = `${ui[currentLang].total}: ${total.toFixed(2)}€`;
+        cartTotalText.innerText = `${ui[currentLang].total}: ${currentTotal.toFixed(2)}€`;
         document.getElementById('btn-validate').style.display = cart.length > 0 ? 'block' : 'none';
         document.getElementById('checkout-message').style.display = 'none';
     }
@@ -418,13 +404,16 @@
         const quotesArray = quotes[currentLang];
         const randomQuote = quotesArray[Math.floor(Math.random() * quotesArray.length)];
         
-        toast.innerText = `"${randomQuote}"`;
+        toast.innerHTML = `
+            ${randomQuote.text}
+            <span class="toast-movie">${randomQuote.movie}</span>
+        `;
         toast.classList.add('show');
 
         clearTimeout(toastTimeout);
         toastTimeout = setTimeout(() => {
             toast.classList.remove('show');
-        }, 4000);
+        }, 10000); // Reste affiché 10 secondes exactement
     }
 
     function validateOrder() {
@@ -434,7 +423,15 @@
         const removeBtns = document.querySelectorAll('.btn-remove');
         removeBtns.forEach(btn => btn.style.display = 'none');
 
-        msgDiv.innerText = ui[currentLang].finalMsg;
+        // Affichage du message final avec le total bien mis en valeur
+        const finalHtml = `
+            ${ui[currentLang].finalMsg}
+            <div style="margin-top:20px; font-size: 20px; font-weight: 900; border-top: 2px solid var(--text); padding-top: 15px;">
+                TOTAL À RÉGLER : ${currentTotal.toFixed(2)}€
+            </div>
+        `;
+        
+        msgDiv.innerHTML = finalHtml;
         msgDiv.style.display = 'block';
     }
 
