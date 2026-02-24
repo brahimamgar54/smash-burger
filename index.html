@@ -10,6 +10,7 @@
             --bg: #ffffff;
             --text: #000000;
             --border: #000000;
+            --soldout: #999999;
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,7 +42,7 @@
 
         /* HEADER PRO */
         header { text-align: center; padding: 40px 20px 30px 20px; border-bottom: 1px solid var(--border); }
-        .logo-icon { font-size: 32px; margin-bottom: 10px; }
+        .logo-icon { font-size: 32px; margin-bottom: 10px; cursor: pointer; user-select: none; }
         h1 { font-size: 26px; letter-spacing: 3px; text-transform: uppercase; font-weight: 900; }
         .slogan { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; margin-top: 5px; }
         .rating { font-size: 14px; margin-top: 20px; font-weight: bold; display: inline-block; border: 1px solid var(--text); padding: 8px 20px; border-radius: 20px;}
@@ -55,7 +56,7 @@
             padding-bottom: 5px; margin: 40px 0 15px 0; letter-spacing: 2px;
         }
 
-        .item { margin-bottom: 25px; }
+        .item { margin-bottom: 25px; transition: opacity 0.3s; }
         .item-header { display: flex; justify-content: space-between; align-items: baseline; }
         .item-name { font-size: 16px; font-weight: bold; text-transform: uppercase; }
         .item-desc { font-size: 12px; color: #555555; margin: 5px 0 10px 0; }
@@ -68,6 +69,7 @@
             transition: background 0.2s, color 0.2s;
         }
         .btn-add:hover, .btn-add:active { background: var(--text); color: var(--bg); }
+        .victime-succes { width: 100%; text-align: center; padding: 8px; font-size: 12px; font-weight: bold; border: 1px solid var(--text); color: var(--bg); background: var(--text); text-transform: uppercase; }
 
         /* PANIER & CHECKOUT */
         #cart-bar {
@@ -105,6 +107,18 @@
             line-height: 1.4;
         }
         #toast.show { top: 20px; }
+
+        /* PANEL ADMIN */
+        #admin-panel {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); display: none; flex-direction: column;
+            z-index: 10000; overflow-y: auto; padding: 20px; font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--text); padding-bottom: 10px; margin-bottom: 20px; }
+        .admin-btn { background: var(--text); color: var(--bg); border: 1px solid var(--text); padding: 8px 12px; font-size: 12px; cursor: pointer; font-weight: bold; text-transform: uppercase; margin: 5px 0;}
+        .admin-btn-outline { background: transparent; color: var(--text); border: 1px solid var(--text); padding: 5px 10px; font-size: 10px; cursor: pointer; font-weight: bold; text-transform: uppercase; margin-right: 5px;}
+        .admin-cat-block { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+        .admin-item-block { border-top: 1px dashed #ccc; padding: 10px 0; margin-top: 10px; display: flex; justify-content: space-between; align-items: center;}
     </style>
 </head>
 <body>
@@ -121,7 +135,7 @@
 
     <div id="app">
         <header>
-            <div class="logo-icon">🍔</div>
+            <div class="logo-icon" onclick="checkSecret()">🍔</div>
             <h1>BRUNCH & SMASH</h1>
             <div class="slogan">100% Fait Maison • Premium Fresh Food</div>
             <div class="rating">★ 4,9/5 sur 317 avis Google</div>
@@ -147,9 +161,22 @@
         </div>
     </div>
 
+    <div id="admin-panel">
+        <div class="admin-header">
+            <h2>PANEL ADMIN</h2>
+            <button class="close-cart" onclick="closeAdmin()">✕</button>
+        </div>
+        <div style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="admin-btn" onclick="adminAddCategory()">+ Ajouter Catégorie</button>
+            <button class="admin-btn" onclick="adminChangePin()">Modifier PIN</button>
+            <button class="admin-btn" onclick="adminResetData()" style="background: red; color: white; border-color: red;">Reset par défaut</button>
+        </div>
+        <div id="admin-content"></div>
+    </div>
+
 <script>
-    // --- DONNÉES DU MENU (Sides déplacés à la fin) ---
-    const menuData = {
+    // --- DONNÉES DU MENU (Transformé en let pour pouvoir être modifié) ---
+    let defaultMenuData = {
         smash: {
             id: "smash",
             title: { fr: "SMASH BURGERS", en: "SMASH BURGERS", nl: "SMASH BURGERS" },
@@ -225,6 +252,10 @@
         }
     };
 
+    // Chargement des données locales si existantes
+    let menuData = JSON.parse(localStorage.getItem('smash_menuData')) || defaultMenuData;
+    let adminPin = localStorage.getItem('smash_adminPin') || "1234";
+
     // --- TRADUCTIONS UI ---
     const ui = {
         fr: { 
@@ -285,8 +316,12 @@
     let cart = [];
     let currentTotal = 0;
     let toastTimeout;
+    
+    // Variables pour l'Easter Egg
+    let clickCount = 0;
+    let clickTimeout;
 
-    // --- FONCTIONS ---
+    // --- FONCTIONS EXISTANTES ---
 
     function initApp(lang) {
         currentLang = lang;
@@ -310,20 +345,23 @@
             const sectionTitle = document.createElement('h2');
             sectionTitle.className = 'section-title';
             sectionTitle.id = cat.id;
-            sectionTitle.innerText = cat.title[currentLang];
+            sectionTitle.innerText = cat.title[currentLang] || cat.title.fr;
             container.appendChild(sectionTitle);
 
             cat.items.forEach(item => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'item';
+                if(item.outOfStock) itemDiv.style.opacity = '0.6';
 
                 let descHtml = '';
-                if (item.desc) {
-                    descHtml = `<div class="item-desc">${item.desc[currentLang]}</div>`;
+                if (item.desc && (item.desc[currentLang] || item.desc.fr)) {
+                    descHtml = `<div class="item-desc" ${item.outOfStock ? 'style="text-decoration:line-through;"' : ''}>${item.desc[currentLang] || item.desc.fr}</div>`;
                 }
 
                 let buttonsHtml = '';
-                if (item.priceMenu) {
+                if (item.outOfStock) {
+                    buttonsHtml = `<div class="victime-succes">VICTIME DE SON SUCCÈS</div>`;
+                } else if (item.priceMenu) {
                     buttonsHtml = `
                         <button class="btn-add" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.priceAlone}, false, '${cat.id}')">${ui[currentLang].addAlone} - ${item.priceAlone}€</button>
                         <button class="btn-add" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.priceMenu}, true, '${cat.id}')">${ui[currentLang].addMenu} - ${item.priceMenu}€</button>
@@ -334,7 +372,7 @@
 
                 itemDiv.innerHTML = `
                     <div class="item-header">
-                        <span class="item-name">${item.name}</span>
+                        <span class="item-name" ${item.outOfStock ? 'style="text-decoration:line-through;"' : ''}>${item.name}</span>
                     </div>
                     ${descHtml}
                     <div class="action-row">
@@ -352,7 +390,6 @@
         updateCart();
         showQuote();
 
-        // Entonnoir : défilement auto vers l'étape logique suivante
         setTimeout(() => {
             if (categoryId === 'smash' || categoryId === 'baguettes') {
                 document.getElementById('extras').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -402,13 +439,8 @@
         document.getElementById('checkout-message').style.display = 'none';
     }
 
-    function openCart() {
-        document.getElementById('cart-modal').style.display = 'flex';
-    }
-
-    function closeCart() {
-        document.getElementById('cart-modal').style.display = 'none';
-    }
+    function openCart() { document.getElementById('cart-modal').style.display = 'flex'; }
+    function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
 
     function showQuote() {
         const toast = document.getElementById('toast');
@@ -419,9 +451,7 @@
         toast.classList.add('show');
 
         clearTimeout(toastTimeout);
-        toastTimeout = setTimeout(() => {
-            toast.classList.remove('show');
-        }, 10000); // Reste affiché 10 secondes exactement
+        toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 10000);
     }
 
     function validateOrder() {
@@ -431,7 +461,6 @@
         const removeBtns = document.querySelectorAll('.btn-remove');
         removeBtns.forEach(btn => btn.style.display = 'none');
 
-        // Affichage du message final avec le total bien mis en valeur
         const finalHtml = `
             ${ui[currentLang].finalMsg}
             <div style="margin-top:20px; font-size: 20px; font-weight: 900; border-top: 2px solid var(--text); padding-top: 15px;">
@@ -441,6 +470,162 @@
         
         msgDiv.innerHTML = finalHtml;
         msgDiv.style.display = 'block';
+    }
+
+    // --- FONCTIONS ADMIN (NOUVEAU) ---
+
+    function checkSecret() {
+        clickCount++;
+        clearTimeout(clickTimeout);
+        if (clickCount >= 3) {
+            clickCount = 0;
+            let pin = prompt("Code PIN Administrateur (4 chiffres) :");
+            if (pin === adminPin) openAdmin();
+            else if (pin !== null) alert("Code PIN incorrect.");
+        } else {
+            clickTimeout = setTimeout(() => { clickCount = 0; }, 1000);
+        }
+    }
+
+    function saveMenuData() {
+        localStorage.setItem('smash_menuData', JSON.stringify(menuData));
+        renderMenu();
+        renderAdmin();
+    }
+
+    function openAdmin() {
+        document.getElementById('admin-panel').style.display = 'block';
+        renderAdmin();
+    }
+
+    function closeAdmin() {
+        document.getElementById('admin-panel').style.display = 'none';
+    }
+
+    function adminChangePin() {
+        let newPin = prompt("Nouveau code PIN à 4 chiffres :", adminPin);
+        if (newPin && newPin.trim().length > 0) {
+            adminPin = newPin.trim();
+            localStorage.setItem('smash_adminPin', adminPin);
+            alert("Code PIN modifié avec succès.");
+        }
+    }
+
+    function adminResetData() {
+        if(confirm("Attention, cela va effacer toutes vos modifications et remettre le menu par défaut. Continuer ?")) {
+            menuData = JSON.parse(JSON.stringify(defaultMenuData));
+            saveMenuData();
+        }
+    }
+
+    function adminAddCategory() {
+        let titleFr = prompt("Nom de la catégorie (ex: BOISSONS CHAUDES) :");
+        if (!titleFr) return;
+        let id = "cat_" + Date.now();
+        menuData[id] = { id: id, title: { fr: titleFr, en: titleFr, nl: titleFr }, items: [] };
+        saveMenuData();
+    }
+
+    function adminDeleteCategory(catKey) {
+        if(confirm("Supprimer cette catégorie et tout ce qu'elle contient ?")) {
+            delete menuData[catKey];
+            saveMenuData();
+        }
+    }
+
+    function adminAddItem(catKey) {
+        let name = prompt("Nom du produit :");
+        if (!name) return;
+        let price = parseFloat(prompt("Prix seul (ex: 5.50) :"));
+        if (isNaN(price)) return;
+        let desc = prompt("Description (optionnel) :");
+        
+        let hasMenu = confirm("Voulez-vous ajouter un prix MENU (Frites + Boisson) pour cet article ?");
+        let priceMenu = null;
+        if (hasMenu) {
+            priceMenu = parseFloat(prompt("Prix du Menu (ex: 8.50) :"));
+            if (isNaN(priceMenu)) priceMenu = null;
+        }
+
+        let newItem = { id: "item_" + Date.now(), name: name, priceAlone: price };
+        if (desc) newItem.desc = { fr: desc, en: desc, nl: desc };
+        if (priceMenu) newItem.priceMenu = priceMenu;
+
+        menuData[catKey].items.push(newItem);
+        saveMenuData();
+    }
+
+    function adminEditItem(catKey, itemIndex) {
+        let item = menuData[catKey].items[itemIndex];
+        
+        let newName = prompt("Modifier le nom :", item.name);
+        if(newName !== null) item.name = newName;
+
+        let currentDesc = item.desc ? (item.desc.fr || "") : "";
+        let newDesc = prompt("Modifier la description :", currentDesc);
+        if(newDesc !== null) item.desc = { fr: newDesc, en: newDesc, nl: newDesc };
+
+        let newPrice = prompt("Modifier le prix seul :", item.priceAlone);
+        if(newPrice !== null && !isNaN(parseFloat(newPrice))) item.priceAlone = parseFloat(newPrice);
+
+        if (item.priceMenu !== undefined) {
+            let newPriceMenu = prompt("Modifier le prix Menu :", item.priceMenu);
+            if(newPriceMenu !== null && !isNaN(parseFloat(newPriceMenu))) item.priceMenu = parseFloat(newPriceMenu);
+        }
+
+        saveMenuData();
+    }
+
+    function adminToggleStock(catKey, itemIndex) {
+        let item = menuData[catKey].items[itemIndex];
+        item.outOfStock = !item.outOfStock;
+        saveMenuData();
+    }
+
+    function adminDeleteItem(catKey, itemIndex) {
+        if(confirm("Supprimer cet article définitivement ?")) {
+            menuData[catKey].items.splice(itemIndex, 1);
+            saveMenuData();
+        }
+    }
+
+    function renderAdmin() {
+        const container = document.getElementById('admin-content');
+        container.innerHTML = '';
+
+        for (const catKey in menuData) {
+            const cat = menuData[catKey];
+            
+            let html = `<div class="admin-cat-block">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <h3 style="text-transform:uppercase;">${cat.title.fr}</h3>
+                    <div>
+                        <button class="admin-btn-outline" onclick="adminAddItem('${catKey}')">+ Produit</button>
+                        <button class="admin-btn-outline" style="color:red; border-color:red;" onclick="adminDeleteCategory('${catKey}')">Suppr. Catégorie</button>
+                    </div>
+                </div>
+            `;
+
+            cat.items.forEach((item, index) => {
+                html += `
+                    <div class="admin-item-block">
+                        <div style="flex:1;">
+                            <strong style="${item.outOfStock ? 'text-decoration:line-through; color:#999;' : ''}">${item.name}</strong> - ${item.priceAlone}€ ${item.priceMenu ? ' (Menu: '+item.priceMenu+'€)' : ''}
+                        </div>
+                        <div style="display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end;">
+                            <button class="admin-btn-outline" onclick="adminToggleStock('${catKey}', ${index})">
+                                ${item.outOfStock ? 'Remettre en Stock' : 'Pénurie (Croix)'}
+                            </button>
+                            <button class="admin-btn-outline" onclick="adminEditItem('${catKey}', ${index})">Modifier</button>
+                            <button class="admin-btn-outline" style="color:red; border-color:red;" onclick="adminDeleteItem('${catKey}', ${index})">X</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+            container.innerHTML += html;
+        }
     }
 
 </script>
