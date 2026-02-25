@@ -2,28 +2,36 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BRUNCH & SMASH BURGER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>BRUNCH & SMASH</title>
     <style>
-        /* CSS BLANC ET NOIR - MINIMALISTE & PRO */
+        /* ===== RESET & VARIABLES ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         :root {
             --bg: #ffffff;
             --text: #000000;
             --border: #000000;
-            --soldout: #999999;
+            --soldout-strike: #ff0000;
+            --soldout-bg: #f8f8f8;
         }
-        
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
+
         body {
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.5;
-            padding-bottom: 80px;
+            padding-bottom: 90px; /* footer + cart */
+            min-height: 100vh;
+            position: relative;
         }
 
-        /* ECRAN DE LANGUE */
+        /* ===== LANGUE ===== */
         #lang-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--bg);
@@ -40,16 +48,15 @@
         }
         .lang-btn:hover, .lang-btn:active { background: var(--text); color: var(--bg); }
 
-        /* HEADER PRO */
+        /* ===== HEADER ===== */
         header { text-align: center; padding: 40px 20px 30px 20px; border-bottom: 1px solid var(--border); }
         .logo-icon { font-size: 32px; margin-bottom: 10px; cursor: pointer; user-select: none; }
         h1 { font-size: 26px; letter-spacing: 3px; text-transform: uppercase; font-weight: 900; }
         .slogan { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; margin-top: 5px; }
         .rating { font-size: 14px; margin-top: 20px; font-weight: bold; display: inline-block; border: 1px solid var(--text); padding: 8px 20px; border-radius: 20px;}
 
-        /* CONTENU PRINCIPAL */
+        /* ===== MENU ===== */
         #app { display: none; padding: 20px; max-width: 600px; margin: 0 auto; }
-        
         .section-title {
             font-size: 20px; font-weight: bold; text-transform: uppercase;
             border-bottom: 2px solid var(--border);
@@ -60,7 +67,29 @@
         .item-header { display: flex; justify-content: space-between; align-items: baseline; }
         .item-name { font-size: 16px; font-weight: bold; text-transform: uppercase; }
         .item-desc { font-size: 12px; color: #555555; margin: 5px 0 10px 0; }
-        
+
+        /* Style simple pour rupture */
+        .item.out-of-stock .item-name {
+            text-decoration: line-through 2px var(--soldout-strike);
+            color: #777;
+        }
+        .item.out-of-stock .item-desc {
+            text-decoration: line-through 1px var(--soldout-strike);
+            color: #999;
+        }
+        .victime-succes {
+            background: transparent;
+            color: var(--soldout-strike);
+            font-weight: bold;
+            padding: 5px 0;
+            text-align: left;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-top: 1px dashed #ccc;
+            margin-top: 8px;
+        }
+
         .action-row { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn-add {
             flex: 1; background: transparent; color: var(--text);
@@ -69,17 +98,16 @@
             transition: background 0.2s, color 0.2s;
         }
         .btn-add:hover, .btn-add:active { background: var(--text); color: var(--bg); }
-        .victime-succes { width: 100%; text-align: center; padding: 8px; font-size: 12px; font-weight: bold; border: 1px solid var(--text); color: var(--bg); background: var(--text); text-transform: uppercase; }
 
-        /* PANIER & CHECKOUT */
+        /* ===== PANIER & MODAL ===== */
         #cart-bar {
-            position: fixed; bottom: 0; left: 0; width: 100%;
+            position: fixed; bottom: 30px; left: 0; width: 100%;
             background: var(--text); color: var(--bg);
             padding: 15px 20px; display: flex; justify-content: space-between;
             align-items: center; cursor: pointer; z-index: 1000;
             font-weight: bold; text-transform: uppercase; border-top: 1px solid var(--border);
         }
-        
+
         #cart-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg); display: none; flex-direction: column;
@@ -91,28 +119,94 @@
         .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dotted #ccc; padding: 15px 0; }
         .cart-item-info { flex: 1; font-weight: bold; }
         .btn-remove { background: transparent; color: #000; border: 1px solid #000; padding: 5px 10px; cursor: pointer; font-size: 11px; margin-left: 10px; font-weight: bold; text-transform: uppercase;}
-        
+
+        /* sélecteur table */
+        .table-selector {
+            padding: 15px 20px;
+            border-top: 1px dashed var(--border);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #f9f9f9;
+        }
+        .table-selector label {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        .table-selector select {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            font-size: 16px;
+            font-weight: bold;
+        }
+
         .checkout-area { padding: 20px; border-top: 1px solid var(--border); }
         .checkout-msg { font-size: 14px; text-align: center; margin-bottom: 20px; display: none; padding: 20px; border: 2px solid var(--text); background: var(--bg);}
-        .btn-checkout { width: 100%; background: var(--text); color: var(--bg); border: none; padding: 15px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        .btn-checkout { width: 100%; background: var(--text); color: var(--bg); border: none; padding: 15px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-bottom: 10px; }
 
-        /* TOAST (CITATIONS) */
+        .whatsapp-btn, .sms-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 2px solid var(--text);
+            background: white;
+            color: var(--text);
+            cursor: pointer;
+        }
+        .whatsapp-btn { background: #25D366; color: white; border-color: #075E54; }
+        .sms-btn { background: #34b7f1; color: white; border-color: #0b7ab3; }
+
+        /* ===== TOAST (CITATION) ===== */
         #toast {
             position: fixed; top: -150px; left: 50%; transform: translateX(-50%);
             background: var(--text); color: var(--bg); padding: 15px 20px;
             font-size: 14px; font-weight: bold; font-style: italic; text-align: center;
             width: 90%; max-width: 450px; z-index: 3000; border: 1px solid var(--bg);
-            transition: top 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             line-height: 1.4;
+            touch-action: pan-y;
+            user-select: none;
         }
         #toast.show { top: 20px; }
 
-        /* PANEL ADMIN */
+        /* ===== CRÉDITS BAS GAUCHE (modifié selon demande) ===== */
+        .credit-footer {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-size: 9px;
+            color: #888;
+            background: rgba(255,255,255,0.8);
+            padding: 4px 10px;
+            border-radius: 30px;
+            backdrop-filter: blur(2px);
+            border: 0.5px solid #ccc;
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+        }
+        .credit-footer a {
+            color: #444;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ===== ADMIN ===== */
         #admin-panel {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg); display: none; flex-direction: column;
-            z-index: 10000; overflow-y: auto; padding: 20px; font-family: 'Helvetica Neue', Arial, sans-serif;
+            z-index: 10000; overflow-y: auto; padding: 20px;
         }
         .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--text); padding-bottom: 10px; margin-bottom: 20px; }
         .admin-btn { background: var(--text); color: var(--bg); border: 1px solid var(--text); padding: 8px 12px; font-size: 12px; cursor: pointer; font-weight: bold; text-transform: uppercase; margin: 5px 0;}
@@ -123,6 +217,7 @@
 </head>
 <body>
 
+    <!-- LANG SCREEN -->
     <div id="lang-screen">
         <h1 style="margin-bottom: 10px;">BRUNCH & SMASH</h1>
         <div style="margin-bottom: 40px; font-size: 12px; font-weight: bold; letter-spacing: 2px;">100% FAIT MAISON</div>
@@ -131,8 +226,17 @@
         <button class="lang-btn" onclick="initApp('nl')">Nederlands</button>
     </div>
 
+    <!-- TOAST (citation) -->
     <div id="toast"></div>
 
+    <!-- CRÉDITS BAS GAUCHE modifié : palawris0 sans émoji -->
+    <div class="credit-footer">
+        <a href="https://instagram.com/palawris0" target="_blank">
+            palawris0
+        </a>
+    </div>
+
+    <!-- APPLICATION PRINCIPALE -->
     <div id="app">
         <header>
             <div class="logo-icon" onclick="checkSecret()">🍔</div>
@@ -144,490 +248,604 @@
         <div id="menu-container"></div>
     </div>
 
+    <!-- PANIER FLOTTANT -->
     <div id="cart-bar" style="display: none;" onclick="openCart()">
         <span id="cart-total-bar">TOTAL: 0.00€</span>
         <span id="ui-view-cart">VOIR PANIER</span>
     </div>
 
+    <!-- MODAL PANIER -->
     <div id="cart-modal">
         <div class="cart-header">
             <h2 id="ui-cart-title" style="font-size: 18px; text-transform: uppercase; letter-spacing: 1px;">VOTRE SÉLECTION</h2>
             <button class="close-cart" onclick="closeCart()">✕</button>
         </div>
         <div class="cart-items" id="cart-items-container"></div>
+
+        <!-- TABLE SELECTOR -->
+        <div class="table-selector">
+            <label for="table-number">🍽️ TABLE</label>
+            <select id="table-number">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7" selected>7</option>
+            </select>
+        </div>
+
         <div class="checkout-area">
             <div class="checkout-msg" id="checkout-message"></div>
             <button class="btn-checkout" id="btn-validate" onclick="validateOrder()">VALIDER LA COMMANDE</button>
+            <!-- Boutons après validation : WhatsApp et SMS (remplace email) -->
+            <div id="post-validation-actions" style="display: none;">
+                <button class="whatsapp-btn" onclick="sendOrderWhatsapp()">📲 ENVOYER PAR WHATSAPP</button>
+                <button class="sms-btn" onclick="sendOrderSMS()">📟 ENVOYER PAR SMS</button>
+            </div>
         </div>
     </div>
 
+    <!-- PANEL ADMIN -->
     <div id="admin-panel">
         <div class="admin-header">
-            <h2>PANEL ADMIN</h2>
+            <h2>⚙️ PANEL ADMIN</h2>
             <button class="close-cart" onclick="closeAdmin()">✕</button>
         </div>
         <div style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
             <button class="admin-btn" onclick="adminAddCategory()">+ Ajouter Catégorie</button>
             <button class="admin-btn" onclick="adminChangePin()">Modifier PIN</button>
+            <button class="admin-btn" onclick="adminSetWhatsapp()">📱 Définir WhatsApp/SMS</button>
             <button class="admin-btn" onclick="adminResetData()" style="background: red; color: white; border-color: red;">Reset par défaut</button>
         </div>
         <div id="admin-content"></div>
     </div>
 
-<script>
-    // --- DONNÉES DU MENU (Transformé en let pour pouvoir être modifié) ---
-    let defaultMenuData = {
-        smash: {
-            id: "smash",
-            title: { fr: "SMASH BURGERS", en: "SMASH BURGERS", nl: "SMASH BURGERS" },
-            items: [
-                { id: "s1", name: "Small Smash", desc: { fr: "Potato bun, steak, cheddar, salade, tomate, cornichon, moutarde, ketchup", en: "Potato bun, beef patty, cheddar, lettuce, tomato, pickle, mustard, ketchup", nl: "Potato bun, runderpasteitje, cheddar, sla, tomaat, augurk, mosterd, ketchup" }, priceAlone: 5, priceMenu: 8.5 },
-                { id: "s2", name: "Classic Smash", desc: { fr: "Potato bun, double steak, double cheddar, cornichon, sauce smash", en: "Potato bun, double beef, double cheddar, pickle, smash sauce", nl: "Potato bun, dubbel rundvlees, dubbele cheddar, augurk, smash saus" }, priceAlone: 7.5, priceMenu: 10.5 },
-                { id: "s3", name: "Chèvre Smash", desc: { fr: "Potato bun, double steak, chèvre, salade, tomate, oignons caramélisés, miel, moutarde", en: "Potato bun, double beef, goat cheese, lettuce, tomato, caramelized onions, honey, mustard", nl: "Potato bun, dubbel rundvlees, geitenkaas, sla, tomaat, gekarameliseerde uien, honing, mosterd" }, priceAlone: 8.5, priceMenu: 11.5 },
-                { id: "s4", name: "Truffe Smash", desc: { fr: "Potato bun, double steak, double cheddar, salade, tomate, oignons caramélisés, sauce truffe", en: "Potato bun, double beef, double cheddar, lettuce, tomato, caramelized onions, truffle sauce", nl: "Potato bun, dubbel rundvlees, dubbele cheddar, sla, tomaat, gekarameliseerde uien, truffelsaus" }, priceAlone: 9.5, priceMenu: 12.5 },
-                { id: "s5", name: "BBQ Smash", desc: { fr: "Potato bun, double steak, double cheddar, bacon, salade, tomate, oignons caramélisés, sauce BBQ", en: "Potato bun, double beef, double cheddar, bacon, lettuce, tomato, caramelized onions, BBQ sauce", nl: "Potato bun, dubbel rundvlees, dubbele cheddar, bacon, sla, tomaat, gekarameliseerde uien, BBQ saus" }, priceAlone: 9.5, priceMenu: 12.5 },
-                { id: "s6", name: "Raclette Smash", desc: { fr: "Potato bun, double steak, raclette savoyarde, salade, tomate, oignons caramélisés, sauce crème ail", en: "Potato bun, double beef, raclette cheese, lettuce, tomato, caramelized onions, garlic cream sauce", nl: "Potato bun, dubbel rundvlees, raclette kaas, sla, tomaat, gekarameliseerde uien, knoflookroomsaus" }, priceAlone: 9.5, priceMenu: 12.5 },
-                { id: "s7", name: "Crispy chicken", desc: { fr: "Potato bun, poulet frit, double cheddar, salade, tomate, oignons caramélisés, mayo Sriracha", en: "Potato bun, fried chicken, double cheddar, lettuce, tomato, caramelized onions, Sriracha mayo", nl: "Potato bun, gebakken kip, dubbele cheddar, sla, tomaat, gekarameliseerde uien, Sriracha mayo" }, priceAlone: 8.5, priceMenu: 11.5 }
-            ]
-        },
-        baguettes: {
-            id: "baguettes",
-            title: { fr: "BAGUETTES", en: "BAGUETTES", nl: "STOKBRODEN" },
-            items: [
-                { id: "b1", name: "Baguette Classic Smash", desc: { fr: "Pain frais, double steak, double cheddar, cornichon, sauce smash", en: "Fresh bread, double beef, double cheddar, pickle, smash sauce", nl: "Vers brood, dubbel rundvlees, dubbele cheddar, augurk, smash saus" }, priceAlone: 9.5, priceMenu: 12.5 },
-                { id: "b2", name: "Baguette BBQ Smash", desc: { fr: "Pain frais, double steak, double cheddar, bacon, salade, tomate, oignons caramélisés, sauce BBQ", en: "Fresh bread, double beef, double cheddar, bacon, lettuce, tomato, caramelized onions, BBQ sauce", nl: "Vers brood, dubbel rundvlees, dubbele cheddar, bacon, sla, tomaat, gekarameliseerde uien, BBQ saus" }, priceAlone: 9.5, priceMenu: 12.5 },
-                { id: "b3", name: "Baguette Raclette Smash", desc: { fr: "Pain frais, double steak, raclette savoyarde, salade, tomate, oignons caramélisés, sauce crème ail", en: "Fresh bread, double beef, raclette cheese, lettuce, tomato, caramelized onions, garlic cream sauce", nl: "Vers brood, dubbel rundvlees, raclette kaas, sla, tomaat, gekarameliseerde uien, knoflookroomsaus" }, priceAlone: 9.5, priceMenu: 12.5 },
-                { id: "b4", name: "Baguette Crispy Chicken", desc: { fr: "Pain frais, poulet frit, double cheddar, salade, tomate, oignons caramélisés, mayo Sriracha", en: "Fresh bread, fried chicken, double cheddar, lettuce, tomato, caramelized onions, Sriracha mayo", nl: "Vers brood, gebakken kip, dubbele cheddar, sla, tomaat, gekarameliseerde uien, Sriracha mayo" }, priceAlone: 9.5, priceMenu: 12.5 },
-                { id: "b5", name: "Baguette Truffe Smash", desc: { fr: "Pain frais, double steak, double cheddar, salade, tomate, oignons caramélisés, sauce truffe", en: "Fresh bread, double beef, double cheddar, lettuce, tomato, caramelized onions, truffle sauce", nl: "Vers brood, dubbel rundvlees, dubbele cheddar, sla, tomaat, gekarameliseerde uien, truffelsaus" }, priceAlone: 9.5, priceMenu: 12.5 },
-                { id: "b6", name: "Baguette Chèvre", desc: { fr: "Pain frais, double steak, chèvre, salade, tomate, oignons caramélisés, miel, moutarde", en: "Fresh bread, double beef, goat cheese, lettuce, tomato, caramelized onions, honey, mustard", nl: "Vers brood, dubbel rundvlees, geitenkaas, sla, tomaat, gekarameliseerde uien, honing, mosterd" }, priceAlone: 9.5, priceMenu: 12.5 }
-            ]
-        },
-        extras: {
-            id: "extras",
-            title: { fr: "SUPPLÉMENTS", en: "EXTRAS", nl: "EXTRA'S" },
-            items: [
-                { id: "ex1", name: "Steak Haché", priceAlone: 2 },
-                { id: "ex2", name: "Crispy Chicken", priceAlone: 2.5 },
-                { id: "ex3", name: "Cornichons / Jalapeños", priceAlone: 0.5 },
-                { id: "ex4", name: "Fromage (Chèvre, Provolone, Raclette...)", priceAlone: 1.5 },
-                { id: "ex5", name: "Champignons Marinés", priceAlone: 1.5 },
-                { id: "ex6", name: "Sauce Hot Cheddar", priceAlone: 1.5 },
-                { id: "ex7", name: "Supplément Sauce", priceAlone: 1 }
-            ]
-        },
-        drinks: {
-            id: "drinks",
-            title: { fr: "BOISSONS", en: "DRINKS", nl: "DRANKEN" },
-            items: [
-                { id: "d1", name: "Pepsi", priceAlone: 2 },
-                { id: "d2", name: "Ice Tea", priceAlone: 2 },
-                { id: "d3", name: "Ice Tea Pêche", priceAlone: 2 },
-                { id: "d4", name: "Oasis Pomme Poire", priceAlone: 2 },
-                { id: "d5", name: "Oasis Fraise Framboise", priceAlone: 2 },
-                { id: "d6", name: "Oasis Tropical", priceAlone: 2 },
-                { id: "d7", name: "Schweppes Agrume", priceAlone: 2 },
-                { id: "d8", name: "Uludag", priceAlone: 2 },
-                { id: "d10", name: "Milk-Shake", priceAlone: 4 }
-            ]
-        },
-        desserts: {
-            id: "desserts",
-            title: { fr: "DESSERTS", en: "DESSERTS", nl: "DESSERTS" },
-            items: [
-                { id: "ds1", name: "Moelleux Chocolat (Glace & Chantilly)", priceAlone: 6 },
-                { id: "ds2", name: "Tiramisu", priceAlone: 4 },
-                { id: "ds3", name: "Brioche perdue", priceAlone: 6.5 }
-            ]
-        },
-        sides: {
-            id: "sides",
-            title: { fr: "SIDES", en: "SIDES", nl: "BIJGERECHTEN" },
-            items: [
-                { id: "sd1", name: "Frites Maison", priceAlone: 3.5 },
-                { id: "sd2", name: "Frites Lardon Hot Cheddar", priceAlone: 5.5 },
-                { id: "sd3", name: "Tenders", priceAlone: 6 },
-                { id: "sd4", name: "Frites Patate Douce", priceAlone: 5 },
-                { id: "sd5", name: "Croquette Fromage", priceAlone: 2 }
-            ]
-        }
-    };
+    <script>
+        (function() {
+            // --- DONNÉES DU MENU ---
+            let defaultMenuData = {
+                smash: {
+                    id: "smash",
+                    title: { fr: "SMASH BURGERS", en: "SMASH BURGERS", nl: "SMASH BURGERS" },
+                    items: [
+                        { id: "s1", name: "Small Smash", desc: { fr: "Potato bun, steak, cheddar, salade, tomate, cornichon, moutarde, ketchup", en: "Potato bun, beef patty, cheddar, lettuce, tomato, pickle, mustard, ketchup", nl: "Potato bun, runderpasteitje, cheddar, sla, tomaat, augurk, mosterd, ketchup" }, priceAlone: 5, priceMenu: 8.5 },
+                        { id: "s2", name: "Classic Smash", desc: { fr: "Potato bun, double steak, double cheddar, cornichon, sauce smash", en: "Potato bun, double beef, double cheddar, pickle, smash sauce", nl: "Potato bun, dubbel rundvlees, dubbele cheddar, augurk, smash saus" }, priceAlone: 7.5, priceMenu: 10.5 },
+                        { id: "s3", name: "Chèvre Smash", desc: { fr: "Potato bun, double steak, chèvre, salade, tomate, oignons caramélisés, miel, moutarde", en: "Potato bun, double beef, goat cheese, lettuce, tomato, caramelized onions, honey, mustard", nl: "Potato bun, dubbel rundvlees, geitenkaas, sla, tomaat, gekarameliseerde uien, honing, mosterd" }, priceAlone: 8.5, priceMenu: 11.5 },
+                        { id: "s4", name: "Truffe Smash", desc: { fr: "Potato bun, double steak, double cheddar, salade, tomate, oignons caramélisés, sauce truffe", en: "Potato bun, double beef, double cheddar, lettuce, tomato, caramelized onions, truffle sauce", nl: "Potato bun, dubbel rundvlees, dubbele cheddar, sla, tomaat, gekarameliseerde uien, truffelsaus" }, priceAlone: 9.5, priceMenu: 12.5 },
+                        { id: "s5", name: "BBQ Smash", desc: { fr: "Potato bun, double steak, double cheddar, bacon, salade, tomate, oignons caramélisés, sauce BBQ", en: "Potato bun, double beef, double cheddar, bacon, lettuce, tomato, caramelized onions, BBQ sauce", nl: "Potato bun, dubbel rundvlees, dubbele cheddar, bacon, sla, tomaat, gekarameliseerde uien, BBQ saus" }, priceAlone: 9.5, priceMenu: 12.5 },
+                        { id: "s6", name: "Raclette Smash", desc: { fr: "Potato bun, double steak, raclette savoyarde, salade, tomate, oignons caramélisés, sauce crème ail", en: "Potato bun, double beef, raclette cheese, lettuce, tomato, caramelized onions, garlic cream sauce", nl: "Potato bun, dubbel rundvlees, raclette kaas, sla, tomaat, gekarameliseerde uien, knoflookroomsaus" }, priceAlone: 9.5, priceMenu: 12.5 },
+                        { id: "s7", name: "Crispy chicken", desc: { fr: "Potato bun, poulet frit, double cheddar, salade, tomate, oignons caramélisés, mayo Sriracha", en: "Potato bun, fried chicken, double cheddar, lettuce, tomato, caramelized onions, Sriracha mayo", nl: "Potato bun, gebakken kip, dubbele cheddar, sla, tomaat, gekarameliseerde uien, Sriracha mayo" }, priceAlone: 8.5, priceMenu: 11.5 }
+                    ]
+                },
+                baguettes: {
+                    id: "baguettes",
+                    title: { fr: "BAGUETTES", en: "BAGUETTES", nl: "STOKBRODEN" },
+                    items: [
+                        { id: "b1", name: "Baguette Classic Smash", desc: { fr: "Pain frais, double steak, double cheddar, cornichon, sauce smash", en: "Fresh bread, double beef, double cheddar, pickle, smash sauce", nl: "Vers brood, dubbel rundvlees, dubbele cheddar, augurk, smash saus" }, priceAlone: 9.5, priceMenu: 12.5 },
+                        { id: "b2", name: "Baguette BBQ Smash", desc: { fr: "Pain frais, double steak, double cheddar, bacon, salade, tomate, oignons caramélisés, sauce BBQ", en: "Fresh bread, double beef, double cheddar, bacon, lettuce, tomato, caramelized onions, BBQ sauce", nl: "Vers brood, dubbel rundvlees, dubbele cheddar, bacon, sla, tomaat, gekarameliseerde uien, BBQ saus" }, priceAlone: 9.5, priceMenu: 12.5 },
+                        { id: "b3", name: "Baguette Raclette Smash", desc: { fr: "Pain frais, double steak, raclette savoyarde, salade, tomate, oignons caramélisés, sauce crème ail", en: "Fresh bread, double beef, raclette cheese, lettuce, tomato, caramelized onions, garlic cream sauce", nl: "Vers brood, dubbel rundvlees, raclette kaas, sla, tomaat, gekarameliseerde uien, knoflookroomsaus" }, priceAlone: 9.5, priceMenu: 12.5 },
+                        { id: "b4", name: "Baguette Crispy Chicken", desc: { fr: "Pain frais, poulet frit, double cheddar, salade, tomate, oignons caramélisés, mayo Sriracha", en: "Fresh bread, fried chicken, double cheddar, lettuce, tomato, caramelized onions, Sriracha mayo", nl: "Vers brood, gebakken kip, dubbele cheddar, sla, tomaat, gekarameliseerde uien, Sriracha mayo" }, priceAlone: 9.5, priceMenu: 12.5 },
+                        { id: "b5", name: "Baguette Truffe Smash", desc: { fr: "Pain frais, double steak, double cheddar, salade, tomate, oignons caramélisés, sauce truffe", en: "Fresh bread, double beef, double cheddar, lettuce, tomato, caramelized onions, truffle sauce", nl: "Vers brood, dubbel rundvlees, dubbele cheddar, sla, tomaat, gekarameliseerde uien, truffelsaus" }, priceAlone: 9.5, priceMenu: 12.5 },
+                        { id: "b6", name: "Baguette Chèvre", desc: { fr: "Pain frais, double steak, chèvre, salade, tomate, oignons caramélisés, miel, moutarde", en: "Fresh bread, double beef, goat cheese, lettuce, tomato, caramelized onions, honey, mustard", nl: "Vers brood, dubbel rundvlees, geitenkaas, sla, tomaat, gekarameliseerde uien, honing, mosterd" }, priceAlone: 9.5, priceMenu: 12.5 }
+                    ]
+                },
+                extras: {
+                    id: "extras",
+                    title: { fr: "SUPPLÉMENTS", en: "EXTRAS", nl: "EXTRA'S" },
+                    items: [
+                        { id: "ex1", name: "Steak Haché", priceAlone: 2 },
+                        { id: "ex2", name: "Crispy Chicken", priceAlone: 2.5 },
+                        { id: "ex3", name: "Cornichons / Jalapeños", priceAlone: 0.5 },
+                        { id: "ex4", name: "Fromage (Chèvre, Provolone, Raclette...)", priceAlone: 1.5 },
+                        { id: "ex5", name: "Champignons Marinés", priceAlone: 1.5 },
+                        { id: "ex6", name: "Sauce Hot Cheddar", priceAlone: 1.5 },
+                        { id: "ex7", name: "Supplément Sauce", priceAlone: 1 }
+                    ]
+                },
+                drinks: {
+                    id: "drinks",
+                    title: { fr: "BOISSONS", en: "DRINKS", nl: "DRANKEN" },
+                    items: [
+                        { id: "d1", name: "Pepsi", priceAlone: 2 },
+                        { id: "d2", name: "Ice Tea", priceAlone: 2 },
+                        { id: "d3", name: "Ice Tea Pêche", priceAlone: 2 },
+                        { id: "d4", name: "Oasis Pomme Poire", priceAlone: 2 },
+                        { id: "d5", name: "Oasis Fraise Framboise", priceAlone: 2 },
+                        { id: "d6", name: "Oasis Tropical", priceAlone: 2 },
+                        { id: "d7", name: "Schweppes Agrume", priceAlone: 2 },
+                        { id: "d8", name: "Uludag", priceAlone: 2 },
+                        { id: "d10", name: "Milk-Shake", priceAlone: 4 }
+                    ]
+                },
+                desserts: {
+                    id: "desserts",
+                    title: { fr: "DESSERTS", en: "DESSERTS", nl: "DESSERTS" },
+                    items: [
+                        { id: "ds1", name: "Moelleux Chocolat (Glace & Chantilly)", priceAlone: 6 },
+                        { id: "ds2", name: "Tiramisu", priceAlone: 4 },
+                        { id: "ds3", name: "Brioche perdue", priceAlone: 6.5 }
+                    ]
+                },
+                sides: {
+                    id: "sides",
+                    title: { fr: "SIDES", en: "SIDES", nl: "BIJGERECHTEN" },
+                    items: [
+                        { id: "sd1", name: "Frites Maison", priceAlone: 3.5 },
+                        { id: "sd2", name: "Frites Lardon Hot Cheddar", priceAlone: 5.5 },
+                        { id: "sd3", name: "Tenders", priceAlone: 6 },
+                        { id: "sd4", name: "Frites Patate Douce", priceAlone: 5 },
+                        { id: "sd5", name: "Croquette Fromage", priceAlone: 2 }
+                    ]
+                }
+            };
 
-    // Chargement des données locales si existantes
-    let menuData = JSON.parse(localStorage.getItem('smash_menuData')) || defaultMenuData;
-    let adminPin = localStorage.getItem('smash_adminPin') || "1234";
+            // Chargement des données locales
+            let menuData = JSON.parse(localStorage.getItem('smash_menuData')) || defaultMenuData;
+            let adminPin = localStorage.getItem('smash_adminPin') || "1234";
+            let whatsappNumber = localStorage.getItem('smash_whatsapp') || "";  // utilisé pour WhatsApp et SMS
 
-    // --- TRADUCTIONS UI ---
-    const ui = {
-        fr: { 
-            viewCart: "VOIR PANIER", addAlone: "SEUL", addMenu: "MENU (+ FRITES & SAUCE)", total: "TOTAL", remove: "RETIRER", empty: "Votre sélection est vide.", checkout: "VALIDER LA COMMANDE", 
-            finalMsg: "<span style='font-weight:bold; font-size:16px;'>LE CHOIX EST FAIT.</span><br><br>Dirigez-vous vers l'équipe avec cet écran pour lancer la préparation."
-        },
-        en: { 
-            viewCart: "VIEW CART", addAlone: "ALONE", addMenu: "MENU (+ FRIES & SAUCE)", total: "TOTAL", remove: "REMOVE", empty: "Your selection is empty.", checkout: "CONFIRM ORDER", 
-            finalMsg: "<span style='font-weight:bold; font-size:16px;'>THE CHOICE IS MADE.</span><br><br>Head to the team with this screen to start preparation."
-        },
-        nl: { 
-            viewCart: "BEKIJK MANDJE", addAlone: "ALLEEN", addMenu: "MENU (+ FRIET & SAUS)", total: "TOTAAL", remove: "VERWIJDER", empty: "Uw selectie is leeg.", checkout: "BESTELLING BEVESTIGEN", 
-            finalMsg: "<span style='font-weight:bold; font-size:16px;'>DE KEUZE IS GEMAAKT.</span><br><br>Ga met dit scherm naar het team om de voorbereiding te starten."
-        }
-    };
+            // --- TRADUCTIONS UI ---
+            const ui = {
+                fr: { 
+                    viewCart: "VOIR PANIER", addAlone: "SEUL", addMenu: "MENU (+ FRITES & SAUCE)", total: "TOTAL", remove: "RETIRER", empty: "Votre sélection est vide.", checkout: "VALIDER LA COMMANDE", 
+                    finalMsg: "<span style='font-weight:bold; font-size:16px;'>✨ CHOIX VALIDÉ ✨</span><br><br>Montrez cet écran à l'équipe ou utilisez les boutons ci-dessous.",
+                    soldout: "victime de son succès"
+                },
+                en: { 
+                    viewCart: "VIEW CART", addAlone: "ALONE", addMenu: "MENU (+ FRIES & SAUCE)", total: "TOTAL", remove: "REMOVE", empty: "Your selection is empty.", checkout: "CONFIRM ORDER", 
+                    finalMsg: "<span style='font-weight:bold; font-size:16px;'>✨ CHOICE MADE ✨</span><br><br>Show this screen to the team or use the buttons below.",
+                    soldout: "out of stock"
+                },
+                nl: { 
+                    viewCart: "BEKIJK MANDJE", addAlone: "ALLEEN", addMenu: "MENU (+ FRIET & SAUS)", total: "TOTAAL", remove: "VERWIJDER", empty: "Uw selectie is leeg.", checkout: "BESTELLING BEVESTIGEN", 
+                    finalMsg: "<span style='font-weight:bold; font-size:16px;'>✨ KEUZE GEMAAKT ✨</span><br><br>Toon dit scherm aan het team of gebruik de onderstaande knoppen.",
+                    soldout: "uitverkocht"
+                }
+            };
 
-    // --- CITATIONS (10 SOURCES CULTES) ---
-    const quotes = {
-        fr: [
-            "« Je ne suis pas en danger. C'est moi le danger... et c'est moi qui commande. » (Breaking Bad)",
-            "« Première règle du Smash Club : il faut parler du Smash Club. » (Fight Club)",
-            "« Choisis la pilule bleue, tu retournes à la réalité. Choisis ce menu, et tu restes au pays des merveilles. » (Matrix)",
-            "« Un burger pour les gouverner tous, et dans la sauce les lier. » (Le Seigneur des Anneaux)",
-            "« Tout ce que je sais, c'est que je ne sais pas comment résister à ce repas. » (Socrate)",
-            "« Ce qui ne nous tue pas nous donne faim. » (Nietzsche)",
-            "« La route ? Là où on va, on n'a pas besoin de route... juste d'un bon repas. » (Retour vers le futur)",
-            "« Soyez insatiables, soyez fous. » (Steve Jobs)",
-            "« Un petit pas pour l'homme, un grand bond pour votre estomac. » (Neil Armstrong)",
-            "« Vos papilles ont dépensé sans compter ! » (Jurassic Park)"
-        ],
-        en: [
-            "« I am not in danger. I am the danger... and the one ordering. » (Breaking Bad)",
-            "« The first rule of Smash Club: you DO talk about Smash Club. » (Fight Club)",
-            "« Take the blue pill, you wake up in your bed. Take this menu, and you stay in Wonderland. » (The Matrix)",
-            "« One burger to rule them all, and in the sauce bind them. » (The Lord of the Rings)",
-            "« The only true wisdom is in knowing you cannot resist this meal. » (Socrates)",
-            "« That which does not kill us makes us hungry. » (Nietzsche)",
-            "« Roads? Where we're going, we don't need roads... just a good meal. » (Back to the Future)",
-            "« Stay hungry, stay foolish. » (Steve Jobs)",
-            "« That's one small step for man, one giant leap for your stomach. » (Neil Armstrong)",
-            "« Your taste buds spared no expense! » (Jurassic Park)"
-        ],
-        nl: [
-            "« Ik ben niet in gevaar. Ik ben het gevaar... en degene die bestelt. » (Breaking Bad)",
-            "« De eerste regel van Smash Club: je MOET praten over Smash Club. » (Fight Club)",
-            "« Neem de blauwe pil en je wordt wakker. Neem dit menu, en blijf in Wonderland. » (The Matrix)",
-            "« Eén burger om hen allen te regeren, en in de saus te binden. » (The Lord of the Rings)",
-            "« De enige echte wijsheid is weten dat je deze maaltijd niet kunt weerstaan. » (Socrates)",
-            "« Wat ons niet doodt, maakt ons hongerig. » (Nietzsche)",
-            "« Wegen? Waar we heen gaan, hebben we geen wegen nodig... alleen een goede maaltijd. » (Back to the Future)",
-            "« Blijf hongerig, blijf dwaas. » (Steve Jobs)",
-            "« Een kleine stap voor een mens, een reuzensprong voor je maag. » (Neil Armstrong)",
-            "« Je smaakpapillen hebben kosten noch moeite gespaard! » (Jurassic Park)"
-        ]
-    };
+            // --- CITATIONS CULTES (10) ---
+            const quotes = {
+                fr: [
+                    "« Je ne suis pas en danger. C'est moi le danger... et c'est moi qui commande. » (Breaking Bad)",
+                    "« Première règle du Smash Club : il faut parler du Smash Club. » (Fight Club)",
+                    "« Choisis la pilule bleue, tu retournes à la réalité. Choisis ce menu, et tu restes au pays des merveilles. » (Matrix)",
+                    "« Un burger pour les gouverner tous, et dans la sauce les lier. » (Le Seigneur des Anneaux)",
+                    "« Tout ce que je sais, c'est que je ne sais pas comment résister à ce repas. » (Socrate)",
+                    "« Ce qui ne nous tue pas nous donne faim. » (Nietzsche)",
+                    "« La route ? Là où on va, on n'a pas besoin de route... juste d'un bon repas. » (Retour vers le futur)",
+                    "« Soyez insatiables, soyez fous. » (Steve Jobs)",
+                    "« Un petit pas pour l'homme, un grand bond pour votre estomac. » (Neil Armstrong)",
+                    "« Vos papilles ont dépensé sans compter ! » (Jurassic Park)"
+                ],
+                en: [
+                    "« I am not in danger. I am the danger... and the one ordering. » (Breaking Bad)",
+                    "« The first rule of Smash Club: you DO talk about Smash Club. » (Fight Club)",
+                    "« Take the blue pill, you wake up in your bed. Take this menu, and you stay in Wonderland. » (The Matrix)",
+                    "« One burger to rule them all, and in the sauce bind them. » (The Lord of the Rings)",
+                    "« The only true wisdom is in knowing you cannot resist this meal. » (Socrates)",
+                    "« That which does not kill us makes us hungry. » (Nietzsche)",
+                    "« Roads? Where we're going, we don't need roads... just a good meal. » (Back to the Future)",
+                    "« Stay hungry, stay foolish. » (Steve Jobs)",
+                    "« That's one small step for man, one giant leap for your stomach. » (Neil Armstrong)",
+                    "« Your taste buds spared no expense! » (Jurassic Park)"
+                ],
+                nl: [
+                    "« Ik ben niet in gevaar. Ik ben het gevaar... en degene die bestelt. » (Breaking Bad)",
+                    "« De eerste regel van Smash Club: je MOET praten over Smash Club. » (Fight Club)",
+                    "« Neem de blauwe pil en je wordt wakker. Neem dit menu, en blijf in Wonderland. » (The Matrix)",
+                    "« Eén burger om hen allen te regeren, en in de saus te binden. » (The Lord of the Rings)",
+                    "« De enige echte wijsheid is weten dat je deze maaltijd niet kunt weerstaan. » (Socrates)",
+                    "« Wat ons niet doodt, maakt ons hongerig. » (Nietzsche)",
+                    "« Wegen? Waar we heen gaan, hebben we geen wegen nodig... alleen een goede maaltijd. » (Back to the Future)",
+                    "« Blijf hongerig, blijf dwaas. » (Steve Jobs)",
+                    "« Een kleine stap voor een mens, een reuzensprong voor je maag. » (Neil Armstrong)",
+                    "« Je smaakpapillen hebben kosten noch moeite gespaard! » (Jurassic Park)"
+                ]
+            };
 
-    let currentLang = 'fr';
-    let cart = [];
-    let currentTotal = 0;
-    let toastTimeout;
-    
-    // Variables pour l'Easter Egg
-    let clickCount = 0;
-    let clickTimeout;
-
-    // --- FONCTIONS EXISTANTES ---
-
-    function initApp(lang) {
-        currentLang = lang;
-        document.getElementById('lang-screen').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-        
-        document.getElementById('ui-view-cart').innerText = ui[lang].viewCart;
-        document.getElementById('ui-cart-title').innerText = ui[lang].viewCart;
-        document.getElementById('btn-validate').innerText = ui[lang].checkout;
-        
-        renderMenu();
-    }
-
-    function renderMenu() {
-        const container = document.getElementById('menu-container');
-        container.innerHTML = '';
-
-        for (const catKey in menuData) {
-            const cat = menuData[catKey];
+            let currentLang = 'fr';
+            let cart = [];
+            let currentTotal = 0;
+            let toastTimeout;
             
-            const sectionTitle = document.createElement('h2');
-            sectionTitle.className = 'section-title';
-            sectionTitle.id = cat.id;
-            sectionTitle.innerText = cat.title[currentLang] || cat.title.fr;
-            container.appendChild(sectionTitle);
+            // Easter egg
+            let clickCount = 0;
+            let clickTimeout;
 
-            cat.items.forEach(item => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'item';
-                if(item.outOfStock) itemDiv.style.opacity = '0.6';
+            // ========== FONCTIONS ==========
 
-                let descHtml = '';
-                if (item.desc && (item.desc[currentLang] || item.desc.fr)) {
-                    descHtml = `<div class="item-desc" ${item.outOfStock ? 'style="text-decoration:line-through;"' : ''}>${item.desc[currentLang] || item.desc.fr}</div>`;
-                }
-
-                let buttonsHtml = '';
-                if (item.outOfStock) {
-                    buttonsHtml = `<div class="victime-succes">VICTIME DE SON SUCCÈS</div>`;
-                } else if (item.priceMenu) {
-                    buttonsHtml = `
-                        <button class="btn-add" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.priceAlone}, false, '${cat.id}')">${ui[currentLang].addAlone} - ${item.priceAlone}€</button>
-                        <button class="btn-add" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.priceMenu}, true, '${cat.id}')">${ui[currentLang].addMenu} - ${item.priceMenu}€</button>
-                    `;
-                } else {
-                    buttonsHtml = `<button class="btn-add" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.priceAlone}, false, '${cat.id}')">+ AJOUTER - ${item.priceAlone}€</button>`;
-                }
-
-                itemDiv.innerHTML = `
-                    <div class="item-header">
-                        <span class="item-name" ${item.outOfStock ? 'style="text-decoration:line-through;"' : ''}>${item.name}</span>
-                    </div>
-                    ${descHtml}
-                    <div class="action-row">
-                        ${buttonsHtml}
-                    </div>
-                `;
-                container.appendChild(itemDiv);
-            });
-        }
-    }
-
-    function addToCart(name, price, isMenu, categoryId) {
-        const itemName = isMenu ? name + " (MENU)" : name;
-        cart.push({ name: itemName, price: price });
-        updateCart();
-        showQuote();
-
-        setTimeout(() => {
-            if (categoryId === 'smash' || categoryId === 'baguettes') {
-                document.getElementById('extras').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } else if (categoryId === 'extras') {
-                document.getElementById('drinks').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } else if (categoryId === 'drinks') {
-                document.getElementById('desserts').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } else if (categoryId === 'desserts') {
-                document.getElementById('sides').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            function initApp(lang) {
+                currentLang = lang;
+                document.getElementById('lang-screen').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                
+                document.getElementById('ui-view-cart').innerText = ui[lang].viewCart;
+                document.getElementById('ui-cart-title').innerText = ui[lang].viewCart;
+                document.getElementById('btn-validate').innerText = ui[lang].checkout;
+                
+                renderMenu();
             }
-        }, 800);
-    }
 
-    function removeFromCart(index) {
-        cart.splice(index, 1);
-        updateCart();
-        if(cart.length === 0) closeCart();
-    }
+            function renderMenu() {
+                const container = document.getElementById('menu-container');
+                container.innerHTML = '';
 
-    function updateCart() {
-        const cartBar = document.getElementById('cart-bar');
-        const cartTotalText = document.getElementById('cart-total-bar');
-        const itemsContainer = document.getElementById('cart-items-container');
-        
-        cartBar.style.display = cart.length > 0 ? 'flex' : 'none';
+                for (const catKey in menuData) {
+                    const cat = menuData[catKey];
+                    
+                    const sectionTitle = document.createElement('h2');
+                    sectionTitle.className = 'section-title';
+                    sectionTitle.id = cat.id;
+                    sectionTitle.innerText = cat.title[currentLang] || cat.title.fr;
+                    container.appendChild(sectionTitle);
 
-        currentTotal = 0;
-        itemsContainer.innerHTML = '';
+                    cat.items.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'item' + (item.outOfStock ? ' out-of-stock' : '');
 
-        cart.forEach((item, index) => {
-            currentTotal += item.price;
-            itemsContainer.innerHTML += `
-                <div class="cart-item">
-                    <div class="cart-item-info">${item.name}</div>
-                    <div style="font-weight:bold;">${item.price.toFixed(2)}€</div>
-                    <button class="btn-remove" onclick="removeFromCart(${index})">${ui[currentLang].remove}</button>
-                </div>
-            `;
-        });
+                        let descHtml = '';
+                        if (item.desc && (item.desc[currentLang] || item.desc.fr)) {
+                            descHtml = `<div class="item-desc">${item.desc[currentLang] || item.desc.fr}</div>`;
+                        }
 
-        if (cart.length === 0) {
-            itemsContainer.innerHTML = `<p style="text-align:center; padding:20px;">${ui[currentLang].empty}</p>`;
-        }
+                        let buttonsHtml = '';
+                        if (item.outOfStock) {
+                            buttonsHtml = `<div class="victime-succes">${ui[currentLang].soldout}</div>`;
+                        } else if (item.priceMenu) {
+                            buttonsHtml = `
+                                <button class="btn-add" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.priceAlone}, false, '${cat.id}')">${ui[currentLang].addAlone} - ${item.priceAlone}€</button>
+                                <button class="btn-add" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.priceMenu}, true, '${cat.id}')">${ui[currentLang].addMenu} - ${item.priceMenu}€</button>
+                            `;
+                        } else {
+                            buttonsHtml = `<button class="btn-add" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.priceAlone}, false, '${cat.id}')">+ AJOUTER - ${item.priceAlone}€</button>`;
+                        }
 
-        cartTotalText.innerText = `${ui[currentLang].total}: ${currentTotal.toFixed(2)}€`;
-        document.getElementById('btn-validate').style.display = cart.length > 0 ? 'block' : 'none';
-        document.getElementById('checkout-message').style.display = 'none';
-    }
+                        itemDiv.innerHTML = `
+                            <div class="item-header">
+                                <span class="item-name">${item.name}</span>
+                            </div>
+                            ${descHtml}
+                            <div class="action-row">
+                                ${buttonsHtml}
+                            </div>
+                        `;
+                        container.appendChild(itemDiv);
+                    });
+                }
+            }
 
-    function openCart() { document.getElementById('cart-modal').style.display = 'flex'; }
-    function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
+            function addToCart(name, price, isMenu, categoryId) {
+                const itemName = isMenu ? name + " (MENU)" : name;
+                cart.push({ name: itemName, price: price });
+                updateCart();
+                showQuote();
 
-    function showQuote() {
-        const toast = document.getElementById('toast');
-        const quotesArray = quotes[currentLang];
-        const randomQuote = quotesArray[Math.floor(Math.random() * quotesArray.length)];
-        
-        toast.innerText = randomQuote;
-        toast.classList.add('show');
+                setTimeout(() => {
+                    if (categoryId === 'smash' || categoryId === 'baguettes') {
+                        document.getElementById('extras').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else if (categoryId === 'extras') {
+                        document.getElementById('drinks').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else if (categoryId === 'drinks') {
+                        document.getElementById('desserts').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else if (categoryId === 'desserts') {
+                        document.getElementById('sides').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 800);
+            }
 
-        clearTimeout(toastTimeout);
-        toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 10000);
-    }
+            function removeFromCart(index) {
+                cart.splice(index, 1);
+                updateCart();
+                if(cart.length === 0) closeCart();
+            }
 
-    function validateOrder() {
-        const msgDiv = document.getElementById('checkout-message');
-        document.getElementById('btn-validate').style.display = 'none';
-        
-        const removeBtns = document.querySelectorAll('.btn-remove');
-        removeBtns.forEach(btn => btn.style.display = 'none');
+            function updateCart() {
+                const cartBar = document.getElementById('cart-bar');
+                const cartTotalText = document.getElementById('cart-total-bar');
+                const itemsContainer = document.getElementById('cart-items-container');
+                
+                cartBar.style.display = cart.length > 0 ? 'flex' : 'none';
 
-        const finalHtml = `
-            ${ui[currentLang].finalMsg}
-            <div style="margin-top:20px; font-size: 20px; font-weight: 900; border-top: 2px solid var(--text); padding-top: 15px;">
-                TOTAL À RÉGLER : ${currentTotal.toFixed(2)}€
-            </div>
-        `;
-        
-        msgDiv.innerHTML = finalHtml;
-        msgDiv.style.display = 'block';
-    }
+                currentTotal = 0;
+                itemsContainer.innerHTML = '';
 
-    // --- FONCTIONS ADMIN (NOUVEAU) ---
-
-    function checkSecret() {
-        clickCount++;
-        clearTimeout(clickTimeout);
-        if (clickCount >= 3) {
-            clickCount = 0;
-            let pin = prompt("Code PIN Administrateur (4 chiffres) :");
-            if (pin === adminPin) openAdmin();
-            else if (pin !== null) alert("Code PIN incorrect.");
-        } else {
-            clickTimeout = setTimeout(() => { clickCount = 0; }, 1000);
-        }
-    }
-
-    function saveMenuData() {
-        localStorage.setItem('smash_menuData', JSON.stringify(menuData));
-        renderMenu();
-        renderAdmin();
-    }
-
-    function openAdmin() {
-        document.getElementById('admin-panel').style.display = 'block';
-        renderAdmin();
-    }
-
-    function closeAdmin() {
-        document.getElementById('admin-panel').style.display = 'none';
-    }
-
-    function adminChangePin() {
-        let newPin = prompt("Nouveau code PIN à 4 chiffres :", adminPin);
-        if (newPin && newPin.trim().length > 0) {
-            adminPin = newPin.trim();
-            localStorage.setItem('smash_adminPin', adminPin);
-            alert("Code PIN modifié avec succès.");
-        }
-    }
-
-    function adminResetData() {
-        if(confirm("Attention, cela va effacer toutes vos modifications et remettre le menu par défaut. Continuer ?")) {
-            menuData = JSON.parse(JSON.stringify(defaultMenuData));
-            saveMenuData();
-        }
-    }
-
-    function adminAddCategory() {
-        let titleFr = prompt("Nom de la catégorie (ex: BOISSONS CHAUDES) :");
-        if (!titleFr) return;
-        let id = "cat_" + Date.now();
-        menuData[id] = { id: id, title: { fr: titleFr, en: titleFr, nl: titleFr }, items: [] };
-        saveMenuData();
-    }
-
-    function adminDeleteCategory(catKey) {
-        if(confirm("Supprimer cette catégorie et tout ce qu'elle contient ?")) {
-            delete menuData[catKey];
-            saveMenuData();
-        }
-    }
-
-    function adminAddItem(catKey) {
-        let name = prompt("Nom du produit :");
-        if (!name) return;
-        let price = parseFloat(prompt("Prix seul (ex: 5.50) :"));
-        if (isNaN(price)) return;
-        let desc = prompt("Description (optionnel) :");
-        
-        let hasMenu = confirm("Voulez-vous ajouter un prix MENU (Frites + Boisson) pour cet article ?");
-        let priceMenu = null;
-        if (hasMenu) {
-            priceMenu = parseFloat(prompt("Prix du Menu (ex: 8.50) :"));
-            if (isNaN(priceMenu)) priceMenu = null;
-        }
-
-        let newItem = { id: "item_" + Date.now(), name: name, priceAlone: price };
-        if (desc) newItem.desc = { fr: desc, en: desc, nl: desc };
-        if (priceMenu) newItem.priceMenu = priceMenu;
-
-        menuData[catKey].items.push(newItem);
-        saveMenuData();
-    }
-
-    function adminEditItem(catKey, itemIndex) {
-        let item = menuData[catKey].items[itemIndex];
-        
-        let newName = prompt("Modifier le nom :", item.name);
-        if(newName !== null) item.name = newName;
-
-        let currentDesc = item.desc ? (item.desc.fr || "") : "";
-        let newDesc = prompt("Modifier la description :", currentDesc);
-        if(newDesc !== null) item.desc = { fr: newDesc, en: newDesc, nl: newDesc };
-
-        let newPrice = prompt("Modifier le prix seul :", item.priceAlone);
-        if(newPrice !== null && !isNaN(parseFloat(newPrice))) item.priceAlone = parseFloat(newPrice);
-
-        if (item.priceMenu !== undefined) {
-            let newPriceMenu = prompt("Modifier le prix Menu :", item.priceMenu);
-            if(newPriceMenu !== null && !isNaN(parseFloat(newPriceMenu))) item.priceMenu = parseFloat(newPriceMenu);
-        }
-
-        saveMenuData();
-    }
-
-    function adminToggleStock(catKey, itemIndex) {
-        let item = menuData[catKey].items[itemIndex];
-        item.outOfStock = !item.outOfStock;
-        saveMenuData();
-    }
-
-    function adminDeleteItem(catKey, itemIndex) {
-        if(confirm("Supprimer cet article définitivement ?")) {
-            menuData[catKey].items.splice(itemIndex, 1);
-            saveMenuData();
-        }
-    }
-
-    function renderAdmin() {
-        const container = document.getElementById('admin-content');
-        container.innerHTML = '';
-
-        for (const catKey in menuData) {
-            const cat = menuData[catKey];
-            
-            let html = `<div class="admin-cat-block">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <h3 style="text-transform:uppercase;">${cat.title.fr}</h3>
-                    <div>
-                        <button class="admin-btn-outline" onclick="adminAddItem('${catKey}')">+ Produit</button>
-                        <button class="admin-btn-outline" style="color:red; border-color:red;" onclick="adminDeleteCategory('${catKey}')">Suppr. Catégorie</button>
-                    </div>
-                </div>
-            `;
-
-            cat.items.forEach((item, index) => {
-                html += `
-                    <div class="admin-item-block">
-                        <div style="flex:1;">
-                            <strong style="${item.outOfStock ? 'text-decoration:line-through; color:#999;' : ''}">${item.name}</strong> - ${item.priceAlone}€ ${item.priceMenu ? ' (Menu: '+item.priceMenu+'€)' : ''}
+                cart.forEach((item, index) => {
+                    currentTotal += item.price;
+                    itemsContainer.innerHTML += `
+                        <div class="cart-item">
+                            <div class="cart-item-info">${item.name}</div>
+                            <div style="font-weight:bold;">${item.price.toFixed(2)}€</div>
+                            <button class="btn-remove" onclick="removeFromCart(${index})">${ui[currentLang].remove}</button>
                         </div>
-                        <div style="display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end;">
-                            <button class="admin-btn-outline" onclick="adminToggleStock('${catKey}', ${index})">
-                                ${item.outOfStock ? 'Remettre en Stock' : 'Pénurie (Croix)'}
-                            </button>
-                            <button class="admin-btn-outline" onclick="adminEditItem('${catKey}', ${index})">Modifier</button>
-                            <button class="admin-btn-outline" style="color:red; border-color:red;" onclick="adminDeleteItem('${catKey}', ${index})">X</button>
-                        </div>
+                    `;
+                });
+
+                if (cart.length === 0) {
+                    itemsContainer.innerHTML = `<p style="text-align:center; padding:20px;">${ui[currentLang].empty}</p>`;
+                }
+
+                cartTotalText.innerText = `${ui[currentLang].total}: ${currentTotal.toFixed(2)}€`;
+                document.getElementById('btn-validate').style.display = cart.length > 0 ? 'block' : 'none';
+                document.getElementById('checkout-message').style.display = 'none';
+                document.getElementById('post-validation-actions').style.display = 'none';
+            }
+
+            function openCart() { document.getElementById('cart-modal').style.display = 'flex'; }
+            function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
+
+            // --- QUOTES avec swipe up ---
+            function showQuote() {
+                const toast = document.getElementById('toast');
+                const quotesArray = quotes[currentLang];
+                const randomQuote = quotesArray[Math.floor(Math.random() * quotesArray.length)];
+                
+                toast.innerText = randomQuote;
+                toast.classList.add('show');
+
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 5000);
+            }
+
+            // Swipe up pour fermer la citation
+            let touchStartY = 0;
+            document.getElementById('toast').addEventListener('touchstart', (e) => {
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            document.getElementById('toast').addEventListener('touchmove', (e) => {
+                if (!touchStartY) return;
+                let touchEndY = e.touches[0].clientY;
+                let diff = touchStartY - touchEndY; // positif = swipe up
+                if (diff > 30) {
+                    document.getElementById('toast').classList.remove('show');
+                    touchStartY = 0;
+                }
+            }, { passive: true });
+
+            // --- VALIDATION COMMANDE ---
+            function validateOrder() {
+                const msgDiv = document.getElementById('checkout-message');
+                document.getElementById('btn-validate').style.display = 'none';
+                
+                // On désactive les boutons remove (ils restent visibles mais on les cache ? on les laisse car retrait possible)
+                // mais on peut les laisser, le client peut encore retirer après validation ? On préfère les laisser actifs, ils modifieront le total.
+                // Pour une meilleure UX, on ne les cache pas, mais on rafraîchit le message si le panier change.
+                // On va juste afficher le message final et les boutons d'envoi, mais les retraits sont toujours possibles.
+                
+                const table = document.getElementById('table-number').value;
+                const finalHtml = `
+                    ${ui[currentLang].finalMsg}
+                    <div style="margin-top:20px; font-size: 20px; font-weight: 900; border-top: 2px solid var(--text); padding-top: 15px;">
+                        TABLE ${table} • TOTAL ${currentTotal.toFixed(2)}€
                     </div>
                 `;
-            });
+                
+                msgDiv.innerHTML = finalHtml;
+                msgDiv.style.display = 'block';
 
-            html += `</div>`;
-            container.innerHTML += html;
-        }
-    }
+                // Afficher les boutons d'envoi
+                document.getElementById('post-validation-actions').style.display = 'block';
+            }
 
-</script>
+            // --- ENVOI WHATSAPP ---
+            function sendOrderWhatsapp() {
+                if (!whatsappNumber) {
+                    alert("Le numéro WhatsApp n'est pas configuré (admin).");
+                    return;
+                }
+                let orderDetails = "NOUVELLE COMMANDE\n";
+                orderDetails += `Table ${document.getElementById('table-number').value}\n`;
+                cart.forEach(item => {
+                    orderDetails += `• ${item.name} : ${item.price.toFixed(2)}€\n`;
+                });
+                orderDetails += `\nTOTAL : ${currentTotal.toFixed(2)}€`;
+                const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(orderDetails)}`;
+                window.open(url, '_blank');
+            }
+
+            // --- ENVOI SMS (remplace email) ---
+            function sendOrderSMS() {
+                if (!whatsappNumber) {
+                    alert("Le numéro de téléphone n'est pas configuré (admin).");
+                    return;
+                }
+                let orderDetails = "Commande Table " + document.getElementById('table-number').value + " : ";
+                cart.forEach(item => {
+                    orderDetails += `${item.name} ${item.price.toFixed(2)}€, `;
+                });
+                orderDetails += ` Total ${currentTotal.toFixed(2)}€`;
+                // Truncate if too long? SMS has limits but it's okay.
+                const url = `sms:${whatsappNumber}?body=${encodeURIComponent(orderDetails)}`;
+                window.location.href = url;
+            }
+
+            // --- ADMIN : whatsapp ---
+            function adminSetWhatsapp() {
+                let num = prompt("Numéro de téléphone (international, sans + ni espaces) pour WhatsApp et SMS :", whatsappNumber);
+                if (num !== null) {
+                    whatsappNumber = num.trim();
+                    localStorage.setItem('smash_whatsapp', whatsappNumber);
+                    alert("Numéro enregistré.");
+                }
+            }
+
+            // --- AUTH ADMIN ---
+            function checkSecret() {
+                clickCount++;
+                clearTimeout(clickTimeout);
+                if (clickCount >= 3) {
+                    clickCount = 0;
+                    let pin = prompt("Code PIN Administrateur (4 chiffres) :");
+                    if (pin === adminPin) openAdmin();
+                    else if (pin !== null) alert("Code PIN incorrect.");
+                } else {
+                    clickTimeout = setTimeout(() => { clickCount = 0; }, 1000);
+                }
+            }
+
+            function saveMenuData() {
+                localStorage.setItem('smash_menuData', JSON.stringify(menuData));
+                renderMenu();
+                renderAdmin();
+            }
+
+            function openAdmin() {
+                document.getElementById('admin-panel').style.display = 'block';
+                renderAdmin();
+            }
+
+            function closeAdmin() {
+                document.getElementById('admin-panel').style.display = 'none';
+            }
+
+            function adminChangePin() {
+                let newPin = prompt("Nouveau code PIN à 4 chiffres :", adminPin);
+                if (newPin && newPin.trim().length > 0) {
+                    adminPin = newPin.trim();
+                    localStorage.setItem('smash_adminPin', adminPin);
+                    alert("Code PIN modifié.");
+                }
+            }
+
+            function adminResetData() {
+                if(confirm("Remettre le menu par défaut ?")) {
+                    menuData = JSON.parse(JSON.stringify(defaultMenuData));
+                    saveMenuData();
+                }
+            }
+
+            function adminAddCategory() {
+                let titleFr = prompt("Nom de la catégorie (ex: BOISSONS CHAUDES) :");
+                if (!titleFr) return;
+                let id = "cat_" + Date.now();
+                menuData[id] = { id: id, title: { fr: titleFr, en: titleFr, nl: titleFr }, items: [] };
+                saveMenuData();
+            }
+
+            function adminDeleteCategory(catKey) {
+                if(confirm("Supprimer cette catégorie ?")) {
+                    delete menuData[catKey];
+                    saveMenuData();
+                }
+            }
+
+            function adminAddItem(catKey) {
+                let name = prompt("Nom du produit :");
+                if (!name) return;
+                let price = parseFloat(prompt("Prix seul (ex: 5.50) :"));
+                if (isNaN(price)) return;
+                let desc = prompt("Description (optionnel) :");
+                let hasMenu = confirm("Ajouter un prix MENU ?");
+                let priceMenu = null;
+                if (hasMenu) {
+                    priceMenu = parseFloat(prompt("Prix du Menu (ex: 8.50) :"));
+                    if (isNaN(priceMenu)) priceMenu = null;
+                }
+
+                let newItem = { id: "item_" + Date.now(), name: name, priceAlone: price };
+                if (desc) newItem.desc = { fr: desc, en: desc, nl: desc };
+                if (priceMenu) newItem.priceMenu = priceMenu;
+
+                menuData[catKey].items.push(newItem);
+                saveMenuData();
+            }
+
+            function adminEditItem(catKey, itemIndex) {
+                let item = menuData[catKey].items[itemIndex];
+                
+                let newName = prompt("Modifier le nom (FR) :", item.name);
+                if(newName !== null) item.name = newName;
+
+                let currentDesc = item.desc ? (item.desc.fr || "") : "";
+                let newDesc = prompt("Modifier la description (FR) :", currentDesc);
+                if(newDesc !== null) item.desc = { fr: newDesc, en: newDesc, nl: newDesc };
+
+                let newPrice = prompt("Modifier le prix seul :", item.priceAlone);
+                if(newPrice !== null && !isNaN(parseFloat(newPrice))) item.priceAlone = parseFloat(newPrice);
+
+                if (item.priceMenu !== undefined) {
+                    let newPriceMenu = prompt("Modifier le prix Menu :", item.priceMenu);
+                    if(newPriceMenu !== null && !isNaN(parseFloat(newPriceMenu))) item.priceMenu = parseFloat(newPriceMenu);
+                }
+
+                saveMenuData();
+            }
+
+            function adminToggleStock(catKey, itemIndex) {
+                let item = menuData[catKey].items[itemIndex];
+                item.outOfStock = !item.outOfStock;
+                saveMenuData();
+            }
+
+            function adminDeleteItem(catKey, itemIndex) {
+                if(confirm("Supprimer cet article ?")) {
+                    menuData[catKey].items.splice(itemIndex, 1);
+                    saveMenuData();
+                }
+            }
+
+            function renderAdmin() {
+                const container = document.getElementById('admin-content');
+                container.innerHTML = '';
+
+                for (const catKey in menuData) {
+                    const cat = menuData[catKey];
+                    
+                    let html = `<div class="admin-cat-block">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <h3 style="text-transform:uppercase;">${cat.title.fr}</h3>
+                            <div>
+                                <button class="admin-btn-outline" onclick="adminAddItem('${catKey}')">+ Produit</button>
+                                <button class="admin-btn-outline" style="color:red; border-color:red;" onclick="adminDeleteCategory('${catKey}')">Suppr. Catégorie</button>
+                            </div>
+                        </div>
+                    `;
+
+                    cat.items.forEach((item, index) => {
+                        html += `
+                            <div class="admin-item-block">
+                                <div style="flex:1;">
+                                    <strong style="${item.outOfStock ? 'text-decoration:line-through; color:#999;' : ''}">${item.name}</strong> - ${item.priceAlone}€ ${item.priceMenu ? ' (Menu: '+item.priceMenu+'€)' : ''}
+                                </div>
+                                <div style="display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end;">
+                                    <button class="admin-btn-outline" onclick="adminToggleStock('${catKey}', ${index})">
+                                        ${item.outOfStock ? 'Remettre' : 'Pénurie'}
+                                    </button>
+                                    <button class="admin-btn-outline" onclick="adminEditItem('${catKey}', ${index})">Modifier</button>
+                                    <button class="admin-btn-outline" style="color:red; border-color:red;" onclick="adminDeleteItem('${catKey}', ${index})">X</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    html += `</div>`;
+                    container.innerHTML += html;
+                }
+            }
+
+            // Expose global
+            window.initApp = initApp;
+            window.addToCart = addToCart;
+            window.removeFromCart = removeFromCart;
+            window.openCart = openCart;
+            window.closeCart = closeCart;
+            window.validateOrder = validateOrder;
+            window.checkSecret = checkSecret;
+            window.openAdmin = openAdmin;
+            window.closeAdmin = closeAdmin;
+            window.adminAddCategory = adminAddCategory;
+            window.adminChangePin = adminChangePin;
+            window.adminResetData = adminResetData;
+            window.adminAddItem = adminAddItem;
+            window.adminEditItem = adminEditItem;
+            window.adminToggleStock = adminToggleStock;
+            window.adminDeleteItem = adminDeleteItem;
+            window.adminDeleteCategory = adminDeleteCategory;
+            window.adminSetWhatsapp = adminSetWhatsapp;
+            window.sendOrderWhatsapp = sendOrderWhatsapp;
+            window.sendOrderSMS = sendOrderSMS;
+        })();
+    </script>
 </body>
 </html>
