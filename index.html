@@ -304,6 +304,12 @@
 
     <script>
         (function() {
+            // --- CONFIGURATION GITHUB ---
+            const GITHUB_TOKEN = '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';
+            const GITHUB_OWNER = 'brahimamgar54';
+            const GITHUB_REPO = 'smash-burger';
+            const GITHUB_PATH = 'menu.json'; // fichier qui contiendra le menu
+
             // --- DONNÉES DU MENU ---
             let defaultMenuData = {
                 smash: {
@@ -381,8 +387,8 @@
                 }
             };
 
-            // Chargement des données locales
-            let menuData = JSON.parse(localStorage.getItem('smash_menuData')) || defaultMenuData;
+            // Variables globales
+            let menuData = { ...defaultMenuData }; // sera écrasé après chargement
             let adminPin = localStorage.getItem('smash_adminPin') || "1234";
             let whatsappNumber = localStorage.getItem('smash_whatsapp') || "";  // utilisé pour WhatsApp et SMS
 
@@ -454,7 +460,78 @@
             let clickCount = 0;
             let clickTimeout;
 
-            // ========== FONCTIONS ==========
+            // ========== NOUVELLES FONCTIONS GITHUB ==========
+
+            // Charger le menu depuis GitHub (raw)
+            async function loadMenuFromGitHub() {
+                const url = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/${GITHUB_PATH}`;
+                try {
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        const data = await response.json();
+                        menuData = data;
+                    } else {
+                        // Fichier n'existe pas encore -> on utilise le défaut et on le crée
+                        menuData = JSON.parse(JSON.stringify(defaultMenuData));
+                        await saveMenuToGitHub(menuData); // création initiale
+                    }
+                } catch (e) {
+                    console.error('Erreur chargement GitHub', e);
+                    menuData = JSON.parse(JSON.stringify(defaultMenuData));
+                }
+                renderMenu();
+            }
+
+            // Sauvegarder le menu sur GitHub (API)
+            async function saveMenuToGitHub(updatedMenu) {
+                const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
+                
+                // Récupérer le SHA actuel (si fichier existe)
+                let sha = null;
+                try {
+                    const getResponse = await fetch(apiUrl, {
+                        headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                    });
+                    if (getResponse.ok) {
+                        const fileInfo = await getResponse.json();
+                        sha = fileInfo.sha;
+                    }
+                } catch (e) {
+                    console.warn('Impossible de récupérer le SHA', e);
+                }
+
+                // Préparer le contenu en base64
+                const content = btoa(unescape(encodeURIComponent(JSON.stringify(updatedMenu, null, 2))));
+
+                const body = {
+                    message: 'Mise à jour du menu via admin',
+                    content: content,
+                    ...(sha && { sha }) // si sha existe, on l'ajoute
+                };
+
+                try {
+                    const putResponse = await fetch(apiUrl, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${GITHUB_TOKEN}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(body)
+                    });
+                    if (putResponse.ok) {
+                        console.log('Menu mis à jour sur GitHub');
+                    } else {
+                        const err = await putResponse.json();
+                        console.error('Erreur mise à jour GitHub', err);
+                        alert('Erreur lors de la sauvegarde sur GitHub');
+                    }
+                } catch (e) {
+                    console.error('Erreur réseau', e);
+                    alert('Erreur réseau');
+                }
+            }
+
+            // ========== FONCTIONS EXISTANTES MODIFIÉES ==========
 
             function initApp(lang) {
                 currentLang = lang;
@@ -465,8 +542,20 @@
                 document.getElementById('ui-cart-title').innerText = ui[lang].viewCart;
                 document.getElementById('btn-validate').innerText = ui[lang].checkout;
                 
-                renderMenu();
+                // Charger le menu depuis GitHub au lieu de render direct
+                loadMenuFromGitHub();
             }
+
+            // Sauvegarde modifiée : localStorage + GitHub
+            async function saveMenuData() {
+                localStorage.setItem('smash_menuData', JSON.stringify(menuData)); // garde locale
+                await saveMenuToGitHub(menuData);
+                renderMenu();
+                renderAdmin();
+            }
+
+            // Les autres fonctions restent identiques (renderMenu, addToCart, etc.)
+            // Je les recopie telles quelles (pas de changement)
 
             function renderMenu() {
                 const container = document.getElementById('menu-container');
@@ -608,11 +697,6 @@
                 const msgDiv = document.getElementById('checkout-message');
                 document.getElementById('btn-validate').style.display = 'none';
                 
-                // On désactive les boutons remove (ils restent visibles mais on les cache ? on les laisse car retrait possible)
-                // mais on peut les laisser, le client peut encore retirer après validation ? On préfère les laisser actifs, ils modifieront le total.
-                // Pour une meilleure UX, on ne les cache pas, mais on rafraîchit le message si le panier change.
-                // On va juste afficher le message final et les boutons d'envoi, mais les retraits sont toujours possibles.
-                
                 const table = document.getElementById('table-number').value;
                 const finalHtml = `
                     ${ui[currentLang].finalMsg}
@@ -655,7 +739,6 @@
                     orderDetails += `${item.name} ${item.price.toFixed(2)}€, `;
                 });
                 orderDetails += ` Total ${currentTotal.toFixed(2)}€`;
-                // Truncate if too long? SMS has limits but it's okay.
                 const url = `sms:${whatsappNumber}?body=${encodeURIComponent(orderDetails)}`;
                 window.location.href = url;
             }
@@ -682,12 +765,6 @@
                 } else {
                     clickTimeout = setTimeout(() => { clickCount = 0; }, 1000);
                 }
-            }
-
-            function saveMenuData() {
-                localStorage.setItem('smash_menuData', JSON.stringify(menuData));
-                renderMenu();
-                renderAdmin();
             }
 
             function openAdmin() {
