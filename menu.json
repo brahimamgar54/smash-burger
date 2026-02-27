@@ -1,0 +1,325 @@
+{
+  "smash": {
+    "id": "smash",
+    "title": {
+      "fr": "SMASH BURGERS",
+      "en": "SMASH BURGERS",
+      "nl": "SMASH BURGERS"
+    },
+    "items": [
+      {
+        "id": "s1",
+        "name": "Small Smash",
+        "desc": {
+          "fr": "Potato bun, steak, cheddar, salade, tomate, cornichon, moutarde, ketchup",
+          "en": "Potato bun, beef patty, cheddar, lettuce, tomato, pickle, mustard, ketchup",
+          "nl": "Potato bun, runderpasteitje, cheddar, sla, tomaat, augurk, mosterd, ketchup"
+        },
+        "priceAlone": 5,
+        "priceMenu": 8.5
+      },
+      {
+        "id": "s2",
+        "name": "Classic Smash",
+        "desc": {
+          "fr": "Potato bun, double steak, double cheddar, cornichon, sauce smash",
+          "en": "Potato bun, double beef, double cheddar, pickle, smash sauce",
+          "nl": "Potato bun, dubbel rundvlees, dubbele cheddar, augurk, smash saus"
+        },
+        "priceAlone": 7.5,
+        "priceMenu": 10.5
+      },
+      {
+        "id": "s3",
+        "name": "Chèvre Smash",
+        "desc": {
+          "fr": "Potato bun, double steak, chèvre, salade, tomate, oignons caramélisés, miel, moutarde",
+          "en": "Potato bun, double beef, goat cheese, lettuce, tomato, caramelized onions, honey, mustard",
+          "nl": "Potato bun, dubbel rundvlees, geitenkaas, sla, tomaat, gekarameliseerde uien, honing, mosterd"
+        },
+        "priceAlone": 8.5,
+        "priceMenu": 11.5
+      },
+      {
+        "id": "s4",
+        "name": "Truffe Smash",
+        "desc": {
+          "fr": "Potato bun, double steak, double cheddar, salade, tomate, oignons caramélisés, sauce truffe",
+          "en": "Potato bun, double beef, double cheddar, lettuce, tomato, caramelized onions, truffle sauce",
+          "nl": "Potato bun, dubbel rundvlees, dubbele cheddar, sla, tomaat, gekarameliseerde uien, truffelsaus"
+        },
+        "priceAlone": 9.5,
+        "priceMenu": 12.5
+      },
+      {
+        "id": "s5",
+        "name": "BBQ Smash",
+        "desc": {
+          "fr": "Potato bun, double steak, double cheddar, bacon, salade, tomate, oignons caramélisés, sauce BBQ",
+          "en": "Potato bun, double beef, double cheddar, bacon, lettuce, tomato, caramelized onions, BBQ sauce",
+          "nl": "Potato bun, dubbel rundvlees, dubbele cheddar, bacon, sla, tomaat, gekarameliseerde uien, BBQ saus"
+        },
+        "priceAlone": 9.5,
+        "priceMenu": 12.5
+      },
+      {
+        "id": "s6",
+        "name": "Raclette Smash",
+        "desc": {
+          "fr": "Potato bun, double steak, raclette savoyarde, salade, tomate, oignons caramélisés, sauce crème ail",
+          "en": "Potato bun, double beef, raclette cheese, lettuce, tomato, caramelized onions, garlic cream sauce",
+          "nl": "Potato bun, dubbel rundvlees, raclette kaas, sla, tomaat, gekarameliseerde uien, knoflookroomsaus"
+        },
+        "priceAlone": 9.5,
+        "priceMenu": 12.5
+      },
+      {
+        "id": "s7",
+        "name": "Crispy chicken",
+        "desc": {
+          "fr": "Potato bun, poulet frit, double cheddar, salade, tomate, oignons caramélisés, mayo Sriracha",
+          "en": "Potato bun, fried chicken, double cheddar, lettuce, tomato, caramelized onions, Sriracha mayo",
+          "nl": "Potato bun, gebakken kip, dubbele cheddar, sla, tomaat, gekarameliseerde uien, Sriracha mayo"
+        },
+        "priceAlone": 8.5,
+        "priceMenu": 11.5
+      }
+    ]
+  },
+  "baguettes": {
+    "id": "baguettes",
+    "title": {
+      "fr": "BAGUETTES",
+      "en": "BAGUETTES",
+      "nl": "STOKBRODEN"
+    },
+    "items": [
+      {
+        "id": "b1",
+        "name": "Baguette Classic Smash",
+        "desc": {
+          "fr": "Pain frais, double steak, double cheddar, cornichon, sauce smash",
+          "en": "Fresh bread, double beef, double cheddar, pickle, smash sauce",
+          "nl": "Vers brood, dubbel rundvlees, dubbele cheddar, augurk, smash saus"
+        },
+        "priceAlone": 9.5,
+        "priceMenu": 12.5
+      },
+      {
+        "id": "b2",
+        "name": "Baguette BBQ Smash",
+        "desc": {
+          "fr": "Pain frais, double steak, double cheddar, bacon, salade, tomate, oignons caramélisés, sauce BBQ",
+          "en": "Fresh bread, double beef, double cheddar, bacon, lettuce, tomato, caramelized onions, BBQ sauce",
+          "nl": "Vers brood, dubbel rundvlees, dubbele cheddar, bacon, sla, tomaat, gekarameliseerde uien, BBQ saus"
+        },
+        "priceAlone": 9.5,
+        "priceMenu": 12.5
+      },
+      {
+        "id": "b3",
+        "name": "Baguette Raclette Smash",
+        "desc": {
+          "fr": "Pain frais, double steak, raclette savoyarde, salade, tomate, oignons caramélisés, sauce crème ail",
+          "en": "Fresh bread, double beef, raclette cheese, lettuce, tomato, caramelized onions, garlic cream sauce",
+          "nl": "Vers brood, dubbel rundvlees, raclette kaas, sla, tomaat, gekarameliseerde uien, knoflookroomsaus"
+        },
+        "priceAlone": 9.5,
+        "priceMenu": 12.5
+      },
+      {
+        "id": "b4",
+        "name": "Baguette Crispy Chicken",
+        "desc": {
+          "fr": "Pain frais, poulet frit, double cheddar, salade, tomate, oignons caramélisés, mayo Sriracha",
+          "en": "Fresh bread, fried chicken, double cheddar, lettuce, tomato, caramelized onions, Sriracha mayo",
+          "nl": "Vers brood, gebakken kip, dubbele cheddar, sla, tomaat, gekarameliseerde uien, Sriracha mayo"
+        },
+        "priceAlone": 9.5,
+        "priceMenu": 12.5
+      },
+      {
+        "id": "b5",
+        "name": "Baguette Truffe Smash",
+        "desc": {
+          "fr": "Pain frais, double steak, double cheddar, salade, tomate, oignons caramélisés, sauce truffe",
+          "en": "Fresh bread, double beef, double cheddar, lettuce, tomato, caramelized onions, truffle sauce",
+          "nl": "Vers brood, dubbel rundvlees, dubbele cheddar, sla, tomaat, gekarameliseerde uien, truffelsaus"
+        },
+        "priceAlone": 9.5,
+        "priceMenu": 12.5
+      },
+      {
+        "id": "b6",
+        "name": "Baguette Chèvre",
+        "desc": {
+          "fr": "Pain frais, double steak, chèvre, salade, tomate, oignons caramélisés, miel, moutarde",
+          "en": "Fresh bread, double beef, goat cheese, lettuce, tomato, caramelized onions, honey, mustard",
+          "nl": "Vers brood, dubbel rundvlees, geitenkaas, sla, tomaat, gekarameliseerde uien, honing, mosterd"
+        },
+        "priceAlone": 9.5,
+        "priceMenu": 12.5
+      }
+    ]
+  },
+  "extras": {
+    "id": "extras",
+    "title": {
+      "fr": "SUPPLÉMENTS",
+      "en": "EXTRAS",
+      "nl": "EXTRA'S"
+    },
+    "items": [
+      {
+        "id": "ex1",
+        "name": "Steak Haché",
+        "priceAlone": 2
+      },
+      {
+        "id": "ex2",
+        "name": "Crispy Chicken",
+        "priceAlone": 2.5
+      },
+      {
+        "id": "ex3",
+        "name": "Cornichons / Jalapeños",
+        "priceAlone": 0.5
+      },
+      {
+        "id": "ex4",
+        "name": "Fromage (Chèvre, Provolone, Raclette...)",
+        "priceAlone": 1.5
+      },
+      {
+        "id": "ex5",
+        "name": "Champignons Marinés",
+        "priceAlone": 1.5
+      },
+      {
+        "id": "ex6",
+        "name": "Sauce Hot Cheddar",
+        "priceAlone": 1.5
+      },
+      {
+        "id": "ex7",
+        "name": "Supplément Sauce",
+        "priceAlone": 1
+      }
+    ]
+  },
+  "drinks": {
+    "id": "drinks",
+    "title": {
+      "fr": "BOISSONS",
+      "en": "DRINKS",
+      "nl": "DRANKEN"
+    },
+    "items": [
+      {
+        "id": "d1",
+        "name": "Pepsi",
+        "priceAlone": 2
+      },
+      {
+        "id": "d2",
+        "name": "Ice Tea",
+        "priceAlone": 2
+      },
+      {
+        "id": "d3",
+        "name": "Ice Tea Pêche",
+        "priceAlone": 2
+      },
+      {
+        "id": "d4",
+        "name": "Oasis Pomme Poire",
+        "priceAlone": 2
+      },
+      {
+        "id": "d5",
+        "name": "Oasis Fraise Framboise",
+        "priceAlone": 2
+      },
+      {
+        "id": "d6",
+        "name": "Oasis Tropical",
+        "priceAlone": 2
+      },
+      {
+        "id": "d7",
+        "name": "Schweppes Agrume",
+        "priceAlone": 2
+      },
+      {
+        "id": "d8",
+        "name": "Uludag",
+        "priceAlone": 2
+      },
+      {
+        "id": "d10",
+        "name": "Milk-Shake",
+        "priceAlone": 4
+      }
+    ]
+  },
+  "desserts": {
+    "id": "desserts",
+    "title": {
+      "fr": "DESSERTS",
+      "en": "DESSERTS",
+      "nl": "DESSERTS"
+    },
+    "items": [
+      {
+        "id": "ds1",
+        "name": "Moelleux Chocolat (Glace & Chantilly)",
+        "priceAlone": 6
+      },
+      {
+        "id": "ds2",
+        "name": "Tiramisu",
+        "priceAlone": 4
+      },
+      {
+        "id": "ds3",
+        "name": "Brioche perdue",
+        "priceAlone": 6.5
+      }
+    ]
+  },
+  "sides": {
+    "id": "sides",
+    "title": {
+      "fr": "SIDES",
+      "en": "SIDES",
+      "nl": "BIJGERECHTEN"
+    },
+    "items": [
+      {
+        "id": "sd1",
+        "name": "Frites Maison",
+        "priceAlone": 3.5
+      },
+      {
+        "id": "sd2",
+        "name": "Frites Lardon Hot Cheddar",
+        "priceAlone": 5.5
+      },
+      {
+        "id": "sd3",
+        "name": "Tenders",
+        "priceAlone": 6
+      },
+      {
+        "id": "sd4",
+        "name": "Frites Patate Douce",
+        "priceAlone": 5
+      },
+      {
+        "id": "sd5",
+        "name": "Croquette Fromage",
+        "priceAlone": 2
+      }
+    ]
+  }
+}
