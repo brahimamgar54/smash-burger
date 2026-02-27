@@ -482,11 +482,11 @@
                 renderMenu();
             }
 
-            // Sauvegarder le menu sur GitHub (API)
+            // Sauvegarder le menu sur GitHub (API) - Version améliorée avec gestion d'erreur
             async function saveMenuToGitHub(updatedMenu) {
                 const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
                 
-                // Récupérer le SHA actuel (si fichier existe)
+                // Récupérer le SHA actuel
                 let sha = null;
                 try {
                     const getResponse = await fetch(apiUrl, {
@@ -495,18 +495,20 @@
                     if (getResponse.ok) {
                         const fileInfo = await getResponse.json();
                         sha = fileInfo.sha;
+                    } else {
+                        // Si le fichier n'existe pas, on continue sans SHA
+                        console.log('Fichier non trouvé, création nouvelle');
                     }
                 } catch (e) {
                     console.warn('Impossible de récupérer le SHA', e);
                 }
 
-                // Préparer le contenu en base64
                 const content = btoa(unescape(encodeURIComponent(JSON.stringify(updatedMenu, null, 2))));
 
                 const body = {
                     message: 'Mise à jour du menu via admin',
                     content: content,
-                    ...(sha && { sha }) // si sha existe, on l'ajoute
+                    ...(sha && { sha })
                 };
 
                 try {
@@ -518,16 +520,19 @@
                         },
                         body: JSON.stringify(body)
                     });
+
+                    const responseData = await putResponse.json();
+
                     if (putResponse.ok) {
                         console.log('Menu mis à jour sur GitHub');
+                        alert('Sauvegarde réussie !');
                     } else {
-                        const err = await putResponse.json();
-                        console.error('Erreur mise à jour GitHub', err);
-                        alert('Erreur lors de la sauvegarde sur GitHub');
+                        console.error('Erreur détaillée GitHub :', responseData);
+                        alert(`Erreur GitHub : ${responseData.message || 'inconnue'}\n\nVoir console pour détails.`);
                     }
                 } catch (e) {
                     console.error('Erreur réseau', e);
-                    alert('Erreur réseau');
+                    alert('Erreur réseau : ' + e.message);
                 }
             }
 
@@ -555,8 +560,6 @@
             }
 
             // Les autres fonctions restent identiques (renderMenu, addToCart, etc.)
-            // Je les recopie telles quelles (pas de changement)
-
             function renderMenu() {
                 const container = document.getElementById('menu-container');
                 container.innerHTML = '';
