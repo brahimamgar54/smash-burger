@@ -16,8 +16,7 @@
           "nl": "Potato bun, runderpasteitje, cheddar, sla, tomaat, augurk, mosterd, ketchup"
         },
         "priceAlone": 5,
-        "priceMenu": 8.5,
-        "outOfStock": false
+        "priceMenu": 8.5
       },
       {
         "id": "s2",
