@@ -79,11 +79,11 @@
         "name": "Crispy chicken",
         "desc": {
           "fr": "Potato bun, poulet frit, double cheddar, salade, tomate, oignons caramélisés, mayo Sriracha",
-          "en": "Potato bun, fried chicken, double cheddar, lettuce, tomato, caramelized onions, Sriracha mayo",
-          "nl": "Potato bun, gebakken kip, dubbele cheddar, sla, tomaat, gekarameliseerde uien, Sriracha mayo"
+          "en": "Potato bun, poulet frit, double cheddar, salade, tomate, oignons caramélisés, mayo Sriracha",
+          "nl": "Potato bun, poulet frit, double cheddar, salade, tomate, oignons caramélisés, mayo Sriracha"
         },
-        "priceAlone": 8.5,
-        "priceMenu": 11.5
+        "priceAlone": 9.5,
+        "priceMenu": 12.5
       }
     ]
   },
