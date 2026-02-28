@@ -303,7 +303,7 @@
     </div>
 
     <script>
-        (function() { 
+        (function() {
             // --- DONNÉES DU MENU ---
             let defaultMenuData = {
                 smash: {
@@ -454,9 +454,13 @@
             let clickCount = 0;
             let clickTimeout;
 
-            // ========== NOUVELLES FONCTIONS GITHUB ==========
+            // --- Configuration pour le chargement public (sans token) ---
+            const GITHUB_OWNER = 'brahimamgar54';
+            const GITHUB_REPO = 'smash-burger';
+            const GITHUB_PATH = 'menu.json';
 
-            // Charger le menu depuis GitHub (raw)
+            // ========== FONCTIONS DE CHARGEMENT (publiques) ==========
+
             async function loadMenuFromGitHub() {
                 const url = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/${GITHUB_PATH}`;
                 try {
@@ -465,9 +469,7 @@
                         const data = await response.json();
                         menuData = data;
                     } else {
-                        // Fichier n'existe pas encore -> on utilise le défaut et on le crée
                         menuData = JSON.parse(JSON.stringify(defaultMenuData));
-                        await saveMenuToGitHub(menuData); // création initiale
                     }
                 } catch (e) {
                     console.error('Erreur chargement GitHub', e);
@@ -476,56 +478,21 @@
                 renderMenu();
             }
 
-            // Sauvegarder le menu sur GitHub (API) - Version améliorée avec gestion d'erreur
+            // ========== FONCTION DE SAUVEGARDE VIA NETLIFY ==========
             async function saveMenuToGitHub(updatedMenu) {
-                const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
-                
-                // Récupérer le SHA actuel
-                let sha = null;
                 try {
-                    const getResponse = await fetch(apiUrl, {
-                        headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                    const response = await fetch('/.netlify/functions/save-menu', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ menuData: updatedMenu })
                     });
-                    if (getResponse.ok) {
-                        const fileInfo = await getResponse.json();
-                        sha = fileInfo.sha;
-                    } else {
-                        // Si le fichier n'existe pas, on continue sans SHA
-                        console.log('Fichier non trouvé, création nouvelle');
-                    }
-                } catch (e) {
-                    console.warn('Impossible de récupérer le SHA', e);
-                }
-
-                const content = btoa(unescape(encodeURIComponent(JSON.stringify(updatedMenu, null, 2))));
-
-                const body = {
-                    message: 'Mise à jour du menu via admin',
-                    content: content,
-                    ...(sha && { sha })
-                };
-
-                try {
-                    const putResponse = await fetch(apiUrl, {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `token ${GITHUB_TOKEN}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(body)
-                    });
-
-                    const responseData = await putResponse.json();
-
-                    if (putResponse.ok) {
-                        console.log('Menu mis à jour sur GitHub');
+                    const result = await response.json();
+                    if (response.ok) {
                         alert('Sauvegarde réussie !');
                     } else {
-                        console.error('Erreur détaillée GitHub :', responseData);
-                        alert(`Erreur GitHub : ${responseData.message || 'inconnue'}\n\nVoir console pour détails.`);
+                        alert('Erreur : ' + (result.error || 'inconnue'));
                     }
                 } catch (e) {
-                    console.error('Erreur réseau', e);
                     alert('Erreur réseau : ' + e.message);
                 }
             }
@@ -541,13 +508,11 @@
                 document.getElementById('ui-cart-title').innerText = ui[lang].viewCart;
                 document.getElementById('btn-validate').innerText = ui[lang].checkout;
                 
-                // Charger le menu depuis GitHub au lieu de render direct
                 loadMenuFromGitHub();
             }
 
-            // Sauvegarde modifiée : localStorage + GitHub
             async function saveMenuData() {
-                localStorage.setItem('smash_menuData', JSON.stringify(menuData)); // garde locale
+                localStorage.setItem('smash_menuData', JSON.stringify(menuData));
                 await saveMenuToGitHub(menuData);
                 renderMenu();
                 renderAdmin();
@@ -705,7 +670,6 @@
                 msgDiv.innerHTML = finalHtml;
                 msgDiv.style.display = 'block';
 
-                // Afficher les boutons d'envoi
                 document.getElementById('post-validation-actions').style.display = 'block';
             }
 
