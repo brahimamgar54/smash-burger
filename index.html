@@ -539,9 +539,7 @@ async function saveMenuToGitHub(updatedMenu) {
         alert('❌ Erreur réseau : ' + error.message);
     }
 }
-            }
-
-            // Les autres fonctions restent identiques (renderMenu, addToCart, etc.)
+ // Les autres fonctions restent identiques (renderMenu, addToCart, etc.)
             function renderMenu() {
                 const container = document.getElementById('menu-container');
                 container.innerHTML = '';
@@ -588,7 +586,6 @@ async function saveMenuToGitHub(updatedMenu) {
                         container.appendChild(itemDiv);
                     });
                 }
-            }
 
             function addToCart(name, price, isMenu, categoryId) {
                 const itemName = isMenu ? name + " (MENU)" : name;
