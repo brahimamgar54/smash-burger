@@ -209,6 +209,11 @@
         "id": "ex7",
         "name": "Supplément Sauce",
         "priceAlone": 1
+      },
+      {
+        "id": "item_1772262160465",
+        "name": "Jalapeños",
+        "priceAlone": 0.5
       }
     ]
   },
