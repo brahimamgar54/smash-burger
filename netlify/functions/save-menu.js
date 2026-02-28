@@ -1,9 +1,6 @@
-const fetch = require('node-fetch');
-
 exports.handler = async (event) => {
-  // Seulement les requêtes POST
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return { statusCode: 405, body: 'C'est un POST qu'il faut !' };
   }
 
   try {
@@ -13,62 +10,44 @@ exports.handler = async (event) => {
     const GITHUB_REPO = 'smash-burger';
     const GITHUB_PATH = 'menu.json';
 
-    // ⚠️ L'URL doit être entre backticks (ou guillemets)
     const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
 
-    // Récupérer le SHA actuel (si le fichier existe)
-    let sha = null;
-    const getResponse = await fetch(apiUrl, {
+    // 1. Récupérer le SHA (on utilise le fetch natif de Node 18+)
+    const getRes = await fetch(apiUrl, {
       headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
     });
 
-    if (getResponse.ok) {
-      const fileInfo = await getResponse.json();
+    let sha = null;
+    if (getRes.status === 200) {
+      const fileInfo = await getRes.json();
       sha = fileInfo.sha;
-    } else if (getResponse.status !== 404) {
-      // Si c'est une autre erreur que "fichier introuvable", on la remonte
-      const errorData = await getResponse.json();
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: `GitHub GET error: ${errorData.message}` })
-      };
     }
-    // Si 404, on continue sans SHA (création automatique)
 
+    // 2. Préparer le contenu pour GitHub (Base64)
     const content = Buffer.from(JSON.stringify(menuData, null, 2)).toString('base64');
 
-    const body = {
-      message: 'Mise à jour du menu via admin',
-      content: content,
-      ...(sha && { sha })
-    };
-
-    const putResponse = await fetch(apiUrl, {
+    // 3. Envoyer la mise à jour
+    const putRes = await fetch(apiUrl, {
       method: 'PUT',
       headers: {
         'Authorization': `token ${GITHUB_TOKEN}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify({
+        message: 'Mise à jour via interface admin',
+        content: content,
+        sha: sha || undefined // Si pas de sha, GitHub crée le fichier
+      })
     });
 
-    const responseData = await putResponse.json();
-
-    if (putResponse.ok) {
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ message: 'Sauvegarde réussie' })
-      };
+    if (putRes.ok) {
+      return { statusCode: 200, body: JSON.stringify({ message: "OK" }) };
     } else {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: responseData.message })
-      };
+      const errorText = await putRes.text();
+      return { statusCode: 500, body: JSON.stringify({ error: errorText }) };
     }
+
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message })
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   }
 };
