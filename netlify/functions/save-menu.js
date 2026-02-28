@@ -1,7 +1,7 @@
-```javascript
 const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
+  // Seulement les requêtes POST
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
@@ -13,16 +13,27 @@ exports.handler = async (event) => {
     const GITHUB_REPO = 'smash-burger';
     const GITHUB_PATH = 'menu.json';
 
-    // Récupérer le SHA actuel
+    // ⚠️ L'URL doit être entre backticks (ou guillemets)
     const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
+
+    // Récupérer le SHA actuel (si le fichier existe)
     let sha = null;
     const getResponse = await fetch(apiUrl, {
       headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
     });
+
     if (getResponse.ok) {
       const fileInfo = await getResponse.json();
       sha = fileInfo.sha;
+    } else if (getResponse.status !== 404) {
+      // Si c'est une autre erreur que "fichier introuvable", on la remonte
+      const errorData = await getResponse.json();
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: `GitHub GET error: ${errorData.message}` })
+      };
     }
+    // Si 404, on continue sans SHA (création automatique)
 
     const content = Buffer.from(JSON.stringify(menuData, null, 2)).toString('base64');
 
@@ -61,4 +72,3 @@ exports.handler = async (event) => {
     };
   }
 };
-```
