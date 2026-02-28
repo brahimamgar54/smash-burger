@@ -17,7 +17,7 @@
         },
         "priceAlone": 5,
         "priceMenu": 8.5,
-        "outOfStock": true
+        "outOfStock": false
       },
       {
         "id": "s2",
