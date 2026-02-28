@@ -279,7 +279,8 @@
       {
         "id": "ds2",
         "name": "Tiramisu",
-        "priceAlone": 4
+        "priceAlone": 4,
+        "outOfStock": true
       },
       {
         "id": "ds3",
