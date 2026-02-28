@@ -27,7 +27,8 @@
           "nl": "Potato bun, dubbel rundvlees, dubbele cheddar, augurk, smash saus"
         },
         "priceAlone": 7.5,
-        "priceMenu": 10.5
+        "priceMenu": 10.5,
+        "outOfStock": true
       },
       {
         "id": "s3",
