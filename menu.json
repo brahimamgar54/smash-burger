@@ -259,7 +259,12 @@
       {
         "id": "d10",
         "name": "Milk-Shake",
-        "priceAlone": 4
+        "priceAlone": 5,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       }
     ]
   },
