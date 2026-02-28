@@ -1,9 +1,14 @@
 exports.handler = async (event) => {
+  // 1. Vérification de la méthode
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'C'est un POST qu'il faut !' };
+    return { 
+      statusCode: 405, 
+      body: JSON.stringify({ error: "Utilisez la methode POST" }) 
+    };
   }
 
   try {
+    // 2. Récupération des données
     const { menuData } = JSON.parse(event.body);
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
     const GITHUB_OWNER = 'brahimamgar54';
@@ -12,7 +17,7 @@ exports.handler = async (event) => {
 
     const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
 
-    // 1. Récupérer le SHA (on utilise le fetch natif de Node 18+)
+    // 3. Récupérer le SHA (pour savoir si on écrase ou on crée)
     const getRes = await fetch(apiUrl, {
       headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
     });
@@ -23,10 +28,10 @@ exports.handler = async (event) => {
       sha = fileInfo.sha;
     }
 
-    // 2. Préparer le contenu pour GitHub (Base64)
+    // 4. Encoder le contenu en Base64 (obligatoire pour GitHub)
     const content = Buffer.from(JSON.stringify(menuData, null, 2)).toString('base64');
 
-    // 3. Envoyer la mise à jour
+    // 5. Envoi vers GitHub
     const putRes = await fetch(apiUrl, {
       method: 'PUT',
       headers: {
@@ -34,20 +39,30 @@ exports.handler = async (event) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        message: 'Mise à jour via interface admin',
+        message: 'Mise a jour via interface admin',
         content: content,
-        sha: sha || undefined // Si pas de sha, GitHub crée le fichier
+        sha: sha || undefined 
       })
     });
 
     if (putRes.ok) {
-      return { statusCode: 200, body: JSON.stringify({ message: "OK" }) };
+      return { 
+        statusCode: 200, 
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: "Sauvegarde reussie sur GitHub !" }) 
+      };
     } else {
-      const errorText = await putRes.text();
-      return { statusCode: 500, body: JSON.stringify({ error: errorText }) };
+      const errorData = await putRes.json();
+      return { 
+        statusCode: putRes.status, 
+        body: JSON.stringify({ error: errorData.message }) 
+      };
     }
 
   } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
+    return { 
+      statusCode: 500, 
+      body: JSON.stringify({ error: error.message }) 
+    };
   }
 };
