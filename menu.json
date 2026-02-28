@@ -35,11 +35,11 @@
         "name": "Chèvre Smash",
         "desc": {
           "fr": "Potato bun, double steak, chèvre, salade, tomate, oignons caramélisés, miel, moutarde",
-          "en": "Potato bun, double beef, goat cheese, lettuce, tomato, caramelized onions, honey, mustard",
-          "nl": "Potato bun, dubbel rundvlees, geitenkaas, sla, tomaat, gekarameliseerde uien, honing, mosterd"
+          "en": "Potato bun, double steak, chèvre, salade, tomate, oignons caramélisés, miel, moutarde",
+          "nl": "Potato bun, double steak, chèvre, salade, tomate, oignons caramélisés, miel, moutarde"
         },
-        "priceAlone": 8.5,
-        "priceMenu": 11.5
+        "priceAlone": 9.5,
+        "priceMenu": 12.5
       },
       {
         "id": "s4",
