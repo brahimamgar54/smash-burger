@@ -511,11 +511,34 @@
                 loadMenuFromGitHub();
             }
 
-            async function saveMenuData() {
-                localStorage.setItem('smash_menuData', JSON.stringify(menuData));
-                await saveMenuToGitHub(menuData);
-                renderMenu();
-                renderAdmin();
+           // Fonction pour sauvegarder via Netlify (à AJOUTER)
+async function saveMenuToGitHub(updatedMenu) {
+    try {
+        console.log("Envoi vers la fonction Netlify...");
+        const response = await fetch('/.netlify/functions/save-menu', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                menuData: updatedMenu
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            console.log("Succès GitHub:", result);
+            alert('✅ Sauvegarde réussie !');
+        } else {
+            console.error("Erreur retournée par la fonction:", result.error);
+            alert('❌ Erreur de sauvegarde : ' + (result.error || 'inconnue'));
+        }
+    } catch (error) {
+        console.error("Erreur réseau ou technique:", error);
+        alert('❌ Erreur réseau : ' + error.message);
+    }
+}
             }
 
             // Les autres fonctions restent identiques (renderMenu, addToCart, etc.)
