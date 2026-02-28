@@ -183,8 +183,13 @@
       },
       {
         "id": "ex3",
-        "name": "Cornichons / Jalapeños",
-        "priceAlone": 0.5
+        "name": "Cornichons ",
+        "priceAlone": 0.5,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       },
       {
         "id": "ex4",
