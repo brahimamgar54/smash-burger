@@ -23,10 +23,10 @@
         "name": "Classic Smash",
         "desc": {
           "fr": "Potato bun, double steak, double cheddar, cornichon, sauce smash",
-          "en": "Potato bun, double beef, double cheddar, pickle, smash sauce",
-          "nl": "Potato bun, dubbel rundvlees, dubbele cheddar, augurk, smash saus"
+          "en": "Potato bun, double steak, double cheddar, cornichon, sauce smash",
+          "nl": "Potato bun, double steak, double cheddar, cornichon, sauce smash"
         },
-        "priceAlone": 7.5,
+        "priceAlone": 8.5,
         "priceMenu": 10.5,
         "outOfStock": false
       },
