@@ -1,14 +1,11 @@
-// On n'utilise plus exports.handler, mais une fonction exportée par défaut
+// Format Vercel Serverless
 export default async function handler(req, res) {
-  
-  // 1. Vérification de la méthode (Vercel utilise req.method)
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: "Utilisez la méthode POST" });
-  }
+    // On n'autorise que le POST
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: "Méthode non autorisée" });
+    }
 
-  try {
-    // 2. Récupération des données (Vercel parse le body automatiquement)
-    const { menuData } = req.body; 
+    const { menuData } = req.body;
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
     const GITHUB_OWNER = 'brahimamgar54';
     const GITHUB_REPO = 'smash-burger';
@@ -16,43 +13,42 @@ export default async function handler(req, res) {
 
     const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
 
-    // 3. Récupérer le SHA
-    const getRes = await fetch(apiUrl, {
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-    });
+    try {
+        // 1. Récupérer le SHA du fichier actuel
+        const getRes = await fetch(apiUrl, {
+            headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+        });
 
-    let sha = null;
-    if (getRes.status === 200) {
-      const fileInfo = await getRes.json();
-      sha = fileInfo.sha;
+        let sha = null;
+        if (getRes.status === 200) {
+            const fileInfo = await getRes.json();
+            sha = fileInfo.sha;
+        }
+
+        // 2. Préparer le contenu en Base64
+        const content = Buffer.from(JSON.stringify(menuData, null, 2)).toString('base64');
+
+        // 3. Envoyer la mise à jour à GitHub
+        const putRes = await fetch(apiUrl, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${GITHUB_TOKEN}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: 'Mise à jour via Vercel Admin',
+                content: content,
+                sha: sha || undefined
+            })
+        });
+
+        if (putRes.ok) {
+            return res.status(200).json({ message: "OK" });
+        } else {
+            const errorData = await putRes.json();
+            return res.status(putRes.status).json({ error: errorData.message });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
     }
-
-    // 4. Encoder en Base64
-    const content = Buffer.from(JSON.stringify(menuData, null, 2)).toString('base64');
-
-    // 5. Envoi vers GitHub
-    const putRes = await fetch(apiUrl, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `token ${GITHUB_TOKEN}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        message: 'Mise à jour via Vercel Admin',
-        content: content,
-        sha: sha || undefined 
-      })
-    });
-
-    if (putRes.ok) {
-      // Format de réponse Vercel
-      return res.status(200).json({ message: "Sauvegarde réussie sur GitHub !" });
-    } else {
-      const errorData = await putRes.json();
-      return res.status(putRes.status).json({ error: errorData.message });
-    }
-
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
 }
