@@ -28,7 +28,7 @@
         },
         "priceAlone": 7.5,
         "priceMenu": 10.5,
-        "outOfStock": false
+        "outOfStock": true
       },
       {
         "id": "s3",
