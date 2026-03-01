@@ -478,32 +478,33 @@
                 renderMenu();
             }
 
-            // ========== FONCTION DE SAUVEGARDE VIA NETLIFY (UNIQUE) ==========
-            async function saveMenuToGitHub(updatedMenu) {
-                try {
-                    console.log("Envoi vers la fonction Netlify...");
-                    const response = await fetch('/.netlify/functions/save-menu', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            menuData: updatedMenu
-                        })
-                    });
+            // ========== FONCTION DE SAUVEGARDE VIA VERCEL (MISE À JOUR) ==========
+async function saveMenuToGitHub(updatedMenu) {
+    try {
+        console.log("Envoi vers la fonction Vercel...");
+        // On change l'URL pour pointer vers le dossier /api de Vercel
+        const response = await fetch('/api/save-menu', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                menuData: updatedMenu // On envoie les données
+            })
+        });
 
-                    const result = await response.json();
+        const result = await response.json();
 
-                    if (response.ok) {
-                        console.log("Succès GitHub:", result);
-                        alert('✅ Sauvegarde réussie !');
-                    } else {
-                        console.error("Erreur retournée par la fonction:", result.error);
-                        alert('❌ Erreur de sauvegarde : ' + (result.error || 'inconnue'));
-                    }
-                } catch (error) {
-                    console.error("Erreur réseau ou technique:", error);
-                    alert('❌ Erreur réseau : ' + error.message);
-                }
-            }
+        if (response.ok) {
+            console.log("Succès GitHub via Vercel:", result);
+            alert('✅ Sauvegarde réussie sur GitHub !');
+        } else {
+            console.error("Erreur retournée par Vercel:", result.error);
+            alert('❌ Erreur de sauvegarde : ' + (result.error || 'inconnue'));
+        }
+    } catch (error) {
+        console.error("Erreur réseau ou technique:", error);
+        alert('❌ Erreur de connexion : ' + error.message);
+    }
+}
 
             // ========== FONCTIONS EXISTANTES MODIFIÉES ==========
 
