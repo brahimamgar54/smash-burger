@@ -12,11 +12,11 @@
         "name": "Small Smash",
         "desc": {
           "fr": "Potato bun, steak, cheddar, salade, tomate, cornichon, moutarde, ketchup",
-          "en": "Potato bun, beef patty, cheddar, lettuce, tomato, pickle, mustard, ketchup",
-          "nl": "Potato bun, runderpasteitje, cheddar, sla, tomaat, augurk, mosterd, ketchup"
+          "en": "Potato bun, steak, cheddar, salade, tomate, cornichon, moutarde, ketchup",
+          "nl": "Potato bun, steak, cheddar, salade, tomate, cornichon, moutarde, ketchup"
         },
         "priceAlone": 5,
-        "priceMenu": 8.5
+        "priceMenu": 7.5
       },
       {
         "id": "s2",
