@@ -15,8 +15,8 @@
           "en": "Potato bun, steak, cheddar, salade, tomate, cornichon, moutarde, ketchup",
           "nl": "Potato bun, steak, cheddar, salade, tomate, cornichon, moutarde, ketchup"
         },
-        "priceAlone": 7.5,
-        "priceMenu": 8
+        "priceAlone": 5,
+        "priceMenu": 7.5
       },
       {
         "id": "s2",
