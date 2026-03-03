@@ -316,7 +316,12 @@
       {
         "id": "sd3",
         "name": "Tenders",
-        "priceAlone": 6
+        "priceAlone": 6,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       },
       {
         "id": "sd4",
