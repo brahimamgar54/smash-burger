@@ -279,8 +279,13 @@
     "items": [
       {
         "id": "ds1",
-        "name": "Moelleux Chocolat (Glace & Chantilly)",
-        "priceAlone": 6
+        "name": "Moelleux Chocolat Nutella (Glace & Chantilly)",
+        "priceAlone": 6,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       },
       {
         "id": "ds2",
