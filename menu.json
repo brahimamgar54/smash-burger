@@ -245,7 +245,7 @@
         "id": "d4",
         "name": "Oasis Pomme Poire",
         "priceAlone": 2,
-        "outOfStock": true
+        "outOfStock": false
       },
       {
         "id": "d5",
