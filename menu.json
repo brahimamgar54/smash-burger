@@ -215,6 +215,11 @@
         "id": "item_1772262556144",
         "name": "Jalapeños",
         "priceAlone": 0.5
+      },
+      {
+        "id": "item_1773354045386",
+        "name": "Piment habanero",
+        "priceAlone": 1
       }
     ]
   },
