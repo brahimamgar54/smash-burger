@@ -174,7 +174,12 @@
       {
         "id": "ex1",
         "name": "Steak Haché",
-        "priceAlone": 2
+        "priceAlone": 2,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       },
       {
         "id": "ex2",
