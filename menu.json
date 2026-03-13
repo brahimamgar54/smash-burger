@@ -301,8 +301,13 @@
       {
         "id": "ds3",
         "name": "Brioche perdue",
-        "priceAlone": 6.5,
-        "outOfStock": false
+        "priceAlone": 5,
+        "outOfStock": false,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       }
     ]
   },
