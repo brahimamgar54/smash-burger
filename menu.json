@@ -84,6 +84,11 @@
         },
         "priceAlone": 9.5,
         "priceMenu": 12.5
+      },
+      {
+        "id": "item_1775820664737",
+        "name": "Pepper",
+        "priceAlone": 7
       }
     ]
   },
