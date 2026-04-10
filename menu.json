@@ -89,6 +89,17 @@
         "id": "item_1775820664737",
         "name": "Pepper",
         "priceAlone": 7
+      },
+      {
+        "id": "item_1775820708167",
+        "name": "Pepper",
+        "priceAlone": 9,
+        "desc": {
+          "fr": "Patato bun - ognion rouge - salade - tomate - Bécon - sauce pepper ",
+          "en": "Patato bun - ognion rouge - salade - tomate - Bécon - sauce pepper ",
+          "nl": "Patato bun - ognion rouge - salade - tomate - Bécon - sauce pepper "
+        },
+        "priceMenu": 12
       }
     ]
   },
