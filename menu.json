@@ -324,7 +324,7 @@
         "id": "sd2",
         "name": "Frites Lardon Hot Cheddar",
         "priceAlone": 5.5,
-        "outOfStock": true
+        "outOfStock": false
       },
       {
         "id": "sd3",
