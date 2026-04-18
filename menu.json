@@ -140,17 +140,6 @@
         "priceMenu": 12.5
       },
       {
-        "id": "b4",
-        "name": "Baguette Crispy Chicken",
-        "desc": {
-          "fr": "Pain frais, poulet frit, double cheddar, salade, tomate, oignons caramélisés, mayo Sriracha",
-          "en": "Fresh bread, fried chicken, double cheddar, lettuce, tomato, caramelized onions, Sriracha mayo",
-          "nl": "Vers brood, gebakken kip, dubbele cheddar, sla, tomaat, gekarameliseerde uien, Sriracha mayo"
-        },
-        "priceAlone": 9.5,
-        "priceMenu": 12.5
-      },
-      {
         "id": "b5",
         "name": "Baguette Truffe Smash",
         "desc": {
