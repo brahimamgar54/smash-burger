@@ -163,7 +163,8 @@
           "nl": "Vers brood, dubbel rundvlees, geitenkaas, sla, tomaat, gekarameliseerde uien, honing, mosterd"
         },
         "priceAlone": 9.5,
-        "priceMenu": 12.5
+        "priceMenu": 12.5,
+        "outOfStock": true
       }
     ]
   },
