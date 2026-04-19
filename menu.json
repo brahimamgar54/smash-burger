@@ -151,7 +151,8 @@
           "nl": "Vers brood, dubbel rundvlees, dubbele cheddar, sla, tomaat, gekarameliseerde uien, truffelsaus"
         },
         "priceAlone": 9.5,
-        "priceMenu": 12.5
+        "priceMenu": 12.5,
+        "outOfStock": true
       },
       {
         "id": "b6",
