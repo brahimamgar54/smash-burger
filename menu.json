@@ -115,7 +115,8 @@
           "nl": "Vers brood, dubbel rundvlees, dubbele cheddar, augurk, smash saus"
         },
         "priceAlone": 9.5,
-        "priceMenu": 12.5
+        "priceMenu": 12.5,
+        "outOfStock": true
       },
       {
         "id": "b2",
