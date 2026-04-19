@@ -127,7 +127,8 @@
           "nl": "Vers brood, dubbel rundvlees, dubbele cheddar, bacon, sla, tomaat, gekarameliseerde uien, BBQ saus"
         },
         "priceAlone": 9.5,
-        "priceMenu": 12.5
+        "priceMenu": 12.5,
+        "outOfStock": true
       },
       {
         "id": "b3",
@@ -138,7 +139,8 @@
           "nl": "Vers brood, dubbel rundvlees, raclette kaas, sla, tomaat, gekarameliseerde uien, knoflookroomsaus"
         },
         "priceAlone": 9.5,
-        "priceMenu": 12.5
+        "priceMenu": 12.5,
+        "outOfStock": true
       },
       {
         "id": "b5",
