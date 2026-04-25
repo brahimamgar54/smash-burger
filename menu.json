@@ -237,11 +237,6 @@
     },
     "items": [
       {
-        "id": "d1",
-        "name": "Pepsi",
-        "priceAlone": 2
-      },
-      {
         "id": "d2",
         "name": "Ice Tea",
         "priceAlone": 2
