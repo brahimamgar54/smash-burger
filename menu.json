@@ -90,9 +90,9 @@
         "name": "Pepper",
         "priceAlone": 9,
         "desc": {
-          "fr": "Patato bun - ognion rouge - salade - tomate - Bécon - sauce pepper ",
-          "en": "Patato bun - ognion rouge - salade - tomate - Bécon - sauce pepper ",
-          "nl": "Patato bun - ognion rouge - salade - tomate - Bécon - sauce pepper "
+          "fr": "Patato bun - double steak-ognion rouge - salade - tomate - Bécon - sauce pepper ",
+          "en": "Patato bun - double steak-ognion rouge - salade - tomate - Bécon - sauce pepper ",
+          "nl": "Patato bun - double steak-ognion rouge - salade - tomate - Bécon - sauce pepper "
         },
         "priceMenu": 12
       }
