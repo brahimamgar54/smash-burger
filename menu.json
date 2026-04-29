@@ -239,8 +239,13 @@
     "items": [
       {
         "id": "d2",
-        "name": "Ice Tea",
-        "priceAlone": 2
+        "name": "Ice Tea Pêche ",
+        "priceAlone": 2,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       },
       {
         "id": "d4",
