@@ -179,7 +179,8 @@
       {
         "id": "ex2",
         "name": "Crispy Chicken",
-        "priceAlone": 2.5
+        "priceAlone": 2.5,
+        "outOfStock": true
       },
       {
         "id": "ex3",
