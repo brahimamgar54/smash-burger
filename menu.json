@@ -8,17 +8,6 @@
     },
     "items": [
       {
-        "id": "s1",
-        "name": "Small Smash",
-        "desc": {
-          "fr": "Potato bun, steak, cheddar, salade, tomate, cornichon, moutarde, ketchup",
-          "en": "Potato bun, steak, cheddar, salade, tomate, cornichon, moutarde, ketchup",
-          "nl": "Potato bun, steak, cheddar, salade, tomate, cornichon, moutarde, ketchup"
-        },
-        "priceAlone": 5,
-        "priceMenu": 8
-      },
-      {
         "id": "s2",
         "name": "Classic Smash",
         "desc": {
