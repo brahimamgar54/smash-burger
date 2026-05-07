@@ -101,11 +101,11 @@
         "name": "Baguette Classic Smash",
         "desc": {
           "fr": "Pain frais, double steak, double cheddar, cornichon, sauce smash",
-          "en": "Fresh bread, double beef, double cheddar, pickle, smash sauce",
-          "nl": "Vers brood, dubbel rundvlees, dubbele cheddar, augurk, smash saus"
+          "en": "Pain frais, double steak, double cheddar, cornichon, sauce smash",
+          "nl": "Pain frais, double steak, double cheddar, cornichon, sauce smash"
         },
-        "priceAlone": 9.5,
-        "priceMenu": 12.5,
+        "priceAlone": 8,
+        "priceMenu": 11,
         "outOfStock": false
       },
       {
