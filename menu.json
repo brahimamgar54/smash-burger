@@ -356,7 +356,8 @@
       {
         "id": "sd4",
         "name": "Frites Patate Douce",
-        "priceAlone": 5
+        "priceAlone": 5,
+        "outOfStock": true
       },
       {
         "id": "item_1775820750038",
