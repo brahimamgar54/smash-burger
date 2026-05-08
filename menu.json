@@ -84,7 +84,8 @@
           "en": "Patato bun - double steak-ognion rouge - salade - tomate - Bécon - sauce pepper ",
           "nl": "Patato bun - double steak-ognion rouge - salade - tomate - Bécon - sauce pepper "
         },
-        "priceMenu": 12.5
+        "priceMenu": 12.5,
+        "outOfStock": true
       }
     ]
   },
