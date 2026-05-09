@@ -342,7 +342,7 @@
         "id": "sd3",
         "name": "Tenders",
         "priceAlone": 6,
-        "outOfStock": true
+        "outOfStock": false
       },
       {
         "id": "sd4",
