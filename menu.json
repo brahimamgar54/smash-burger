@@ -73,7 +73,7 @@
         },
         "priceAlone": 9.5,
         "priceMenu": 12.5,
-        "outOfStock": true
+        "outOfStock": false
       },
       {
         "id": "item_1775820708167",
@@ -253,7 +253,7 @@
         "id": "item_1777135817384",
         "name": "Agrume scheppes ",
         "priceAlone": 2,
-        "outOfStock": true
+        "outOfStock": false
       },
       {
         "id": "item_1777135843774",
