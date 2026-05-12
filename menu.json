@@ -284,6 +284,11 @@
         "id": "item_1778610334399",
         "name": "Pepsi ",
         "priceAlone": 2
+      },
+      {
+        "id": "item_1778610349128",
+        "name": "Ice tea ",
+        "priceAlone": 2
       }
     ]
   },
