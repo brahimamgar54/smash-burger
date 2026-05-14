@@ -305,17 +305,6 @@
         "name": "Tiramisu",
         "priceAlone": 4,
         "outOfStock": true
-      },
-      {
-        "id": "ds3",
-        "name": "Brioche perdue",
-        "priceAlone": 5,
-        "outOfStock": false,
-        "desc": {
-          "fr": "",
-          "en": "",
-          "nl": ""
-        }
       }
     ]
   },
