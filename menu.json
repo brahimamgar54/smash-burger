@@ -381,6 +381,11 @@
         "id": "item_1778775163388",
         "name": "Truffe ",
         "priceAlone": 1
+      },
+      {
+        "id": "item_1778775182466",
+        "name": "Smash ",
+        "priceAlone": 1
       }
     ]
   }
