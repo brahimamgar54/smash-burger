@@ -235,11 +235,6 @@
         "outOfStock": true
       },
       {
-        "id": "d6",
-        "name": "Oasis Tropical",
-        "priceAlone": 2
-      },
-      {
         "id": "d10",
         "name": "Milk-Shake",
         "priceAlone": 4,
