@@ -380,7 +380,12 @@
       {
         "id": "item_1778775163388",
         "name": "Truffe ",
-        "priceAlone": 1
+        "priceAlone": 1,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       },
       {
         "id": "item_1778775182466",
