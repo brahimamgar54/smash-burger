@@ -376,6 +376,12 @@
       "en": "Sauces",
       "nl": "Sauces"
     },
-    "items": []
+    "items": [
+      {
+        "id": "item_1778775163388",
+        "name": "Truffe ",
+        "priceAlone": 1
+      }
+    ]
   }
 }
