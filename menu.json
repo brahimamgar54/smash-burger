@@ -119,7 +119,7 @@
         },
         "priceAlone": 9.5,
         "priceMenu": 12.5,
-        "outOfStock": false
+        "outOfStock": true
       },
       {
         "id": "b3",
