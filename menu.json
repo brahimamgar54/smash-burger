@@ -382,9 +382,9 @@
         "name": "Truffe ",
         "priceAlone": 1,
         "desc": {
-          "fr": "",
-          "en": "",
-          "nl": ""
+          "fr": "Inclus avec le menu ",
+          "en": "Inclus avec le menu ",
+          "nl": "Inclus avec le menu "
         }
       },
       {
