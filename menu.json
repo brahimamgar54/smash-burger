@@ -410,7 +410,12 @@
       {
         "id": "item_1778775232822",
         "name": "Piquante maison ",
-        "priceAlone": 1
+        "priceAlone": 0,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       },
       {
         "id": "item_1778775255974",
