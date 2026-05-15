@@ -399,8 +399,13 @@
       },
       {
         "id": "item_1778775212562",
-        "name": "Blanche à l’ail",
-        "priceAlone": 1
+        "name": "Ail persil",
+        "priceAlone": 0,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       },
       {
         "id": "item_1778775232822",
