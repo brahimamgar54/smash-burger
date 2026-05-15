@@ -283,14 +283,7 @@
       "en": "DESSERTS",
       "nl": "DESSERTS"
     },
-    "items": [
-      {
-        "id": "ds2",
-        "name": "Tiramisu",
-        "priceAlone": 4,
-        "outOfStock": true
-      }
-    ]
+    "items": []
   },
   "sides": {
     "id": "sides",
