@@ -390,7 +390,12 @@
       {
         "id": "item_1778775182466",
         "name": "Smash ",
-        "priceAlone": 1
+        "priceAlone": 0,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       },
       {
         "id": "item_1778775212562",
