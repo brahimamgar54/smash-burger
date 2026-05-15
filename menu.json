@@ -430,7 +430,12 @@
       {
         "id": "item_1778775265033",
         "name": "Ketchup",
-        "priceAlone": 1
+        "priceAlone": 0,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       },
       {
         "id": "item_1778775277948",
