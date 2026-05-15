@@ -420,7 +420,12 @@
       {
         "id": "item_1778775255974",
         "name": "Mayo ",
-        "priceAlone": 1
+        "priceAlone": 0,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       },
       {
         "id": "item_1778775265033",
