@@ -440,7 +440,12 @@
       {
         "id": "item_1778775277948",
         "name": "Barbecue ",
-        "priceAlone": 1
+        "priceAlone": 0,
+        "desc": {
+          "fr": "",
+          "en": "",
+          "nl": ""
+        }
       }
     ]
   }
