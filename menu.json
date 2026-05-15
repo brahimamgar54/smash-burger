@@ -266,11 +266,6 @@
         "priceAlone": 2
       },
       {
-        "id": "item_1777480917198",
-        "name": "Pepsi",
-        "priceAlone": 2
-      },
-      {
         "id": "item_1778265111807",
         "name": "Swheppes agrum",
         "priceAlone": 2
@@ -278,6 +273,11 @@
       {
         "id": "item_1778610349128",
         "name": "Ice tea ",
+        "priceAlone": 2
+      },
+      {
+        "id": "item_1778861629584",
+        "name": "Orangina",
         "priceAlone": 2
       }
     ]
