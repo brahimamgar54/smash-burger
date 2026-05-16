@@ -107,7 +107,7 @@
         },
         "priceAlone": 8,
         "priceMenu": 11,
-        "outOfStock": true
+        "outOfStock": false
       },
       {
         "id": "b2",
@@ -119,7 +119,7 @@
         },
         "priceAlone": 9.5,
         "priceMenu": 12.5,
-        "outOfStock": true
+        "outOfStock": false
       },
       {
         "id": "b3",
