@@ -234,16 +234,6 @@
         "priceAlone": 2
       },
       {
-        "id": "d10",
-        "name": "Milk-Shake",
-        "priceAlone": 4,
-        "desc": {
-          "fr": "",
-          "en": "",
-          "nl": ""
-        }
-      },
-      {
         "id": "item_1777135817384",
         "name": "Agrume scheppes ",
         "priceAlone": 2,
