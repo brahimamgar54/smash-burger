@@ -230,7 +230,7 @@
         "id": "item_1775820750038",
         "name": "Frites parmesan Truff ",
         "priceAlone": 6,
-        "outOfStock": false
+        "outOfStock": true
       }
     ]
   },
